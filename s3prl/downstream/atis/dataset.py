@@ -1,18 +1,13 @@
+import os
 import random
 
 import torch
 import torch.nn as nn
-from torch.utils.data.dataset import Dataset
-
-
-import os
 import torchaudio
-
+from torch.utils.data.dataset import Dataset
 
 SAMPLE_RATE = 16000
 EXAMPLE_WAV_MAX_SEC = 10
-
-
 
 
 class AtisDataset(Dataset):
@@ -22,11 +17,14 @@ class AtisDataset(Dataset):
         self.max_length = SAMPLE_RATE * EXAMPLE_WAV_MAX_SEC
         self.Sy_intent = Sy_intent
         self.type = type
+
     def __len__(self):
         return len(self.df)
 
     def __getitem__(self, idx):
-        wav_path = os.path.join(self.base_path, self.type, self.df.loc[idx]['id']+'.wav')
+        wav_path = os.path.join(
+            self.base_path, self.type, self.df.loc[idx]["id"] + ".wav"
+        )
         wav, sr = torchaudio.load(wav_path)
         wav = wav.squeeze(0)
         label = []
@@ -45,4 +43,3 @@ class AtisDataset(Dataset):
             labels.append(label)
 
         return wavs, labels
-

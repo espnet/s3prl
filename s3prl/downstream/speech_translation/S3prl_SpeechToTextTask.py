@@ -1,12 +1,18 @@
-from fairseq.tasks.speech_to_text import SpeechToTextTask
-from fairseq.data import FairseqDataset, data_utils, ResamplingDataset, ConcatDataset
-from .Fairseq_SpeechToTextDataset import SpeechToTextDataset, SpeechToTextDatasetCreator, S2TDataConfig
-from typing import Dict, List, Optional, Tuple
-import torchaudio
-import torch
-from argparse import Namespace
-import os.path as op
 import csv
+import os.path as op
+from argparse import Namespace
+from typing import Dict, List, Optional, Tuple
+
+import torch
+import torchaudio
+from fairseq.data import ConcatDataset, FairseqDataset, ResamplingDataset, data_utils
+from fairseq.tasks.speech_to_text import SpeechToTextTask
+
+from .Fairseq_SpeechToTextDataset import (
+    S2TDataConfig,
+    SpeechToTextDataset,
+    SpeechToTextDatasetCreator,
+)
 
 
 # the following codes are modify from fairseq's implementation
@@ -16,7 +22,7 @@ class S3prl_SpeechToTextTask(SpeechToTextTask):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def load_dataset(self, split, max_feature_len = -1, epoch=1, combine=False, **kwargs):
+    def load_dataset(self, split, max_feature_len=-1, epoch=1, combine=False, **kwargs):
         is_train_split = split.startswith("train")
         pre_tokenizer = self.build_tokenizer(self.args)
         bpe_tokenizer = self.build_bpe(self.args)
@@ -30,14 +36,15 @@ class S3prl_SpeechToTextTask(SpeechToTextTask):
             is_train_split=is_train_split,
             epoch=epoch,
             seed=self.args.seed,
-            upstream_rate = self.upstream_rate,
-            max_feature_len = max_feature_len,
+            upstream_rate=self.upstream_rate,
+            max_feature_len=max_feature_len,
         )
-    
+
     def build_model(self, args, input_dim):
         args.input_feat_per_channel = input_dim
         args.input_channels = self.data_cfg.input_channels
         return super(SpeechToTextTask, self).build_model(args)
+
 
 class S3prl_SpeechToTextDatasetCreator(SpeechToTextDatasetCreator):
 
@@ -45,7 +52,7 @@ class S3prl_SpeechToTextDatasetCreator(SpeechToTextDatasetCreator):
         super().__init__(*args, **kwargs)
 
     # optional
-    KEY_SAMPLE_RATE = 'sr'
+    KEY_SAMPLE_RATE = "sr"
 
     # default
     DEFAULT_SAMPLE_RATE = 16000
@@ -79,28 +86,30 @@ class S3prl_SpeechToTextDatasetCreator(SpeechToTextDatasetCreator):
             speakers.extend([ss.get(cls.KEY_SPEAKER, cls.DEFAULT_SPEAKER) for ss in s])
             src_langs.extend([ss.get(cls.KEY_SRC_LANG, cls.DEFAULT_LANG) for ss in s])
             tgt_langs.extend([ss.get(cls.KEY_TGT_LANG, cls.DEFAULT_LANG) for ss in s])
-            
+
             # sample rate
-            srs.extend([int(ss.get(cls.KEY_SAMPLE_RATE, cls.DEFAULT_SAMPLE_RATE)) for ss in s])
-        
+            srs.extend(
+                [int(ss.get(cls.KEY_SAMPLE_RATE, cls.DEFAULT_SAMPLE_RATE)) for ss in s]
+            )
+
         return S3prl_SpeechToTextDataset(
             split_name,
             is_train_split,
             data_cfg,
             audio_paths,
             n_frames,
-            src_texts = src_texts,
-            tgt_texts = tgt_texts,
-            speakers = speakers,
-            src_langs = src_langs,
-            tgt_langs = tgt_langs,
-            srs = srs,
-            ids = ids,
-            tgt_dict = tgt_dict,
-            pre_tokenizer = pre_tokenizer,
-            bpe_tokenizer = bpe_tokenizer,
-            upstream_rate = upstream_rate,
-            max_feature_len = max_feature_len,
+            src_texts=src_texts,
+            tgt_texts=tgt_texts,
+            speakers=speakers,
+            src_langs=src_langs,
+            tgt_langs=tgt_langs,
+            srs=srs,
+            ids=ids,
+            tgt_dict=tgt_dict,
+            pre_tokenizer=pre_tokenizer,
+            bpe_tokenizer=bpe_tokenizer,
+            upstream_rate=upstream_rate,
+            max_feature_len=max_feature_len,
         )
 
     @classmethod
@@ -126,7 +135,7 @@ class S3prl_SpeechToTextDatasetCreator(SpeechToTextDatasetCreator):
         tsv_path = op.join(root, f"{split}.tsv")
         if not op.isfile(tsv_path):
             raise FileNotFoundError(f"Dataset not found: {tsv_path}")
-        
+
         with open(tsv_path) as f:
             reader = csv.DictReader(
                 f,
@@ -157,8 +166,15 @@ class S3prl_SpeechToTextDataset(SpeechToTextDataset):
 
     TARGET_RATE = 16000
 
-    def __init__(self, *args, srs = Optional[List[int]], upstream_rate = 160, max_feature_len=-1, **kwargs):
-        
+    def __init__(
+        self,
+        *args,
+        srs=Optional[List[int]],
+        upstream_rate=160,
+        max_feature_len=-1,
+        **kwargs,
+    ):
+
         super().__init__(*args, **kwargs)
 
         self.srs = srs
@@ -167,12 +183,14 @@ class S3prl_SpeechToTextDataset(SpeechToTextDataset):
         self.resamplers = {}
         for sr in set(srs):
             self.resamplers[sr] = torchaudio.transforms.Resample(
-                orig_freq = sr,
-                new_freq = self.TARGET_RATE,
+                orig_freq=sr,
+                new_freq=self.TARGET_RATE,
             )
 
         for i in range(len(self.n_frames)):
-            new_n_frames = self.n_frames[i] * self.TARGET_RATE / self.srs[i] / upstream_rate
+            new_n_frames = (
+                self.n_frames[i] * self.TARGET_RATE / self.srs[i] / upstream_rate
+            )
             if self.max_feature_len > 0 and new_n_frames > max_feature_len:
                 new_n_frames = max_feature_len
             self.n_frames[i] = int(new_n_frames)
@@ -196,8 +214,10 @@ class S3prl_SpeechToTextDataset(SpeechToTextDataset):
         # truncate the wav
         if self.max_feature_len > 0:
             if source.size(0) > self.max_wav_len:
-                print(f'wav too long({source.size(0)}), truncate to {self.max_wav_len} (id={index})')
-                source = source[:self.max_wav_len]
+                print(
+                    f"wav too long({source.size(0)}), truncate to {self.max_wav_len} (id={index})"
+                )
+                source = source[: self.max_wav_len]
 
         target = None
         if self.tgt_texts is not None:
@@ -215,13 +235,13 @@ class S3prl_SpeechToTextDataset(SpeechToTextDataset):
         ids = [sample[0] for sample in samples]
         samples = [sample[1:] for sample in samples]
         output_dict = super().collater(samples)
-        output_dict['utt_id'] = ids
+        output_dict["utt_id"] = ids
 
         wavs = []
 
-        for i in range(output_dict['nsentences']):
-            wav = output_dict['net_input']['src_tokens'][i]
-            length = output_dict['net_input']['src_lengths'][i].item()
+        for i in range(output_dict["nsentences"]):
+            wav = output_dict["net_input"]["src_tokens"][i]
+            length = output_dict["net_input"]["src_lengths"][i].item()
             wavs.append(wav[:length].numpy())
 
         return wavs, output_dict

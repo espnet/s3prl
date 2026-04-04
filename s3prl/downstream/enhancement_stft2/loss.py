@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ loss.py ]
 #   Synopsis     [ the objective functions for speech separation ]
 #   Source       [ Use some code from https://github.com/funcwj/uPIT-for-speech-separation and https://github.com/asteroid-team/asteroid ]
@@ -7,16 +8,18 @@
 #   Copyright    [ Copyright(c), Johns Hopkins University ]
 """*********************************************************************************************"""
 
-import torch
 from itertools import permutations
+
+import torch
 import torch.nn.functional as F
-from torch.nn.modules.loss import _Loss
 from asteroid.losses import PITLossWrapper
+from torch.nn.modules.loss import _Loss
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+
 class EnhLoss(object):
-    def __init__(self, num_srcs, loss_type, mask_type, log='none'):
+    def __init__(self, num_srcs, loss_type, mask_type, log="none"):
         """
         Args:
             num_srcs (int):
@@ -35,9 +38,9 @@ class EnhLoss(object):
         assert self.loss_type in ["MSE", "L1"]
         assert self.mask_type in ["AM", "PSM", "NPSM"]
         if self.loss_type == "MSE":
-            self.loss = torch.nn.MSELoss(reduction='none')
+            self.loss = torch.nn.MSELoss(reduction="none")
         elif self.loss_type == "L1":
-            self.loss = torch.nn.L1Loss(reduction='none')
+            self.loss = torch.nn.L1Loss(reduction="none")
         self.log = log
 
     def compute_loss(self, masks, feat_length, source_attr, target_attr):
@@ -52,13 +55,15 @@ class EnhLoss(object):
         elif self.mask_type == "PSM":
             refer_spect = targets_spect * torch.cos(mixture_phase - targets_phase)
         elif self.mask_type == "NPSM":
-            refer_spect = targets_spect * F.relu(torch.cos(mixture_phase - targets_phase))
+            refer_spect = targets_spect * F.relu(
+                torch.cos(mixture_phase - targets_phase)
+            )
         else:
             raise ValueError("Mask type not defined.")
 
-        if self.log == 'none':
+        if self.log == "none":
             pass
-        elif self.log == 'log1p':
+        elif self.log == "log1p":
             mixture_spect = torch.log1p(mixture_spect)
             refer_spect = torch.log1p(refer_spect)
         else:
@@ -70,36 +75,47 @@ class EnhLoss(object):
         loss = torch.mean(loss)
         return loss
 
+
 class SISDRLoss(object):
     def __init__(self, num_srcs, n_fft, hop_length, win_length, window, center):
         self.num_srcs = num_srcs
         self.n_fft = n_fft
         self.hop_length = hop_length
         self.win_length = win_length
-        if window == 'hann':
+        if window == "hann":
             self.window = torch.hann_window(win_length).cuda()
         self.center = center
         self.loss = PITLossWrapper(PairwiseNegSDR("sisdr"), pit_from="pw_mtx")
 
-    def compute_loss(self, masks, feat_length, source_attr, wav_length, target_wav_list):
+    def compute_loss(
+        self, masks, feat_length, source_attr, wav_length, target_wav_list
+    ):
         mixture_stft = source_attr["stft"].to(device)
         bs = mixture_stft.size(0)
         est_targets = torch.zeros(bs, self.num_srcs, max(wav_length)).to(device)
         targets = torch.stack(target_wav_list, dim=1).to(device)
         for i in range(bs):
-            mix_stft_utt = mixture_stft[i, :feat_length[i], :]
+            mix_stft_utt = mixture_stft[i, : feat_length[i], :]
             est_src_list = []
             for j in range(self.num_srcs):
-                mask_utt = masks[j][i, :feat_length[i], :]
+                mask_utt = masks[j][i, : feat_length[i], :]
                 est_stft_utt = mix_stft_utt * mask_utt
                 est_stft_utt = (torch.transpose(est_stft_utt, 0, 1)).unsqueeze(0)
-                est_src = torch.istft(est_stft_utt, self.n_fft, hop_length=self.hop_length, win_length=self.win_length, window=self.window, center=self.center, length=wav_length[i])[0]
+                est_src = torch.istft(
+                    est_stft_utt,
+                    self.n_fft,
+                    hop_length=self.hop_length,
+                    win_length=self.win_length,
+                    window=self.window,
+                    center=self.center,
+                    length=wav_length[i],
+                )[0]
                 if est_src.size(0) != wav_length[i]:
                     print("Warning: wav length doesn't match")
                     est_src = match_wave_length(est_src, wav_length[i])
                 est_src_list.append(est_src)
             est_srcs = torch.stack(est_src_list, dim=0)
-            est_targets[i, :, :wav_length[i]] = est_srcs
+            est_targets[i, :, : wav_length[i]] = est_srcs
         loss = self.loss(est_targets, targets, length=wav_length)
         return loss
 
@@ -154,8 +170,12 @@ class PairwiseNegSDR(_Loss):
         mask = length_mask(length).to(device)
         # Step 1. Zero-mean norm
         if self.zero_mean:
-            mean_source = torch.sum(targets, dim=2, keepdim=True) / length.view(-1, 1, 1)
-            mean_estimate = torch.sum(est_targets, dim=2, keepdim=True) / length.view(-1, 1, 1)
+            mean_source = torch.sum(targets, dim=2, keepdim=True) / length.view(
+                -1, 1, 1
+            )
+            mean_estimate = torch.sum(est_targets, dim=2, keepdim=True) / length.view(
+                -1, 1, 1
+            )
             targets = (targets - mean_source) * torch.unsqueeze(mask, 1)
             est_targets = (est_targets - mean_estimate) * torch.unsqueeze(mask, 1)
         # Step 2. Pair-wise SI-SDR. (Reshape to use broadcast)
@@ -166,7 +186,7 @@ class PairwiseNegSDR(_Loss):
             # [batch, n_src, n_src, 1]
             pair_wise_dot = torch.sum(s_estimate * s_target, dim=3, keepdim=True)
             # [batch, 1, n_src, 1]
-            s_target_energy = torch.sum(s_target ** 2, dim=3, keepdim=True) + self.EPS
+            s_target_energy = torch.sum(s_target**2, dim=3, keepdim=True) + self.EPS
             # [batch, n_src, n_src, time]
             pair_wise_proj = pair_wise_dot * s_target / s_target_energy
         else:
@@ -177,12 +197,13 @@ class PairwiseNegSDR(_Loss):
         else:
             e_noise = s_estimate - pair_wise_proj
         # [batch, n_src, n_src]
-        pair_wise_sdr = torch.sum(pair_wise_proj ** 2, dim=3) / (
-            torch.sum(e_noise ** 2, dim=3) + self.EPS
+        pair_wise_sdr = torch.sum(pair_wise_proj**2, dim=3) / (
+            torch.sum(e_noise**2, dim=3) + self.EPS
         )
         if self.take_log:
             pair_wise_sdr = 10 * torch.log10(pair_wise_sdr + self.EPS)
         return -pair_wise_sdr
+
 
 def match_wave_length(x, length):
     if x.size(0) == length:
@@ -192,11 +213,12 @@ def match_wave_length(x, length):
         return new_x
     else:
         new_x = torch.zeros(length).to(x.device)
-        new_x[:x.size(0)] = x
+        new_x[: x.size(0)] = x
         return new_x
+
 
 def length_mask(length):
     mask = torch.zeros(len(length), max(length)).to(device)
     for i in range(len(length)):
-        mask[i, :length[i]] = 1
+        mask[i, : length[i]] = 1
     return mask

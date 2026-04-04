@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/byol_a/hubconf.py ]
 #   Synopsis     [ the BYOL-A torch hubconf ]
 #   Author       [ S3PRL ]

@@ -1,7 +1,8 @@
 # Always prefer setuptools over distutils
 import os
 from pathlib import Path
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 here = Path(__file__).parent.resolve()
 
@@ -142,7 +143,7 @@ setup(
     # installed, specify them here.
     package_data={  # Optional
         "s3prl": ["version.txt"],
-        "s3prl.upstream": ["*/*.yaml", "*/*/*.yaml"]
+        "s3prl.upstream": ["*/*.yaml", "*/*/*.yaml"],
     },
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:

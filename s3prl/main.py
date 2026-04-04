@@ -1,5 +1,6 @@
 import sys
 import traceback
+
 from s3prl import problem
 
 
@@ -28,4 +29,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

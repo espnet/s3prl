@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/log_stft/expert.py ]
 #   Synopsis     [ the wrapper for STFT magnitude ]
 #   Author       [ Zili Huang ]

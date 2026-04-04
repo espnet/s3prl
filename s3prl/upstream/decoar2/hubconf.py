@@ -36,7 +36,7 @@ def decoar2(*args, refresh=False, **kwargs):
     The apc standard model on 360hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar2.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar2.pt"
+    )
     return decoar2_url(*args, refresh=refresh, **kwargs)

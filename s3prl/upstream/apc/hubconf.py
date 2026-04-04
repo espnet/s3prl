@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/apc/hubconf.py ]
 #   Synopsis     [ the apc torch hubconf ]
 #   Author       [ S3PRL ]
@@ -44,9 +45,9 @@ def apc_360hr(refresh=False, *args, **kwargs):
     The apc standard model on 360hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/leo19941227/apc_series/resolve/main/apc_360hr.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/leo19941227/apc_series/resolve/main/apc_360hr.ckpt"
+    )
     return apc_url(refresh=refresh, *args, **kwargs)
 
 
@@ -55,7 +56,7 @@ def apc_960hr(refresh=False, *args, **kwargs):
     The apc standard model on 960hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/leo19941227/apc_series/resolve/main/apc_960hr.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/leo19941227/apc_series/resolve/main/apc_960hr.ckpt"
+    )
     return apc_url(refresh=refresh, *args, **kwargs)

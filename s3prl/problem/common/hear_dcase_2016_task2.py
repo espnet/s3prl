@@ -60,9 +60,9 @@ def dcase_2016_task2(
             }
             for segment in metadata[utt]:
                 fullinfo = deepcopy(baseinfo)
-                fullinfo[
-                    "utt_id"
-                ] = f"{baseinfo['record_id']}-{int(segment['start'])}-{int(segment['end'])}"
+                fullinfo["utt_id"] = (
+                    f"{baseinfo['record_id']}-{int(segment['start'])}-{int(segment['end'])}"
+                )
                 fullinfo["labels"] = segment["label"]
                 fullinfo["start_sec"] = segment["start"] / 1000
                 fullinfo["end_sec"] = segment["end"] / 1000

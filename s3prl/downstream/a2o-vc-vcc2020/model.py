@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the simple (LSTMP), simple-AR and taco2-AR models for any-to-one voice conversion ]
 #   Reference    [ `WaveNet Vocoder with Limited Training Data for Voice Conversion`, Interspeech 2018 ]
@@ -12,17 +13,21 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+
+from s3prl.downstream.asr.model import downsample
 
 ################################################################################
 
 # The follow section is related to Tacotron2
 # Reference: https://github.com/espnet/espnet/blob/master/espnet/nets/pytorch_backend/tacotron2
 
+
 def encoder_init(m):
     """Initialize encoder parameters."""
     if isinstance(m, torch.nn.Conv1d):
         torch.nn.init.xavier_uniform_(m.weight, torch.nn.init.calculate_gain("relu"))
+
 
 class Taco2Encoder(torch.nn.Module):
     """Encoder module of the Tacotron2 TTS model.
@@ -105,7 +110,7 @@ class Taco2Encoder(torch.nn.Module):
         else:
             self.convs = None
         if elayers > 0:
-            iunits = econv_chans if econv_layers != 0 else embed_dim
+            iunits = econv_chans if econv_layers != 0 else eunits
             self.blstm = torch.nn.LSTM(
                 iunits, eunits // 2, elayers, batch_first=True, bidirectional=True
             )
@@ -138,6 +143,7 @@ class Taco2Encoder(torch.nn.Module):
         xs, hlens = pad_packed_sequence(xs, batch_first=True)
 
         return xs, hlens
+
 
 class Taco2Prenet(torch.nn.Module):
     """Prenet module for decoder of Tacotron2.
@@ -175,12 +181,24 @@ class Taco2Prenet(torch.nn.Module):
             x = F.dropout(self.prenet[i](x), self.dropout_rate)
         return x
 
+
 ################################################################################
 
-class RNNLayer(nn.Module):
-    ''' RNN wrapper, includes time-downsampling'''
 
-    def __init__(self, input_dim, module, bidirection, dim, dropout, layer_norm, sample_rate, proj):
+class RNNLayer(nn.Module):
+    """RNN wrapper, includes time-downsampling"""
+
+    def __init__(
+        self,
+        input_dim,
+        module,
+        bidirection,
+        dim,
+        dropout,
+        layer_norm,
+        sample_rate,
+        proj,
+    ):
         super(RNNLayer, self).__init__()
         # Setup
         rnn_out_dim = 2 * dim if bidirection else dim
@@ -192,7 +210,8 @@ class RNNLayer(nn.Module):
 
         # Recurrent layer
         self.layer = getattr(nn, module.upper())(
-            input_dim, dim, bidirectional=bidirection, num_layers=1, batch_first=True)
+            input_dim, dim, bidirectional=bidirection, num_layers=1, batch_first=True
+        )
 
         # Regularizations
         if self.layer_norm:
@@ -210,7 +229,9 @@ class RNNLayer(nn.Module):
         if not self.training:
             self.layer.flatten_parameters()
 
-        input_x = pack_padded_sequence(input_x, x_len, batch_first=True, enforce_sorted=False)
+        input_x = pack_padded_sequence(
+            input_x, x_len, batch_first=True, enforce_sorted=False
+        )
         output, _ = self.layer(input_x)
         output, x_len = pad_packed_sequence(output, batch_first=True)
 
@@ -222,7 +243,7 @@ class RNNLayer(nn.Module):
 
         # Perform Downsampling
         if self.sample_rate > 1:
-            output, x_len = downsample(output, x_len, self.sample_rate, 'drop')
+            output, x_len = downsample(output, x_len, self.sample_rate, "drop")
 
         if self.proj:
             output = torch.tanh(self.pj(output))
@@ -231,7 +252,7 @@ class RNNLayer(nn.Module):
 
 
 class RNNCell(nn.Module):
-    ''' RNN cell wrapper'''
+    """RNN cell wrapper"""
 
     def __init__(self, input_dim, module, dim, dropout, layer_norm, proj):
         super(RNNCell, self).__init__()
@@ -243,7 +264,7 @@ class RNNCell(nn.Module):
         self.proj = proj
 
         # Recurrent cell
-        self.cell = getattr(nn, module.upper()+"Cell")(input_dim, dim)
+        self.cell = getattr(nn, module.upper() + "Cell")(input_dim, dim)
 
         # Regularizations
         if self.layer_norm:
@@ -254,7 +275,7 @@ class RNNCell(nn.Module):
         # Additional projection layer
         if self.proj:
             self.pj = nn.Linear(rnn_out_dim, rnn_out_dim)
-    
+
     def forward(self, input_x, z, c):
 
         # Forward RNN cell
@@ -271,25 +292,29 @@ class RNNCell(nn.Module):
 
         return new_z, new_c
 
+
 ################################################################################
 
+
 class Model(nn.Module):
-    def __init__(self,
-                 input_dim,
-                 output_dim,
-                 resample_ratio,
-                 stats,
-                 ar,
-                 encoder_type,
-                 hidden_dim,
-                 lstmp_layers,
-                 lstmp_dropout_rate,
-                 lstmp_proj_dim,
-                 lstmp_layernorm,
-                 prenet_layers=2,
-                 prenet_dim=256,
-                 prenet_dropout_rate=0.5,
-                 **kwargs):
+    def __init__(
+        self,
+        input_dim,
+        output_dim,
+        resample_ratio,
+        stats,
+        ar,
+        encoder_type,
+        hidden_dim,
+        lstmp_layers,
+        lstmp_dropout_rate,
+        lstmp_proj_dim,
+        lstmp_layernorm,
+        prenet_layers=2,
+        prenet_dim=256,
+        prenet_dropout_rate=0.5,
+        **kwargs
+    ):
         super(Model, self).__init__()
 
         self.ar = ar
@@ -306,12 +331,11 @@ class Model(nn.Module):
             self.encoder = Taco2Encoder(input_dim, eunits=hidden_dim)
         elif encoder_type == "ffn":
             self.encoder = torch.nn.Sequential(
-                torch.nn.Linear(input_dim, hidden_dim),
-                torch.nn.ReLU()
+                torch.nn.Linear(input_dim, hidden_dim), torch.nn.ReLU()
             )
         else:
             raise ValueError("Encoder type not supported.")
-        
+
         # define prenet
         self.prenet = Taco2Prenet(
             idim=output_dim,
@@ -354,30 +378,32 @@ class Model(nn.Module):
     def normalize(self, x):
         return (x - self.target_mean) / self.target_scale
 
-    def forward(self, features, lens, targets = None):
+    def forward(self, features, lens, targets=None):
         """Calculate forward propagation.
-            Args:
-            features: Batch of the sequences of input features (B, Lmax, idim).
-            targets: Batch of the sequences of padded target features (B, Lmax, odim).
+        Args:
+        features: Batch of the sequences of input features (B, Lmax, idim).
+        targets: Batch of the sequences of padded target features (B, Lmax, odim).
         """
         B = features.shape[0]
-        
+
         # resample the input features according to resample_ratio
         features = features.permute(0, 2, 1)
-        resampled_features = F.interpolate(features, scale_factor = self.resample_ratio)
+        resampled_features = F.interpolate(features, scale_factor=self.resample_ratio)
         resampled_features = resampled_features.permute(0, 2, 1)
         lens = lens * self.resample_ratio
 
         # encoder
         if self.encoder_type == "taco2":
-            encoder_states, lens = self.encoder(resampled_features, lens) # (B, Lmax, hidden_dim)
+            encoder_states, lens = self.encoder(
+                resampled_features, lens
+            )  # (B, Lmax, hidden_dim)
         elif self.encoder_type == "ffn":
-            encoder_states = self.encoder(resampled_features) # (B, Lmax, hidden_dim)
-        
+            encoder_states = self.encoder(resampled_features)  # (B, Lmax, hidden_dim)
+
         # decoder: LSTMP layers & projection
         if self.ar:
             if targets is not None:
-                targets = targets.transpose(0, 1) # (Lmax, B, output_dim)
+                targets = targets.transpose(0, 1)  # (Lmax, B, output_dim)
             predicted_list = []
 
             # initialize hidden states
@@ -390,20 +416,30 @@ class Model(nn.Module):
 
             # step-by-step loop for autoregressive decoding
             for t, encoder_state in enumerate(encoder_states.transpose(0, 1)):
-                concat = torch.cat([encoder_state, self.prenet(prev_out)], dim=1) # each encoder_state has shape (B, hidden_dim)
+                concat = torch.cat(
+                    [encoder_state, self.prenet(prev_out)], dim=1
+                )  # each encoder_state has shape (B, hidden_dim)
                 for i, lstmp in enumerate(self.lstmps):
-                    lstmp_input = concat if i == 0 else z_list[i-1]
+                    lstmp_input = concat if i == 0 else z_list[i - 1]
                     z_list[i], c_list[i] = lstmp(lstmp_input, z_list[i], c_list[i])
-                predicted_list += [self.proj(z_list[-1]).view(B, self.output_dim, -1)] # projection is done here to ensure output dim
-                prev_out = targets[t] if targets is not None else predicted_list[-1].squeeze(-1) # targets not None = teacher-forcing
-                prev_out = self.normalize(prev_out) # apply normalization
+                predicted_list += [
+                    self.proj(z_list[-1]).view(B, self.output_dim, -1)
+                ]  # projection is done here to ensure output dim
+                prev_out = (
+                    targets[t]
+                    if targets is not None
+                    else predicted_list[-1].squeeze(-1)
+                )  # targets not None = teacher-forcing
+                prev_out = self.normalize(prev_out)  # apply normalization
             predicted = torch.cat(predicted_list, dim=2)
-            predicted = predicted.transpose(1, 2)  # (B, hidden_dim, Lmax) -> (B, Lmax, hidden_dim)
+            predicted = predicted.transpose(
+                1, 2
+            )  # (B, hidden_dim, Lmax) -> (B, Lmax, hidden_dim)
         else:
             predicted = encoder_states
             for i, lstmp in enumerate(self.lstmps):
                 predicted, lens = lstmp(predicted, lens)
-        
+
             # projection layer
             predicted = self.proj(predicted)
 

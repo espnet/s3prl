@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ dataset.py ]
 #   Synopsis     [ the speaker diarization dataset ]
 #   Source       [ Refactored from https://github.com/hitachi-speech/EEND ]
@@ -24,11 +25,11 @@ import soundfile as sf
 
 # -------------#
 import torch
-from torch.nn.utils.rnn import pad_sequence
-from torch.utils.data.dataset import Dataset
 
 # -------------#
 import torchaudio
+from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data.dataset import Dataset
 
 
 def _count_frames(data_len, size, step):
@@ -139,7 +140,7 @@ class DiarizationDataset(Dataset):
         else:
             chunks = self.chunk_indices[self.rec_list[i]]
             Ys, Ts = [], []
-            for (rec, st, ed) in chunks:
+            for rec, st, ed in chunks:
                 Y, T = self._get_labeled_speech(rec, st, ed, self.n_speakers)
                 Ys.append(Y)
                 Ts.append(T)

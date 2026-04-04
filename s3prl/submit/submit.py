@@ -1,5 +1,5 @@
-import os
 import argparse
+import os
 from pathlib import Path
 from shutil import copyfile, copytree
 
@@ -44,7 +44,9 @@ if args.pr is not None:
     tgt = tgt_dir / "predict.ark"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.sid is not None:
     task_name = "sid_public"
@@ -59,7 +61,9 @@ if args.sid is not None:
     tgt = tgt_dir / "predict.txt"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.ks is not None:
     task_name = "ks_public"
@@ -74,7 +78,9 @@ if args.ks is not None:
     tgt = tgt_dir / "predict.txt"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.ic is not None:
     task_name = "ic_public"
@@ -89,7 +95,9 @@ if args.ic is not None:
     tgt = tgt_dir / "predict.csv"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 er_processed = []
 for foldid in range(1, 6):
@@ -108,10 +116,14 @@ for foldid in range(1, 6):
         tgt = tgt_dir / "predict.txt"
 
         copyfile(src, tgt)
-        print(f"{task_name} is included in the submission and will be scored after submitted.")
+        print(
+            f"{task_name} is included in the submission and will be scored after submitted."
+        )
 
 if len(er_processed) > 0 and len(er_processed) < 5:
-        print(f"[Warning] - {er_processed} are included but only in {len(er_processed)} folds. er_public will NOT be scored. er_public will be scored only when all the 5 folds are submitted.")
+    print(
+        f"[Warning] - {er_processed} are included but only in {len(er_processed)} folds. er_public will NOT be scored. er_public will be scored only when all the 5 folds are submitted."
+    )
 
 if args.asr_no_lm is not None:
     task_name = "asr_public"
@@ -126,7 +138,9 @@ if args.asr_no_lm is not None:
     tgt = tgt_dir / "predict.ark"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.asr_with_lm is not None:
     task_name = "asr_lm_public"
@@ -141,7 +155,9 @@ if args.asr_with_lm is not None:
     tgt = tgt_dir / "predict.ark"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.qbe is not None:
     task_name = "qbe_public"
@@ -156,7 +172,9 @@ if args.qbe is not None:
     tgt = tgt_dir / "benchmark.stdlist.xml"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.sf is not None:
     task_name = "sf_public"
@@ -171,7 +189,9 @@ if args.sf is not None:
     tgt = tgt_dir / "predict.ark"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.sv is not None:
     task_name = "sv_public"
@@ -186,7 +206,9 @@ if args.sv is not None:
     tgt = tgt_dir / "predict.txt"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.sd is not None:
     task_name = "sd_public"
@@ -204,7 +226,9 @@ if args.sd is not None:
     if upstream_rate.is_file():
         copyfile(upstream_rate, tgt_dir / "frame_shift")
 
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.se is not None:
     task_name = "se_public"
@@ -219,7 +243,9 @@ if args.se is not None:
     tgt = tgt_dir / "metrics.txt"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.ss is not None:
     task_name = "ss_public"
@@ -234,7 +260,9 @@ if args.ss is not None:
     tgt = tgt_dir / "metrics.txt"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 if args.st is not None:
     task_name = "st_public"
@@ -249,7 +277,9 @@ if args.st is not None:
     tgt = tgt_dir / "predict.tsv"
 
     copyfile(src, tgt)
-    print(f"{task_name} is included in the submission and will be scored after submitted.")
+    print(
+        f"{task_name} is included in the submission and will be scored after submitted."
+    )
 
 print("Zipping predictions for submission...")
 os.chdir(output_dir)

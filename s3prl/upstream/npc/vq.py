@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/npc/vq.py ]
 #   Synopsis     [ the vq component for npc]
 #   Author       [ S3PRL ]

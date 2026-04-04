@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the 1-hidden model ]
 #   Author       [ S3PRL ]
@@ -20,13 +21,12 @@ import torch.nn as nn
 class Model(nn.Module):
     def __init__(self, input_dim, output_class_num, hidden_size, dropout, **kwargs):
         super(Model, self).__init__()
-        
-        # init attributes
-        self.in_linear = nn.Linear(input_dim, hidden_size)    
-        self.out_linear = nn.Linear(hidden_size, output_class_num)
-        self.drop = nn.Dropout(dropout)    
-        self.act_fn = nn.functional.relu      
 
+        # init attributes
+        self.in_linear = nn.Linear(input_dim, hidden_size)
+        self.out_linear = nn.Linear(hidden_size, output_class_num)
+        self.drop = nn.Dropout(dropout)
+        self.act_fn = nn.functional.relu
 
     def forward(self, features):
         hidden = self.in_linear(features)

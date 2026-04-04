@@ -101,9 +101,11 @@ class SpeechCommandsV1(Corpus):
     @staticmethod
     def parse_train_valid_data_list(data_list, train_dataset_root: Path):
         data = [
-            (class_name, audio_path)
-            if class_name in CLASSES
-            else ("_unknown_", audio_path)
+            (
+                (class_name, audio_path)
+                if class_name in CLASSES
+                else ("_unknown_", audio_path)
+            )
             for class_name, audio_path in data_list
         ]
         data += [

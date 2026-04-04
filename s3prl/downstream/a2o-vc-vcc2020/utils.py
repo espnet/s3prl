@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ utils.py ]
 #   Synopsis     [ utility functions ]
 #   Author       [ Wen-Chin Huang (https://github.com/unilight) ]
@@ -8,17 +9,20 @@
 
 
 import fnmatch
+import logging
+import os
+import sys
+
 import h5py
 import librosa
-import logging
 import numpy as np
-import os
 import torch
 
 ################################################################################
 
 # The following function are based on:
 # https://github.com/espnet/espnet/blob/master/espnet/nets/pytorch_backend/nets_utils.py
+
 
 def make_pad_mask(lengths, xs=None, length_dim=-1):
     """Make mask tensor containing indices of padded part.
@@ -223,10 +227,12 @@ def make_non_pad_mask(lengths, xs=None, length_dim=-1):
     """
     return ~make_pad_mask(lengths, xs, length_dim)
 
+
 ################################################################################
 
 # The following function are based on:
 # https://github.com/kan-bayashi/ParallelWaveGAN/blob/master/parallel_wavegan/utils/utils.py
+
 
 def find_files(root_dir, query="*.wav", include_root_dir=True):
     files = []
@@ -237,6 +243,7 @@ def find_files(root_dir, query="*.wav", include_root_dir=True):
         files = [file_.replace(root_dir + "/", "") for file_ in files]
 
     return files
+
 
 def read_hdf5(hdf5_name, hdf5_path):
     """Read hdf5 dataset.
@@ -290,12 +297,15 @@ def write_hdf5(hdf5_name, hdf5_path, write_data, is_overwrite=True):
         # check dataset existence
         if hdf5_path in hdf5_file:
             if is_overwrite:
-                logging.warning("Dataset in hdf5 file already exists. "
-                                "recreate dataset in hdf5.")
+                logging.warning(
+                    "Dataset in hdf5 file already exists. " "recreate dataset in hdf5."
+                )
                 hdf5_file.__delitem__(hdf5_path)
             else:
-                logging.error("Dataset in hdf5 file already exists. "
-                              "if you want to overwrite, please set is_overwrite = True.")
+                logging.error(
+                    "Dataset in hdf5 file already exists. "
+                    "if you want to overwrite, please set is_overwrite = True."
+                )
                 hdf5_file.close()
                 sys.exit(1)
     else:
@@ -307,12 +317,14 @@ def write_hdf5(hdf5_name, hdf5_path, write_data, is_overwrite=True):
     hdf5_file.flush()
     hdf5_file.close()
 
+
 ################################################################################
 
 # The following function are based on:
 # https://github.com/espnet/espnet/blob/master/utils/convert_fbank_to_wav.py
 
 EPS = 1e-10
+
 
 def logmelspc_to_linearspc(lmspc, fs, n_mels, n_fft, fmin=None, fmax=None):
     """Convert log Mel filterbank to linear spectrogram.
@@ -333,7 +345,9 @@ def logmelspc_to_linearspc(lmspc, fs, n_mels, n_fft, fmin=None, fmax=None):
     fmin = 0 if fmin is None else fmin
     fmax = fs / 2 if fmax is None else fmax
     mspc = np.power(10.0, lmspc)
-    mel_basis = librosa.filters.mel(sr=fs, n_fft=n_fft, n_mels=n_mels, fmin=fmin, fmax=fmax)
+    mel_basis = librosa.filters.mel(
+        sr=fs, n_fft=n_fft, n_mels=n_mels, fmin=fmin, fmax=fmax
+    )
     inv_mel_basis = np.linalg.pinv(mel_basis)
     spc = np.maximum(EPS, np.dot(inv_mel_basis, mspc.T).T)
 
@@ -371,10 +385,12 @@ def griffin_lim(spc, n_fft, n_shift, win_length, window="hann", n_iters=100):
 
     return y
 
+
 ################################################################################
 
 # The following function are based on:
 # https://github.com/espnet/espnet/blob/master/espnet/transform/spectrogram.py
+
 
 def stft(
     x, n_fft, n_shift, win_length=None, window="hann", center=True, pad_mode="reflect"
@@ -420,7 +436,9 @@ def stft2logmelspectrogram(x_stft, fs, n_mels, n_fft, fmin=None, fmax=None, eps=
     # spc: (Time, Channel, Freq) or (Time, Freq)
     spc = np.abs(x_stft)
     # mel_basis: (Mel_freq, Freq)
-    mel_basis = librosa.filters.mel(sr=fs, n_fft=n_fft, n_mels=n_mels, fmin=fmin, fmax=fmax)
+    mel_basis = librosa.filters.mel(
+        sr=fs, n_fft=n_fft, n_mels=n_mels, fmin=fmin, fmax=fmax
+    )
     # lmspc: (Time, Channel, Mel_freq) or (Time, Mel_freq)
     lmspc = np.log10(np.maximum(eps, np.dot(spc, mel_basis.T)))
 

@@ -10,21 +10,21 @@ Flashlight decoders.
 """
 
 import itertools as it
-from typing import List
 import warnings
+from typing import List
 
 import torch
 
 try:
-    from flashlight.lib.text.dictionary import create_word_dict, load_words
     from flashlight.lib.text.decoder import (
         CriterionType,
-        LexiconDecoderOptions,
         KenLM,
+        LexiconDecoder,
+        LexiconDecoderOptions,
         SmearingMode,
         Trie,
-        LexiconDecoder,
     )
+    from flashlight.lib.text.dictionary import create_word_dict, load_words
 except:
     warnings.warn(
         "flashlight python bindings are required to use this functionality. Please install from https://github.com/flashlight/text and https://github.com/flashlight/sequence"

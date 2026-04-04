@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/vggish/hubconf.py ]
 #   Synopsis     [ the VGGish torch hubconf ]
 #   Author       [ S3PRL ]

@@ -3,6 +3,7 @@
 
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/wavlm/hubconf.py ]
 #   Synopsis     [ the WavLM torch hubconf ]
 #   Author       [ Microsoft ]
@@ -47,9 +48,9 @@ def wavlm_base(refresh=False, *args, **kwargs):
     The Base model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_base.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_base.pt"
+    )
 
     return wavlm_url(refresh=refresh, *args, **kwargs)
 
@@ -59,9 +60,9 @@ def wavlm_base_plus(refresh=False, *args, **kwargs):
     The Base-Plus model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_base_plus.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_base_plus.pt"
+    )
 
     return wavlm_url(refresh=refresh, *args, **kwargs)
 
@@ -71,8 +72,8 @@ def wavlm_large(refresh=False, *args, **kwargs):
     The Large model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_large.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wavlm_large.pt"
+    )
 
     return wavlm_url(refresh=refresh, *args, **kwargs)

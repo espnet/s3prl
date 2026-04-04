@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/mockingjay/builder.py ]
 #   Synopsis     [ build the transformer model for downstream usage ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]
@@ -494,15 +495,15 @@ def position_encoding(seq_len, hidden_size):
 # SPEC AUGMENT #
 ################
 """
-Process training data for the supervised ASR model by 
+Process training data for the supervised ASR model by
 masking to time-steps and channels during training
 which delays overfitting and significantly improves the final accuracy numbers.
 Input:
     `spec`: input real frames, with shape: (batch_size, seq_len, feature_dim)
-    `mask_T`: the time mask parameter T described in the SpecAugment paper, 
+    `mask_T`: the time mask parameter T described in the SpecAugment paper,
               we use default values based on the LD Policy
               (In paper: T=100, we use 70 since we are training on the 100 hr subset only)
-    `mask_F`: the frequency mask parameter F described in the SpecAugment paper, 
+    `mask_F`: the frequency mask parameter F described in the SpecAugment paper,
               we use default values based on the LD Policy
               (In paper: F=27:D=80*3 -> F=9:D=80, where D is acoustic dimension)
     `num_T` : the number of time masks applied (In paper: mT=2)

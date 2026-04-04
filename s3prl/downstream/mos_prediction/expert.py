@@ -4,15 +4,15 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import pearsonr, spearmanr
 import torch
 import torch.nn as nn
+from scipy.stats import pearsonr, spearmanr
 from torch.distributed import is_initialized
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader, DistributedSampler
 from tqdm import tqdm
 
-from .dataset import VCC18SegmentalDataset, VCC16SegmentalDataset
+from .dataset import VCC16SegmentalDataset, VCC18SegmentalDataset
 from .model import Model
 
 warnings.filterwarnings("ignore")
@@ -66,9 +66,11 @@ class DownstreamExpert(nn.Module):
         self.model = Model(
             input_dim=self.modelrc["projector_dim"],
             clipping=self.modelrc["clipping"] if "clipping" in self.modelrc else False,
-            attention_pooling=self.modelrc["attention_pooling"]
-            if "attention_pooling" in self.modelrc
-            else False,
+            attention_pooling=(
+                self.modelrc["attention_pooling"]
+                if "attention_pooling" in self.modelrc
+                else False
+            ),
             num_judges=5000,
         )
         self.objective = nn.MSELoss()

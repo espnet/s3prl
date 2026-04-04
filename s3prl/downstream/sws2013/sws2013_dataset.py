@@ -44,9 +44,11 @@ class SWS2013Dataset(Dataset):
                 negative_pairs.append(
                     {
                         "query_tensor": query_tensor,
-                        "audio_set": query2audio_compl_set[query]
-                        if query in query2audio_compl_set
-                        else all_audio_set,
+                        "audio_set": (
+                            query2audio_compl_set[query]
+                            if query in query2audio_compl_set
+                            else all_audio_set
+                        ),
                     }
                 )
                 if query not in query2audios:

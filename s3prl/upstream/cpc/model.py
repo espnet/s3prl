@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/cpc/model.py ]
 #   Synopsis     [ the cpc model ]
 #   Author       [ Facebook Research ]

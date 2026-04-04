@@ -15,7 +15,9 @@ class RandomDataset(Dataset):
         self.class_num = 48
 
     def __getitem__(self, idx):
-        samples = random.randint(EXAMPLE_WAV_MIN_SEC * SAMPLE_RATE, EXAMPLE_WAV_MAX_SEC * SAMPLE_RATE)
+        samples = random.randint(
+            EXAMPLE_WAV_MIN_SEC * SAMPLE_RATE, EXAMPLE_WAV_MAX_SEC * SAMPLE_RATE
+        )
         wav = torch.randn(samples)
         label = random.randint(0, self.class_num - 1)
         return wav, label

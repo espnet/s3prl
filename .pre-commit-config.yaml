@@ -3,7 +3,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         types: [python]
@@ -21,3 +21,4 @@ repos:
         entry: ./ci/format.py
         language: python
         types: [python]
+        additional_dependencies: [flake8>=3.7.8, black, isort]

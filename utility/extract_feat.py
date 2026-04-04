@@ -1,12 +1,12 @@
-import logging
 import argparse
+import logging
 from pathlib import Path
 
 import torch
 
 from s3prl.nn import S3PRLUpstream
-from s3prl.util.pseudo_data import get_pseudo_wavs
 from s3prl.util.override import parse_overrides
+from s3prl.util.pseudo_data import get_pseudo_wavs
 
 logger = logging.getLogger(__name__)
 

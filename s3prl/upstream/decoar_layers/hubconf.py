@@ -23,7 +23,7 @@ def decoar_layers(*args, refresh=False, **kwargs):
     The apc standard model on 360hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar.pt"
+    )
     return decoar_layers_url(*args, refresh=refresh, **kwargs)

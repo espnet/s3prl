@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/wav2vec/hubconf.py ]
 #   Synopsis     [ the wav2vec torch hubconf ]
 #   Author       [ S3PRL ]
@@ -58,7 +59,7 @@ def wav2vec_large(refresh=False, legacy=False, **kwargs):
     """
     kwargs["ckpt"] = "https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt"
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wav2vec_large.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/wav2vec_large.pt"
+        )
     return wav2vec_custom(refresh=refresh, legacy=legacy, **kwargs)

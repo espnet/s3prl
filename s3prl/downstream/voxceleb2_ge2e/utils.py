@@ -1,11 +1,13 @@
-import numpy as np 
 import pickle
-from scipy.optimize import brentq
-from scipy.interpolate import interp1d
-from sklearn.metrics import roc_curve ,auc
-
-from itertools import accumulate
 from functools import partial
+from itertools import accumulate
+
+import numpy as np
+import torch
+from scipy.interpolate import interp1d
+from scipy.optimize import brentq
+from sklearn.metrics import auc, roc_curve
+
 
 def EER(labels, scores):
     """
@@ -17,11 +19,12 @@ def EER(labels, scores):
 
     fpr, tpr, thresholds = roc_curve(labels, scores)
     s = interp1d(fpr, tpr)
-    a = lambda x : 1. - x - interp1d(fpr, tpr)(x)
-    eer = brentq(a, 0., 1.)
+    a = lambda x: 1.0 - x - interp1d(fpr, tpr)(x)
+    eer = brentq(a, 0.0, 1.0)
     thresh = interp1d(fpr, thresholds)(eer)
 
     return eer, thresh
+
 
 def eer_yist_f(labels, scores):
     """
@@ -40,12 +43,12 @@ def eer_yist_f(labels, scores):
     total_ones = sum(sorted_labels)
     total_zeros = len(sorted_labels) - total_ones
 
-    prefsum_ones = list(accumulate(sorted_labels,
-                                   partial(_count_labels, label_to_count=1),
-                                   initial=0))
-    prefsum_zeros = list(accumulate(sorted_labels,
-                                    partial(_count_labels, label_to_count=0),
-                                    initial=0))
+    prefsum_ones = list(
+        accumulate(sorted_labels, partial(_count_labels, label_to_count=1), initial=0)
+    )
+    prefsum_zeros = list(
+        accumulate(sorted_labels, partial(_count_labels, label_to_count=0), initial=0)
+    )
 
     ext_scores = [-1.0, *sorted_scores, 1.0]
 
@@ -67,7 +70,7 @@ def eer_yist_f(labels, scores):
         else:
             break
 
-    thresh = (ext_scores[thresh_idx] + ext_scores[thresh_idx+1]) / 2
+    thresh = (ext_scores[thresh_idx] + ext_scores[thresh_idx + 1]) / 2
     false_negative_ratio = nb_false_negatives / len(labels)
     false_positive_ratio = nb_false_positives / len(labels)
     equal_error_rate = (false_positive_ratio + false_negative_ratio) / 2
@@ -78,14 +81,16 @@ def eer_yist_f(labels, scores):
 def _count_labels(counted_so_far, label, label_to_count=0):
     return counted_so_far + 1 if label == label_to_count else counted_so_far
 
+
 def compute_metrics(input_x_speaker, ylabel):
+    score_fn = torch.nn.CosineSimilarity(dim=1)
     wav1 = []
     wav2 = []
     for i in range(len(ylabel)):
         wav1.append(input_x_speaker[i].unsqueeze(0))
-        wav2.append(input_x_speaker[len(ylabel)+i].unsqueeze(0))
+        wav2.append(input_x_speaker[len(ylabel) + i].unsqueeze(0))
     wav1 = torch.stack(wav1)
     wav2 = torch.stack(wav2)
     ylabel = torch.stack(ylabel).cpu().detach().long().tolist()
-    scores = self.score_fn(wav1,wav2).squeeze().cpu().detach().tolist()
+    scores = score_fn(wav1, wav2).squeeze().cpu().detach().tolist()
     return scores, ylabel

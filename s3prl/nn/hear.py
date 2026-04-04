@@ -6,7 +6,6 @@ Authors:
   * Leo 2022
 """
 
-
 from typing import List
 
 import torch

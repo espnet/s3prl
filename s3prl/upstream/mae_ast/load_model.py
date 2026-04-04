@@ -96,14 +96,12 @@ class MAE_AST_Pretraining_Config:
 
     mask_type: MASK_TYPE_CHOICES = field(
         default="random_mask",
-        metadata={
-            "help": """Determine type of mask for MAE pretraining. 
+        metadata={"help": """Determine type of mask for MAE pretraining.
                       -retain_spans: Only for frame data. Wav2Vec2 like masking.
                       -random_mask: Perform masking on completely random tokens. No chunking. Used in MAE
                       -random_mask_batched: random_mask with the same mask across the batch.
                       -chunk_mask: Perform masking on chunks until mask_spans hit. From SSAST. Same across batch for speed.
-                          """
-        },
+                          """},
     )
 
 

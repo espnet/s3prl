@@ -1,15 +1,15 @@
 """
-    Pre-train expert for distiller
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Pre-train expert for distiller
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
-from easydict import EasyDict as edict
-import yaml
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader
+import yaml
+from easydict import EasyDict as edict
 from pretrain.distiller.dataset import OnlineWaveDataset
+from torch.utils.data import DataLoader
 from upstream.distiller.model import DistillerConfig, DistillerModel
 
 
@@ -319,9 +319,9 @@ class DistillerForPretrain(nn.Module):
                         "hnet",
                         "self-hidden",
                     ]:
-                        other_res[
-                            "norm_task_emb"
-                        ] = self.distiller.task_embedding.weight.pow(2).mean()
+                        other_res["norm_task_emb"] = (
+                            self.distiller.task_embedding.weight.pow(2).mean()
+                        )
         else:
             other_res = None
 

@@ -1,18 +1,17 @@
-import os
 import math
-import torch
+import os
 import random
 
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader
 
-from ..model import *
 from ..asr.model import *
-from .text import load_text_encoder
+from ..model import *
 from .data import load_dataset
 from .metric import *
+from .text import load_text_encoder
 
 
 class DownstreamExpert(nn.Module):
@@ -95,9 +94,7 @@ class DownstreamExpert(nn.Module):
                 if token != self.tokenizer.pad_idx and token != self.tokenizer.eos_idx
             ]
             filtered_tokens.append(filtered_token)
-        hypothesis = [
-            self.tokenizer.decode(h) for h in filtered_tokens
-        ]
+        hypothesis = [self.tokenizer.decode(h) for h in filtered_tokens]
         groundtruth = [self.tokenizer.decode(g.tolist()) for g in labels]
 
         # store all text in a batch

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/mockingjay/hubconf.py ]
 #   Synopsis     [ the mockingjay torch hubconf ]
 #   Author       [ S3PRL ]
@@ -113,9 +114,9 @@ def mockingjay_logMelLinearLarge_T_AdamW_b32_500k_360hr_drop1(
     Total steps: 500k
     Unlabled Speech: 360hr
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/mockingjay/resolve/main/mockingjay_logMelLinearLarge_T_AdamW_b32_500k_360hr_drop1/states-500000.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/mockingjay/resolve/main/mockingjay_logMelLinearLarge_T_AdamW_b32_500k_360hr_drop1/states-500000.ckpt"
+    )
     return mockingjay_url(refresh=refresh, *args, **kwargs)
 
 
@@ -133,9 +134,9 @@ def mockingjay_logMelBase_T_AdamW_b32_1m_960hr(refresh=False, *args, **kwargs):
     Total steps: 1M
     Unlabled Speech: 960hr
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/jzx0xggk663jev6/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/jzx0xggk663jev6/states-1000000.ckpt?dl=1"
+    )
     return mockingjay_url(refresh=refresh, *args, **kwargs)
 
 
@@ -149,9 +150,9 @@ def mockingjay_logMelBase_T_AdamW_b32_1m_960hr_drop1(refresh=False, *args, **kwa
     Unlabled Speech: 960hr
     Differences: Dropout of 0.1 (instead of 0.3)
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/7f9z6dzc7oix6qv/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/7f9z6dzc7oix6qv/states-1000000.ckpt?dl=1"
+    )
     return mockingjay_url(refresh=refresh, *args, **kwargs)
 
 
@@ -165,7 +166,7 @@ def mockingjay_logMelBase_T_AdamW_b32_1m_960hr_seq3k(refresh=False, *args, **kwa
     Unlabled Speech: 960hr
     Differences: sequence length of 3k (instead of 1.5k)
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/qnnvdrai2tfmjmh/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/qnnvdrai2tfmjmh/states-1000000.ckpt?dl=1"
+    )
     return mockingjay_url(refresh=refresh, *args, **kwargs)

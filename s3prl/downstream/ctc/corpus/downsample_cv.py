@@ -2,12 +2,12 @@ import argparse
 import csv
 from os.path import join
 from pathlib import Path
-from tqdm import tqdm
 
+import numpy as np
 import torch
 import torchaudio
-import numpy as np
 from librosa import resample
+from tqdm import tqdm
 
 
 def read_processed_tsv(path):

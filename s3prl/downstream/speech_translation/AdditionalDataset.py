@@ -1,8 +1,10 @@
-import fairseq
-from fairseq.data import Dictionary, encoders
 import csv
 from argparse import Namespace
+
+import fairseq
 import torch
+from fairseq.data import Dictionary, encoders
+
 
 class AdditionalDataset:
 
@@ -10,8 +12,9 @@ class AdditionalDataset:
     def from_tsv(cls, file, key, bpe_tokenizer=None, pre_tokenizer=None):
 
         data = []
-        with open(file, 'r') as file:
-            reader = csv.DictReader(file,
+        with open(file, "r") as file:
+            reader = csv.DictReader(
+                file,
                 delimiter="\t",
                 quotechar=None,
                 doublequote=False,
@@ -20,7 +23,7 @@ class AdditionalDataset:
             )
             for line in reader:
                 data.append(line[key])
-        
+
         return cls(data, bpe_tokenizer, pre_tokenizer)
 
     def __init__(self, data, dictionary, bpe_tokenizer=None, pre_tokenizer=None):
@@ -31,12 +34,12 @@ class AdditionalDataset:
         self.dictionary = dictionary
 
     def _create_target(self, index):
-        
+
         tokenized = self._tokenize_text(self.data[index])
         target = self.dictionary.encode_line(
             tokenized, add_if_not_exist=False, append_eos=True
         ).long()
-        
+
         return target
 
     def get_addtional_input(self, id_list):
@@ -50,9 +53,7 @@ class AdditionalDataset:
             left_pad=False,
             move_eos_to_beginning=False,
         )
-        target_lengths = torch.tensor(
-            [t.size(0) for t in target], dtype=torch.long
-        )
+        target_lengths = torch.tensor([t.size(0) for t in target], dtype=torch.long)
         prev_output_tokens = fairseq.data.data_utils.collate_tokens(
             target,
             self.dictionary.pad(),
@@ -69,7 +70,7 @@ class AdditionalDataset:
             "target_lengths": target_lengths,
             "ntokens": ntokens,
         }
-        
+
     def _tokenize_text(self, text):
 
         if self.pre_tokenizer is not None:

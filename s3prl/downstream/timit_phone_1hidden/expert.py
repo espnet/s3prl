@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ expert.py ]
 #   Synopsis     [ the phone 1-hidden downstream wrapper ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]
@@ -20,7 +21,13 @@ class DownstreamExpert(PhoneExpert):
     """
 
     def __init__(self, upstream_dim, downstream_expert, **kwargs):
-        super(DownstreamExpert, self).__init__(upstream_dim, downstream_expert, **kwargs)
-        
-        delattr(self, 'model')
-        self.model = Model(input_dim=self.upstream_dim, output_class_num=self.train_dataset.class_num, **self.modelrc)
+        super(DownstreamExpert, self).__init__(
+            upstream_dim, downstream_expert, **kwargs
+        )
+
+        delattr(self, "model")
+        self.model = Model(
+            input_dim=self.upstream_dim,
+            output_class_num=self.train_dataset.class_num,
+            **self.modelrc
+        )

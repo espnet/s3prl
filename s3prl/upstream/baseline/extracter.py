@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/baseline/extracter.py ]
 #   Synopsis     [ the baseline feature extracter with torchaudio.compliance.kaldi as backend ]
 #   Author       [ S3PRL ]

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/pase/hubconf.py ]
 #   Synopsis     [ the pase torch hubconf ]
 #   Author       [ S3PRL ]
@@ -44,9 +45,9 @@ def pase_plus(refresh=False, **kwargs):
         refresh (bool): whether to download ckpt/config again if existed
     """
     kwargs["ckpt"] = "https://www.dropbox.com/s/p8811o7eadv4pat/FE_e199.ckpt?dl=1"
-    kwargs[
-        "model_config"
-    ] = "https://www.dropbox.com/s/2p3ouod1k0ekfxn/PASE%2B.cfg?dl=1"
+    kwargs["model_config"] = (
+        "https://www.dropbox.com/s/2p3ouod1k0ekfxn/PASE%2B.cfg?dl=1"
+    )
 
     def align_skip(input_, skip):
         """

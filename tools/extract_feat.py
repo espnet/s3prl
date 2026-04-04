@@ -1,7 +1,8 @@
-import torch
-import logging
 import argparse
+import logging
 from pathlib import Path
+
+import torch
 
 from s3prl import hub
 from s3prl.util.pseudo_data import get_pseudo_wavs

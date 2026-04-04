@@ -5,7 +5,6 @@ Authors:
   * Andy T. Liu 2022
 """
 
-
 import numpy as np
 import torch
 import torch.nn as nn

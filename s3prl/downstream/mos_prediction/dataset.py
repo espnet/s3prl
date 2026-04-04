@@ -1,22 +1,22 @@
-from pathlib import Path
 import os
-
 import random
+from itertools import accumulate
+from pathlib import Path
+
 import torch
 from torch.utils.data.dataset import Dataset
 from torchaudio.sox_effects import apply_effects_file
-from itertools import accumulate
 
 
 class VCC18SegmentalDataset(Dataset):
-    def __init__(self, dataframe, base_path, idtable = '', valid = False):
+    def __init__(self, dataframe, base_path, idtable="", valid=False):
         self.base_path = Path(base_path)
         self.dataframe = dataframe
         self.segments_durations = 1
         if Path.is_file(idtable):
             self.idtable = torch.load(idtable)
-            for i, judge_i in enumerate(self.dataframe['JUDGE']):
-                self.dataframe['JUDGE'][i] = self.idtable[judge_i]
+            for i, judge_i in enumerate(self.dataframe["JUDGE"]):
+                self.dataframe["JUDGE"][i] = self.idtable[judge_i]
 
         elif not valid:
             self.gen_idtable(idtable)
@@ -52,30 +52,32 @@ class VCC18SegmentalDataset(Dataset):
         wav_segments_lengths = [len(wav_segments) for wav_segments in wavs_segments]
         prefix_sums = list(accumulate(wav_segments_lengths, initial=0))
         segment_judge_ids = []
-        for i in range(len(prefix_sums)-1):
-            segment_judge_ids.extend([judge_ids[i]] * (prefix_sums[i+1]-prefix_sums[i]))
-        
+        for i in range(len(prefix_sums) - 1):
+            segment_judge_ids.extend(
+                [judge_ids[i]] * (prefix_sums[i + 1] - prefix_sums[i])
+            )
+
         return (
             torch.stack(flattened_wavs_segments),
             prefix_sums,
             torch.FloatTensor(means),
             system_names,
-            torch.FloatTensor(moss), 
-            torch.LongTensor(segment_judge_ids)
+            torch.FloatTensor(moss),
+            torch.LongTensor(segment_judge_ids),
         )
-    
+
     def gen_idtable(self, idtable_path):
-        if idtable_path == '':
-            idtable_path = './idtable.pkl'
+        if idtable_path == "":
+            idtable_path = "./idtable.pkl"
         self.idtable = {}
         count = 0
-        for i, judge_i in enumerate(self.dataframe['JUDGE']):
+        for i, judge_i in enumerate(self.dataframe["JUDGE"]):
             if judge_i not in self.idtable.keys():
                 self.idtable[judge_i] = count
                 count += 1
-                self.dataframe['JUDGE'][i] = self.idtable[judge_i]
+                self.dataframe["JUDGE"][i] = self.idtable[judge_i]
             else:
-                self.dataframe['JUDGE'][i] = self.idtable[judge_i]
+                self.dataframe["JUDGE"][i] = self.idtable[judge_i]
         torch.save(self.idtable, idtable_path)
 
 
@@ -121,7 +123,7 @@ class VCC16SegmentalDataset(Dataset):
             prefix_sums,
             None,
             system_names,
-            None, 
+            None,
             None,
         )
 

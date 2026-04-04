@@ -1,8 +1,9 @@
-import csv
 import argparse
-import tempfile
-import sentencepiece as sp
+import csv
 import shutil
+import tempfile
+
+import sentencepiece as sp
 
 # fairseq's special token
 UNK_TOKEN, UNK_TOKEN_ID = "<unk>", 3
@@ -10,10 +11,11 @@ BOS_TOKEN, BOS_TOKEN_ID = "<s>", 0
 EOS_TOKEN, EOS_TOKEN_ID = "</s>", 2
 PAD_TOKEN, PAD_TOKEN_ID = "<pad>", 1
 
+
 def create_sentencepiece(filenames, model_type, vocab_size, output_prefix):
 
     sp.SentencePieceTrainer.train(
-        input=','.join(filenames),
+        input=",".join(filenames),
         model_prefix=output_prefix,
         vocab_size=vocab_size,
         model_type=model_type,
@@ -24,9 +26,7 @@ def create_sentencepiece(filenames, model_type, vocab_size, output_prefix):
         pad_id=PAD_TOKEN_ID,
     )
 
-    spm = sp.SentencePieceProcessor(
-        model_file=f'{output_prefix}.model'
-    )
+    spm = sp.SentencePieceProcessor(model_file=f"{output_prefix}.model")
 
     vocab = {i: spm.IdToPiece(i) for i in range(spm.GetPieceSize())}
 
@@ -36,36 +36,37 @@ def create_sentencepiece(filenames, model_type, vocab_size, output_prefix):
     assert vocab.get(PAD_TOKEN_ID) == PAD_TOKEN
 
     vocab = {
-        i: s for i, s in vocab.items()
+        i: s
+        for i, s in vocab.items()
         if s not in {UNK_TOKEN, BOS_TOKEN, EOS_TOKEN, PAD_TOKEN}
     }
 
-    with open(f'{output_prefix}.txt', 'w') as f:
+    with open(f"{output_prefix}.txt", "w") as f:
         for _, s in sorted(vocab.items(), key=lambda x: x[0]):
-            print(f'{s} 1', file=f)
+            print(f"{s} 1", file=f)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_tsv')
-    parser.add_argument('-s', '--src-key', default='src_text')
-    parser.add_argument('-t', '--tgt-key', default='tgt_text')
-    parser.add_argument('-c', '--combine', action='store_true')
-    parser.add_argument('-o', '--output-dir')
-    parser.add_argument('-n', '--vocab-size', default=1000)
-    parser.add_argument('--model-type', default='char')
+    parser.add_argument("input_tsv")
+    parser.add_argument("-s", "--src-key", default="src_text")
+    parser.add_argument("-t", "--tgt-key", default="tgt_text")
+    parser.add_argument("-c", "--combine", action="store_true")
+    parser.add_argument("-o", "--output-dir")
+    parser.add_argument("-n", "--vocab-size", default=1000)
+    parser.add_argument("--model-type", default="char")
     args = parser.parse_args()
 
-    with tempfile.NamedTemporaryFile(mode='w') as src_f:
-        with tempfile.NamedTemporaryFile(mode='w') as tgt_f:
-            with open(args.input_tsv, 'r') as f:
+    with tempfile.NamedTemporaryFile(mode="w") as src_f:
+        with tempfile.NamedTemporaryFile(mode="w") as tgt_f:
+            with open(args.input_tsv, "r") as f:
                 reader = csv.DictReader(
                     f,
-                    delimiter='\t',
+                    delimiter="\t",
                     quotechar=None,
                     doublequote=False,
-                    lineterminator='\n',
+                    lineterminator="\n",
                     quoting=csv.QUOTE_NONE,
                 )
                 for line in reader:
@@ -76,23 +77,23 @@ if __name__ == '__main__':
                     [src_f.name],
                     args.model_type,
                     args.vocab_size,
-                    f'{args.output_dir}/spm-{args.src_key}',
+                    f"{args.output_dir}/spm-{args.src_key}",
                 )
                 create_sentencepiece(
                     [tgt_f.name],
                     args.model_type,
                     args.vocab_size,
-                    f'{args.output_dir}/spm-{args.tgt_key}',
+                    f"{args.output_dir}/spm-{args.tgt_key}",
                 )
             else:
                 create_sentencepiece(
                     [src_f.name, tgt_f.name],
                     args.model_type,
                     args.vocab_size,
-                    f'{args.output_dir}/spm-{args.src_key}',
+                    f"{args.output_dir}/spm-{args.src_key}",
                 )
-                for s in ['model', 'vocab', 'txt']:
+                for s in ["model", "vocab", "txt"]:
                     shutil.copyfile(
-                        f'{args.output_dir}/spm-{args.src_key}.{s}',
-                        f'{args.output_dir}/spm-{args.tgt_key}.{s}',
+                        f"{args.output_dir}/spm-{args.src_key}.{s}",
+                        f"{args.output_dir}/spm-{args.tgt_key}.{s}",
                     )

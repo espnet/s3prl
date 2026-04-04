@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ dataset.py ]
 #   Synopsis     [ the speaker diarization dataset ]
 #   Source       [ Refactored from https://github.com/hitachi-speech/EEND ]
@@ -7,12 +8,14 @@
 #   Copyright    [ Copyleft(c), Johns Hopkins University ]
 """*********************************************************************************************"""
 
+from itertools import permutations
+
+import numpy as np
+
 ###############
 # IMPORTATION #
 ###############
 import torch
-import numpy as np
-from itertools import permutations
 
 
 # compute mask to remove the padding positions
@@ -60,7 +63,7 @@ def get_label_perm(label, perm_idx, perm_list):
 
 
 def calc_diarization_error(pred, label, length):
-    (batch_size, max_len, num_output) = label.size()
+    batch_size, max_len, num_output = label.size()
     # mask the padding part
     mask = np.zeros((batch_size, max_len, num_output))
     for i in range(batch_size):

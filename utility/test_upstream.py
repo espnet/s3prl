@@ -1,10 +1,11 @@
-import random
 import argparse
-import numpy as np
+import random
 
+import numpy as np
 import torch
-from s3prl.nn import S3PRLUpstream
 from torch.nn.utils.rnn import pad_sequence
+
+from s3prl.nn import S3PRLUpstream
 
 SAMPLE_RATE = 16000
 BATCH_SIZE = 3

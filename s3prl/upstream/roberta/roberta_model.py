@@ -1264,11 +1264,7 @@ class RobertaModel(FairseqEncoderModel):
                 end_idx = (i + 1) * layer.self_attn.head_dim
                 norm_loss_layer += scaling * (
                     torch.sum(
-                        torch.abs(
-                            layer.self_attn.q_proj.weight[
-                                start_idx:end_idx,
-                            ]
-                        )
+                        torch.abs(layer.self_attn.q_proj.weight[start_idx:end_idx,])
                     )
                     + torch.sum(
                         torch.abs(layer.self_attn.q_proj.bias[start_idx:end_idx])
@@ -1276,11 +1272,7 @@ class RobertaModel(FairseqEncoderModel):
                 )
                 norm_loss_layer += scaling * (
                     torch.sum(
-                        torch.abs(
-                            layer.self_attn.k_proj.weight[
-                                start_idx:end_idx,
-                            ]
-                        )
+                        torch.abs(layer.self_attn.k_proj.weight[start_idx:end_idx,])
                     )
                     + torch.sum(
                         torch.abs(layer.self_attn.k_proj.bias[start_idx:end_idx])
@@ -1288,11 +1280,7 @@ class RobertaModel(FairseqEncoderModel):
                 )
                 norm_loss_layer += scaling * (
                     torch.sum(
-                        torch.abs(
-                            layer.self_attn.v_proj.weight[
-                                start_idx:end_idx,
-                            ]
-                        )
+                        torch.abs(layer.self_attn.v_proj.weight[start_idx:end_idx,])
                     )
                     + torch.sum(
                         torch.abs(layer.self_attn.v_proj.bias[start_idx:end_idx])
@@ -2177,9 +2165,9 @@ class TransformerEncoderBase(FairseqEncoder):
             if weights_key in state_dict:
                 print("deleting {0}".format(weights_key))
                 del state_dict[weights_key]
-            state_dict[
-                "{}.embed_positions._float_tensor".format(name)
-            ] = torch.FloatTensor(1)
+            state_dict["{}.embed_positions._float_tensor".format(name)] = (
+                torch.FloatTensor(1)
+            )
         for i in range(self.num_layers):
             # update layer norms
             self.layers[i].upgrade_state_dict_named(
@@ -2528,9 +2516,7 @@ class TransformerConfig:
             args_dict = (
                 args._asdict()
                 if safe_hasattr(args, "_asdict")
-                else vars(args)
-                if safe_hasattr(args, "__dict__")
-                else {}
+                else vars(args) if safe_hasattr(args, "__dict__") else {}
             )  # namedtupled doesn't have __dict__ :-/
             for key, value in args_dict.items():
                 if key not in seen:

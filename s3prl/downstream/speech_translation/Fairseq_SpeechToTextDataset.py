@@ -17,14 +17,18 @@ from fairseq.data import (
     Dictionary,
     FairseqDataset,
     ResamplingDataset,
-    data_utils as fairseq_data_utils,
 )
+from fairseq.data import data_utils as fairseq_data_utils
 from fairseq.data.audio.audio_utils import (
-    get_fbank, get_waveform, read_from_stored_zip, is_npy_data,
-    is_sf_audio_data, parse_path, FEATURE_OR_SF_AUDIO_FILE_EXTENSIONS
+    FEATURE_OR_SF_AUDIO_FILE_EXTENSIONS,
+    get_fbank,
+    get_waveform,
+    is_npy_data,
+    is_sf_audio_data,
+    parse_path,
+    read_from_stored_zip,
 )
 from fairseq.data.audio.feature_transforms import CompositeAudioFeatureTransform
-
 
 logger = logging.getLogger(__name__)
 
@@ -139,8 +143,9 @@ def get_features_or_waveform_from_stored_zip(
     if is_npy_data(data):
         features_or_waveform = np.load(f)
     elif is_sf_audio_data(data):
-        features_or_waveform = \
+        features_or_waveform = (
             get_waveform(f, always_2d=False)[0] if need_waveform else get_fbank(f)
+        )
     else:
         raise ValueError(f'Unknown file format for "{path}"')
     return features_or_waveform
@@ -439,7 +444,7 @@ class SpeechToTextDatasetCreator(object):
         (https://arxiv.org/abs/1907.05019)"""
         _sizes = np.array(sizes)
         prob = _sizes / _sizes.sum()
-        smoothed_prob = prob ** alpha
+        smoothed_prob = prob**alpha
         smoothed_prob = smoothed_prob / smoothed_prob.sum()
         size_ratio = (smoothed_prob * _sizes.sum()) / _sizes
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the 1-hidden model ]
 #   Author       [ S3PRL ]
@@ -12,7 +13,16 @@ import torch.nn.functional as F
 
 
 class ConvBank(nn.Module):
-    def __init__(self, input_dim, output_class_num, kernels, cnn_size, hidden_size, dropout, **kwargs):
+    def __init__(
+        self,
+        input_dim,
+        output_class_num,
+        kernels,
+        cnn_size,
+        hidden_size,
+        dropout,
+        **kwargs
+    ):
         super(ConvBank, self).__init__()
         self.drop_p = dropout
 
@@ -23,7 +33,9 @@ class ConvBank(nn.Module):
         self.cnns = nn.ModuleList()
         assert len(kernels) > 0
         for kernel in kernels:
-            self.cnns.append(nn.Conv1d(latest_size, cnn_size, kernel, padding=kernel//2))
+            self.cnns.append(
+                nn.Conv1d(latest_size, cnn_size, kernel, padding=kernel // 2)
+            )
         latest_size = cnn_size * len(kernels)
 
         self.out_linear = nn.Linear(latest_size, output_class_num)

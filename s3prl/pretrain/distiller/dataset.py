@@ -1,15 +1,16 @@
 """
-    Dataset for distiller
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Dataset for distiller
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import os
 import random
+
 import numpy as np
 import torch
-from torch.nn.utils.rnn import pad_sequence
 import torchaudio
 from pretrain.bucket_dataset import WaveDataset
+from torch.nn.utils.rnn import pad_sequence
 
 
 class OnlineWaveDataset(WaveDataset):

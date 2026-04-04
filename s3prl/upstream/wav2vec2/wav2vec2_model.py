@@ -899,33 +899,15 @@ class MultiheadAttention(nn.Module):
             start_idx = i * self.head_dim
             end_idx = (i + 1) * self.head_dim
             k_proj_heads_norm.append(
-                torch.sum(
-                    torch.abs(
-                        self.k_proj.weight[
-                            start_idx:end_idx,
-                        ]
-                    )
-                ).tolist()
+                torch.sum(torch.abs(self.k_proj.weight[start_idx:end_idx,])).tolist()
                 + torch.sum(torch.abs(self.k_proj.bias[start_idx:end_idx])).tolist()
             )
             q_proj_heads_norm.append(
-                torch.sum(
-                    torch.abs(
-                        self.q_proj.weight[
-                            start_idx:end_idx,
-                        ]
-                    )
-                ).tolist()
+                torch.sum(torch.abs(self.q_proj.weight[start_idx:end_idx,])).tolist()
                 + torch.sum(torch.abs(self.q_proj.bias[start_idx:end_idx])).tolist()
             )
             v_proj_heads_norm.append(
-                torch.sum(
-                    torch.abs(
-                        self.v_proj.weight[
-                            start_idx:end_idx,
-                        ]
-                    )
-                ).tolist()
+                torch.sum(torch.abs(self.v_proj.weight[start_idx:end_idx,])).tolist()
                 + torch.sum(torch.abs(self.v_proj.bias[start_idx:end_idx])).tolist()
             )
 
@@ -956,26 +938,14 @@ class MultiheadAttention(nn.Module):
 
         for ele in reserve_head_index:
             start_idx, end_idx = ele
-            new_q_weight.append(
-                self.q_proj.weight[
-                    start_idx:end_idx,
-                ]
-            )
+            new_q_weight.append(self.q_proj.weight[start_idx:end_idx,])
             new_q_bias.append(self.q_proj.bias[start_idx:end_idx])
 
-            new_k_weight.append(
-                self.k_proj.weight[
-                    start_idx:end_idx,
-                ]
-            )
+            new_k_weight.append(self.k_proj.weight[start_idx:end_idx,])
 
             new_k_bias.append(self.k_proj.bias[start_idx:end_idx])
 
-            new_v_weight.append(
-                self.v_proj.weight[
-                    start_idx:end_idx,
-                ]
-            )
+            new_v_weight.append(self.v_proj.weight[start_idx:end_idx,])
             new_v_bias.append(self.v_proj.bias[start_idx:end_idx])
 
             new_out_proj_weight.append(self.out_proj.weight[:, start_idx:end_idx])
@@ -2909,7 +2879,7 @@ class ConvFeatureExtractionModel(nn.Module):
         self.conv_layers = nn.ModuleList()
         for i, cl in enumerate(conv_layers):
             assert len(cl) == 3, "invalid conv definition: " + str(cl)
-            (dim, k, stride) = cl
+            dim, k, stride = cl
 
             self.conv_layers.append(
                 block(

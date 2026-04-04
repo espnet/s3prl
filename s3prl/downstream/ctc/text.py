@@ -2,9 +2,12 @@
 
 Reference: https://www.tensorflow.org/datasets/api_docs/python/tfds/features/text_lib
 """
+
 import abc
 
-BERT_FIRST_IDX = 997  # Replacing the 2 tokens right before english starts as <eos> & <unk>
+BERT_FIRST_IDX = (
+    997  # Replacing the 2 tokens right before english starts as <eos> & <unk>
+)
 BERT_LAST_IDX = 29635  # Drop rest of tokens
 
 
@@ -62,7 +65,7 @@ class CharacterTextEncoder(_BaseTextEncoder):
         vocabs = []
         for t, idx in enumerate(idxs):
             v = self.idx_to_vocab(idx)
-            if idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            if idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t - 1]):
                 continue
             elif idx == self.eos_idx:
                 break
@@ -84,13 +87,14 @@ class CharacterTextEncoder(_BaseTextEncoder):
 
     @property
     def token_type(self):
-        return 'character'
+        return "character"
 
     def vocab_to_idx(self, vocab):
         return self._vocab2idx.get(vocab, self.unk_idx)
 
     def idx_to_vocab(self, idx):
         return self._vocab_list[idx]
+
 
 class CharacterTextSlotEncoder(_BaseTextEncoder):
     def __init__(self, vocab_list, slots):
@@ -99,37 +103,40 @@ class CharacterTextSlotEncoder(_BaseTextEncoder):
         self._vocab_list = ["<pad>", "<eos>", "<unk>"] + vocab_list
         self._vocab2idx = {v: idx for idx, v in enumerate(self._vocab_list)}
         self.slots = slots
-        self.slot2id = {self.slots[i]:(i+len(self._vocab_list)) for i in range(len(self.slots))}
-        self.id2slot = {(i+len(self._vocab_list)):self.slots[i] for i in range(len(self.slots))}
-
+        self.slot2id = {
+            self.slots[i]: (i + len(self._vocab_list)) for i in range(len(self.slots))
+        }
+        self.id2slot = {
+            (i + len(self._vocab_list)): self.slots[i] for i in range(len(self.slots))
+        }
 
     def encode(self, s):
         # Always strip trailing space, \r and \n
-        sent, iobs = s.strip('\r\n ').split('\t')
-        sent = sent.split(' ')[1:-1]
-        iobs = iobs.split(' ')[1:-1]
+        sent, iobs = s.strip("\r\n ").split("\t")
+        sent = sent.split(" ")[1:-1]
+        iobs = iobs.split(" ")[1:-1]
         tokens = []
         for i, (wrd, iob) in enumerate(zip(sent, iobs)):
             if wrd in "?!.,;-":
                 continue
-            if wrd == '&':
-                wrd = 'AND'
-            if iob != 'O' and (i == 0 or iobs[i-1] != iob):
-                tokens.append(self.slot2id['B-'+iob])
+            if wrd == "&":
+                wrd = "AND"
+            if iob != "O" and (i == 0 or iobs[i - 1] != iob):
+                tokens.append(self.slot2id["B-" + iob])
             tokens += [self.vocab_to_idx(v) for v in wrd]
-            if iob != 'O' and (i == len(sent)-1 or iobs[i+1] != iob):
-                tokens.append(self.slot2id['E-'+iob])
-            if i == (len(sent)-1):
+            if iob != "O" and (i == len(sent) - 1 or iobs[i + 1] != iob):
+                tokens.append(self.slot2id["E-" + iob])
+            if i == (len(sent) - 1):
                 tokens.append(self.eos_idx)
             else:
-                tokens.append(self.vocab_to_idx(' '))
+                tokens.append(self.vocab_to_idx(" "))
         return tokens
 
     def decode(self, idxs, ignore_repeat=False):
         vocabs = []
         for t, idx in enumerate(idxs):
             v = self.idx_to_vocab(idx)
-            if idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            if idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t - 1]):
                 continue
             elif idx == self.eos_idx:
                 break
@@ -143,11 +150,11 @@ class CharacterTextSlotEncoder(_BaseTextEncoder):
             # Do not strip space because character based text encoder should
             # have a space token
             vocab_list = [line.strip("\r\n") for line in f]
-        org_slots = open(slots_file).read().split('\n')
+        org_slots = open(slots_file).read().split("\n")
         slots = []
         for slot in org_slots[1:]:
-            slots.append('B-'+slot)
-            slots.append('E-'+slot)
+            slots.append("B-" + slot)
+            slots.append("E-" + slot)
         return cls(vocab_list, slots)
 
     @property
@@ -156,7 +163,7 @@ class CharacterTextSlotEncoder(_BaseTextEncoder):
 
     @property
     def token_type(self):
-        return 'character-slot'
+        return "character-slot"
 
     def vocab_to_idx(self, vocab):
         return self._vocab2idx.get(vocab, self.unk_idx)
@@ -167,13 +174,12 @@ class CharacterTextSlotEncoder(_BaseTextEncoder):
             return self._vocab_list[idx]
         else:
             token = self.id2slot[idx]
-            if token[0] == 'B':
-                return token + ' '
-            elif token[0] == 'E':
-                return ' ' + token
+            if token[0] == "B":
+                return token + " "
+            elif token[0] == "E":
+                return " " + token
             else:
-                raise ValueError('id2slot get:', token)
-
+                raise ValueError("id2slot get:", token)
 
 
 class SubwordTextEncoder(_BaseTextEncoder):
@@ -181,7 +187,8 @@ class SubwordTextEncoder(_BaseTextEncoder):
         if spm.pad_id() != 0 or spm.eos_id() != 1 or spm.unk_id() != 2:
             raise ValueError(
                 "Please train sentencepiece model with following argument:\n"
-                "--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=<eos>")
+                "--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=<eos>"
+            )
         self.spm = spm
 
     def encode(self, s):
@@ -192,7 +199,9 @@ class SubwordTextEncoder(_BaseTextEncoder):
         for t, idx in enumerate(idxs):
             if idx == self.eos_idx:
                 break
-            elif idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            elif idx == self.pad_idx or (
+                ignore_repeat and t > 0 and idx == idxs[t - 1]
+            ):
                 continue
             else:
                 crop_idx.append(idx)
@@ -201,6 +210,7 @@ class SubwordTextEncoder(_BaseTextEncoder):
     @classmethod
     def load_from_file(cls, filepath):
         import sentencepiece as splib
+
         spm = splib.SentencePieceProcessor()
         spm.load(filepath)
         spm.set_encode_extra_options(":eos")
@@ -212,7 +222,7 @@ class SubwordTextEncoder(_BaseTextEncoder):
 
     @property
     def token_type(self):
-        return 'subword'
+        return "subword"
 
 
 class SubwordTextSlotEncoder(_BaseTextEncoder):
@@ -220,37 +230,46 @@ class SubwordTextSlotEncoder(_BaseTextEncoder):
         if spm.pad_id() != 0 or spm.eos_id() != 1 or spm.unk_id() != 2:
             raise ValueError(
                 "Please train sentencepiece model with following argument:\n"
-                "--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=<eos>")
+                "--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=<eos>"
+            )
         self.spm = spm
         self.slots = slots
-        self.slot2id = {self.slots[i]:(i+len(self.spm)) for i in range(len(self.slots))}
-        self.id2slot = {(i+len(self.spm)):self.slots[i] for i in range(len(self.slots))}
+        self.slot2id = {
+            self.slots[i]: (i + len(self.spm)) for i in range(len(self.slots))
+        }
+        self.id2slot = {
+            (i + len(self.spm)): self.slots[i] for i in range(len(self.slots))
+        }
 
     def encode(self, s):
-        sent, iobs = s.strip().split('\t')
-        sent = sent.split(' ')[1:-1]
-        iobs = iobs.split(' ')[1:-1]
+        sent, iobs = s.strip().split("\t")
+        sent = sent.split(" ")[1:-1]
+        iobs = iobs.split(" ")[1:-1]
         tokens = []
         for i, (wrd, iob) in enumerate(zip(sent, iobs)):
             if wrd in "?!.,;-":
                 continue
-            if wrd == '&':
-                wrd = 'AND'
-            if iob != 'O' and (i == 0 or iobs[i-1] != iob):
-                tokens.append(self.slot2id['B-'+iob])
-            tokens += self.spm.encode_as_ids(wrd)[:-1] #if i != len(sent)-1 else self.spm.encode_as_ids(wrd)
-            if iob != 'O' and (i == len(sent)-1 or iobs[i+1] != iob):
-                tokens.append(self.slot2id['E-'+iob])
+            if wrd == "&":
+                wrd = "AND"
+            if iob != "O" and (i == 0 or iobs[i - 1] != iob):
+                tokens.append(self.slot2id["B-" + iob])
+            tokens += self.spm.encode_as_ids(wrd)[
+                :-1
+            ]  # if i != len(sent)-1 else self.spm.encode_as_ids(wrd)
+            if iob != "O" and (i == len(sent) - 1 or iobs[i + 1] != iob):
+                tokens.append(self.slot2id["E-" + iob])
         if tokens[-1] != 1:
             tokens.append(1)
-        return tokens #self.spm.encode_as_ids(s)
+        return tokens  # self.spm.encode_as_ids(s)
 
     def decode(self, idxs, ignore_repeat=False):
         crop_idx = []
         for t, idx in enumerate(idxs):
             if idx == self.eos_idx:
                 break
-            elif idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            elif idx == self.pad_idx or (
+                ignore_repeat and t > 0 and idx == idxs[t - 1]
+            ):
                 continue
             else:
                 crop_idx.append(idx)
@@ -266,14 +285,15 @@ class SubwordTextSlotEncoder(_BaseTextEncoder):
     @classmethod
     def load_from_file(cls, filepath, slots_file):
         import sentencepiece as splib
+
         spm = splib.SentencePieceProcessor()
         spm.load(filepath)
         spm.set_encode_extra_options(":eos")
-        org_slots = open(slots_file).read().split('\n')
+        org_slots = open(slots_file).read().split("\n")
         slots = []
         for slot in org_slots[1:]:
-            slots.append('B-'+slot)
-            slots.append('E-'+slot)
+            slots.append("B-" + slot)
+            slots.append("E-" + slot)
         return cls(spm, slots)
 
     @property
@@ -282,8 +302,7 @@ class SubwordTextSlotEncoder(_BaseTextEncoder):
 
     @property
     def token_type(self):
-        return 'subword-slot'
-
+        return "subword-slot"
 
 
 class WordTextEncoder(CharacterTextEncoder):
@@ -301,7 +320,9 @@ class WordTextEncoder(CharacterTextEncoder):
             v = self.idx_to_vocab(idx)
             if idx == self.eos_idx:
                 break
-            elif idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            elif idx == self.pad_idx or (
+                ignore_repeat and t > 0 and idx == idxs[t - 1]
+            ):
                 continue
             else:
                 vocabs.append(v)
@@ -309,7 +330,7 @@ class WordTextEncoder(CharacterTextEncoder):
 
     @property
     def token_type(self):
-        return 'word'
+        return "word"
 
 
 class BertTextEncoder(_BaseTextEncoder):
@@ -329,7 +350,7 @@ class BertTextEncoder(_BaseTextEncoder):
         reduced_idx = []
         for idx in self._tokenizer.encode(s):
             try:
-                r_idx = idx-BERT_FIRST_IDX
+                r_idx = idx - BERT_FIRST_IDX
                 assert r_idx > 0
                 reduced_idx.append(r_idx)
             except:
@@ -342,16 +363,18 @@ class BertTextEncoder(_BaseTextEncoder):
         for t, idx in enumerate(idxs):
             if idx == self.eos_idx:
                 break
-            elif idx == self.pad_idx or (ignore_repeat and t > 0 and idx == idxs[t-1]):
+            elif idx == self.pad_idx or (
+                ignore_repeat and t > 0 and idx == idxs[t - 1]
+            ):
                 continue
             else:
                 # Shift to correct idx for bert tokenizer
-                crop_idx.append(idx+BERT_FIRST_IDX)
+                crop_idx.append(idx + BERT_FIRST_IDX)
         return self._tokenizer.decode(crop_idx)
 
     @property
     def vocab_size(self):
-        return BERT_LAST_IDX-BERT_FIRST_IDX+1
+        return BERT_LAST_IDX - BERT_FIRST_IDX + 1
 
     @property
     def token_type(self):
@@ -360,6 +383,7 @@ class BertTextEncoder(_BaseTextEncoder):
     @classmethod
     def load_from_file(cls, vocab_file):
         from pytorch_transformers import BertTokenizer
+
         return cls(BertTokenizer.from_pretrained(vocab_file))
 
     @property

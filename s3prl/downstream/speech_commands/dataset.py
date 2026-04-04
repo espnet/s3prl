@@ -1,5 +1,5 @@
-from random import randint
 from pathlib import Path
+from random import randint
 
 from torch.utils.data.dataset import Dataset
 from torchaudio.sox_effects import apply_effects_file
@@ -52,9 +52,11 @@ class SpeechCommandsDataset(SpeechCommandsBaseDataset):
         super().__init__()
 
         data = [
-            (class_name, audio_path)
-            if class_name in self.class2index.keys()
-            else ("_unknown_", audio_path)
+            (
+                (class_name, audio_path)
+                if class_name in self.class2index.keys()
+                else ("_unknown_", audio_path)
+            )
             for class_name, audio_path in data_list
         ]
         data += [

@@ -342,18 +342,24 @@ class LightHuBERTConfig:
     def __init__(self, cfg=None):
         self.supernet_type: str = "base"  # 'base' or 'small' supernet
 
-        self.prune_encoder_pos_conv: bool = True  # if true, prune multi-layer position convolution totally, otherwise, prune last layer to encoder
+        self.prune_encoder_pos_conv: bool = (
+            True  # if true, prune multi-layer position convolution totally, otherwise, prune last layer to encoder
+        )
 
         # Configuration for Student
         self.teacher_embed_dim: int = 768  # embedding size of teacher's outputs
-        self.layer_pred_num: str = "0,0,0,0,0,0,0,0,0,0,0,1"  # specify the predicted number of each layer, e.g., '2,2,2,2,2,2'
+        self.layer_pred_num: str = (
+            "0,0,0,0,0,0,0,0,0,0,0,1"  # specify the predicted number of each layer, e.g., '2,2,2,2,2,2'
+        )
 
         # add pos_conv_depth to hubert as wav2vec2 and enable data2vec architecture
         self.pos_conv_depth: int = 1  # depth of positional encoder network
 
         # hubert config
         self.label_rate: int = 50
-        self.extractor_mode: str = "layer_norm"  # mode for feature extractor. default has a single group norm with d groups in the first conv block, whereas layer_norm has layer norms in every block (meant to use with normalize=True)
+        self.extractor_mode: str = (
+            "layer_norm"  # mode for feature extractor. default has a single group norm with d groups in the first conv block, whereas layer_norm has layer norms in every block (meant to use with normalize=True)
+        )
         self.encoder_layers: int = 12  # num encoder layers in the transformer
         self.encoder_embed_dim: int = 768  # encoder embedding dimension
         self.encoder_ffn_embed_dim: int = 3072  # encoder embedding dimension for FFN
@@ -378,7 +384,9 @@ class LightHuBERTConfig:
         )
 
         self.layer_norm_first: bool = False  # apply layernorm first in the transformer
-        self.conv_feature_layers: str = "[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2"  # string describing convolutional feature extraction layers in form of a python list that contains [(dim, kernel_size, stride), ...]
+        self.conv_feature_layers: str = (
+            "[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2"  # string describing convolutional feature extraction layers in form of a python list that contains [(dim, kernel_size, stride), ...]
+        )
         self.conv_bias: bool = False  # include bias in conv encoder
         self.feature_grad_mult: float = (
             1.0  # multiply feature extractor var grads by this
@@ -388,7 +396,9 @@ class LightHuBERTConfig:
         self.mask_length: int = 10  # mask length"
         self.mask_prob: float = 0.65  # probability of replacing a token with mask
         self.mask_selection: str = "static"  # how to choose mask length
-        self.mask_other: float = 0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        self.mask_other: float = (
+            0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        )
         self.no_mask_overlap: bool = False  # whether to allow masks to overlap
         self.mask_min_space: int = (
             1  # min space between spans (if no overlap is enabled)
@@ -400,7 +410,9 @@ class LightHuBERTConfig:
         self.mask_channel_selection: str = (
             "static"  # how to choose mask length for channel masking
         )
-        self.mask_channel_other: float = 0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        self.mask_channel_other: float = (
+            0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        )
         self.no_mask_channel_overlap: bool = (
             False  # whether to allow channel masks to overlap
         )
@@ -417,7 +429,9 @@ class LightHuBERTConfig:
         )
 
         # FP16 optimization
-        self.required_seq_len_multiple: int = 2  # pad the input to encoder such that the sequence length is divisible by multiple
+        self.required_seq_len_multiple: int = (
+            2  # pad the input to encoder such that the sequence length is divisible by multiple
+        )
 
         if cfg is not None:
             self.update(cfg)

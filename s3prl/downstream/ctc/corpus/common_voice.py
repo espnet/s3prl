@@ -1,8 +1,9 @@
 import csv
-from tqdm import tqdm
+from os.path import getsize, join
 from pathlib import Path
-from os.path import join, getsize
+
 from torch.utils.data import Dataset
+from tqdm import tqdm
 
 
 class CommonVoiceDataset(Dataset):

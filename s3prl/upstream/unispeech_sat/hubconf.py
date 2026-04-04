@@ -3,6 +3,7 @@
 
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/unispeech_sat/hubconf.py ]
 #   Synopsis     [ the UniSpeech-SAT torch hubconf ]
 #   Author       [ Microsoft ]
@@ -49,9 +50,9 @@ def unispeech_sat_base(refresh=False, *args, **kwargs):
     The Base model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_base.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_base.pt"
+    )
 
     return unispeech_sat_url(refresh=refresh, *args, **kwargs)
 
@@ -61,9 +62,9 @@ def unispeech_sat_base_plus(refresh=False, *args, **kwargs):
     The Base-Plus model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_base_plus.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_base_plus.pt"
+    )
 
     return unispeech_sat_url(refresh=refresh, *args, **kwargs)
 
@@ -73,8 +74,8 @@ def unispeech_sat_large(refresh=False, *args, **kwargs):
     The Large model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_large.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/unispeech_sat_large.pt"
+    )
 
     return unispeech_sat_url(refresh=refresh, *args, **kwargs)

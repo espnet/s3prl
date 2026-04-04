@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/cpc/hubconf.py ]
 #   Synopsis     [ the cpc torch hubconf ]
 #   Author       [ S3PRL ]
@@ -35,7 +36,7 @@ def modified_cpc(refresh=False, *args, **kwargs):
     """
     The model from official repository
     """
-    kwargs[
-        "ckpt"
-    ] = "https://dl.fbaipublicfiles.com/librilight/CPC_checkpoints/60k_epoch4-d0f474de.pt"
+    kwargs["ckpt"] = (
+        "https://dl.fbaipublicfiles.com/librilight/CPC_checkpoints/60k_epoch4-d0f474de.pt"
+    )
     return cpc_url(refresh=refresh, *args, **kwargs)
