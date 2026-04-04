@@ -1,9 +1,12 @@
 name: CI
 
 on:
-  # Trigger the workflow on push to any branch or any pull request
   push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
 
 jobs:
   build-and-test:
