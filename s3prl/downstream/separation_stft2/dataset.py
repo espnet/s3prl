@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ dataset.py ]
 #   Synopsis     [ LibriMix speech separation dataset ]
 #   Author       [ Zili Huang ]
@@ -13,25 +14,24 @@
 import os
 import random
 
+import librosa
 import numpy as np
-
 import torch
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data.dataset import Dataset
 
-import librosa
 
 class SeparationDataset(Dataset):
     def __init__(
         self,
         data_dir,
         rate=16000,
-        src=['mix_clean'],
-        tgt=['s1', 's2'],
+        src=["mix_clean"],
+        tgt=["s1", "s2"],
         n_fft=512,
         hop_length=320,
         win_length=512,
-        window='hann',
+        window="hann",
         center=True,
     ):
         super(SeparationDataset, self).__init__()
@@ -90,10 +90,10 @@ class SeparationDataset(Dataset):
         for cond in src + tgt:
             assert cond in cond_list
             assert os.path.exists("{}/{}/wav.scp".format(self.data_dir, cond))
-            with open("{}/{}/wav.scp".format(self.data_dir, cond), 'r') as fh:
+            with open("{}/{}/wav.scp".format(self.data_dir, cond), "r") as fh:
                 content = fh.readlines()
             for line in content:
-                line = line.strip('\n')
+                line = line.strip("\n")
                 uttname, path = line.split()
                 if uttname not in reco2path:
                     reco2path[uttname] = {}
@@ -111,24 +111,32 @@ class SeparationDataset(Dataset):
         src_path = self.reco2path[reco][self.src[0]]
         src_samp, rate = librosa.load(src_path, sr=None)
         assert rate == self.rate
-        src_feat = np.transpose(librosa.stft(src_samp,
-            n_fft=self.n_fft,
-            hop_length = self.hop_length,
-            win_length = self.win_length,
-            window = self.window,
-            center = self.center))
+        src_feat = np.transpose(
+            librosa.stft(
+                src_samp,
+                n_fft=self.n_fft,
+                hop_length=self.hop_length,
+                win_length=self.win_length,
+                window=self.window,
+                center=self.center,
+            )
+        )
 
         tgt_samp_list, tgt_feat_list = [], []
         for j in range(self.n_srcs):
             tgt_path = self.reco2path[reco][self.tgt[j]]
             tgt_samp, rate = librosa.load(tgt_path, sr=None)
             assert rate == self.rate
-            tgt_feat = np.transpose(librosa.stft(tgt_samp,
-                n_fft=self.n_fft,
-                hop_length = self.hop_length,
-                win_length = self.win_length,
-                window = self.window,
-                center = self.center))
+            tgt_feat = np.transpose(
+                librosa.stft(
+                    tgt_samp,
+                    n_fft=self.n_fft,
+                    hop_length=self.hop_length,
+                    win_length=self.win_length,
+                    window=self.window,
+                    center=self.center,
+                )
+            )
             tgt_samp_list.append(tgt_samp)
             tgt_feat_list.append(tgt_feat)
         """
@@ -156,8 +164,12 @@ class SeparationDataset(Dataset):
 
         # Store the magnitude, phase for the mixture in source_attr
         source_attr = {}
-        mix_magnitude_list = [torch.from_numpy(np.abs(sorted_batch[i][2])) for i in range(bs)]
-        mix_phase_list = [torch.from_numpy(np.angle(sorted_batch[i][2])) for i in range(bs)]
+        mix_magnitude_list = [
+            torch.from_numpy(np.abs(sorted_batch[i][2])) for i in range(bs)
+        ]
+        mix_phase_list = [
+            torch.from_numpy(np.angle(sorted_batch[i][2])) for i in range(bs)
+        ]
         mix_stft_list = [torch.from_numpy(sorted_batch[i][2]) for i in range(bs)]
         mix_magnitude = pad_sequence(mix_magnitude_list, batch_first=True)
         mix_phase = pad_sequence(mix_phase_list, batch_first=True)
@@ -170,21 +182,34 @@ class SeparationDataset(Dataset):
         target_attr["magnitude"] = []
         target_attr["phase"] = []
         for j in range(self.n_srcs):
-            tgt_magnitude_list = [torch.from_numpy(np.abs(sorted_batch[i][4][j])) for i in range(bs)]
-            tgt_phase_list = [torch.from_numpy(np.angle(sorted_batch[i][4][j])) for i in range(bs)]
+            tgt_magnitude_list = [
+                torch.from_numpy(np.abs(sorted_batch[i][4][j])) for i in range(bs)
+            ]
+            tgt_phase_list = [
+                torch.from_numpy(np.angle(sorted_batch[i][4][j])) for i in range(bs)
+            ]
             tgt_magnitude = pad_sequence(tgt_magnitude_list, batch_first=True)
             tgt_phase = pad_sequence(tgt_phase_list, batch_first=True)
             target_attr["magnitude"].append(tgt_magnitude)
             target_attr["phase"].append(tgt_phase)
 
-        wav_length = torch.from_numpy(np.array([len(sorted_batch[i][1]) for i in range(bs)]))
+        wav_length = torch.from_numpy(
+            np.array([len(sorted_batch[i][1]) for i in range(bs)])
+        )
         source_wav_list = [torch.from_numpy(sorted_batch[i][1]) for i in range(bs)]
         source_wav = pad_sequence(source_wav_list, batch_first=True)
         target_wav_list = []
         for j in range(self.n_srcs):
-            target_wav_list.append(pad_sequence([torch.from_numpy(sorted_batch[i][3][j]) for i in range(bs)], batch_first=True))
+            target_wav_list.append(
+                pad_sequence(
+                    [torch.from_numpy(sorted_batch[i][3][j]) for i in range(bs)],
+                    batch_first=True,
+                )
+            )
 
-        feat_length = torch.from_numpy(np.array([stft.size(0) for stft in mix_stft_list]))
+        feat_length = torch.from_numpy(
+            np.array([stft.size(0) for stft in mix_stft_list])
+        )
         """
         source_wav_list (list(tensor)):
             list of audio samples for the source
@@ -207,4 +232,13 @@ class SeparationDataset(Dataset):
         wav_length (tensor):
             number of samples in each utterance
         """
-        return source_wav_list, uttname_list, source_attr, source_wav, target_attr, target_wav_list, feat_length, wav_length
+        return (
+            source_wav_list,
+            uttname_list,
+            source_attr,
+            source_wav,
+            target_attr,
+            target_wav_list,
+            feat_length,
+            wav_length,
+        )
