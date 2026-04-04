@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ vc_evaluate.py ]
 #   Synopsis     [ functions related to objective evaluation for voice conversion ]
 #   Author       [ Wen-Chin Huang (https://github.com/unilight) ]
@@ -8,15 +9,15 @@
 
 
 import logging
-from fastdtw import fastdtw
+
 import librosa
 import numpy as np
 import pysptk
 import pyworld as pw
 import scipy
+from fastdtw import fastdtw
 from scipy.io import wavfile
-from scipy.signal import firwin
-from scipy.signal import lfilter
+from scipy.signal import firwin, lfilter
 from torch._C import ErrorReport
 
 SRCSPKS = ["SEF1", "SEF2", "SEM1", "SEM2"]
@@ -28,10 +29,11 @@ TRGSPKS_TASK2 = ["TFF1", "TFM1", "TGF1", "TGM1", "TMF1", "TMM1"]
 # The follow section is related to the calculation of MCD and F0-related metrics
 # Reference: https://github.com/espnet/espnet/blob/master/utils/mcd_calculate.py
 
-MCEP_DIM=39
-MCEP_ALPHA=0.466
-MCEP_SHIFT=5
-MCEP_FFTL=1024
+MCEP_DIM = 39
+MCEP_ALPHA = 0.466
+MCEP_SHIFT = 5
+MCEP_FFTL = 1024
+
 
 def low_cut_filter(x, fs, cutoff=70):
     """FUNCTION TO APPLY LOW CUT FILTER
@@ -53,6 +55,7 @@ def low_cut_filter(x, fs, cutoff=70):
     lcf_x = lfilter(fil, 1, x)
 
     return lcf_x
+
 
 def spc2npow(spectrogram):
     """Calculate normalized power sequence from spectrogram
@@ -76,6 +79,7 @@ def spc2npow(spectrogram):
     npow = 10.0 * np.log10(npow / meanpow)
 
     return npow
+
 
 def _spvec2pow(specvec):
     """Convert a spectrum envelope into a power
@@ -104,6 +108,7 @@ def _spvec2pow(specvec):
 
     return power
 
+
 def extfrm(data, npow, power_threshold=-20):
     """Extract frame over the power threshold
 
@@ -127,13 +132,14 @@ def extfrm(data, npow, power_threshold=-20):
 
     T = data.shape[0]
     if T != len(npow):
-        raise("Length of two vectors is different.")
+        raise ("Length of two vectors is different.")
 
     valid_index = np.where(npow > power_threshold)
     extdata = data[valid_index]
     assert extdata.shape[0] <= T
 
     return extdata
+
 
 def world_extract(x, fs, f0min, f0max):
     # scale from [-1, 1] to [-32768, 32767]
@@ -159,6 +165,7 @@ def world_extract(x, fs, f0min, f0max):
         "npow": npow,
     }
 
+
 def calculate_mcd_f0(x, y, fs, f0min, f0max):
     """
     x and y must be in range [-1, 1]
@@ -171,7 +178,9 @@ def calculate_mcd_f0(x, y, fs, f0min, f0max):
     # VAD & DTW based on power
     gt_mcep_nonsil_pow = extfrm(gt_feats["mcep"], gt_feats["npow"])
     cvt_mcep_nonsil_pow = extfrm(cvt_feats["mcep"], cvt_feats["npow"])
-    _, path = fastdtw(cvt_mcep_nonsil_pow, gt_mcep_nonsil_pow, dist=scipy.spatial.distance.euclidean)
+    _, path = fastdtw(
+        cvt_mcep_nonsil_pow, gt_mcep_nonsil_pow, dist=scipy.spatial.distance.euclidean
+    )
     twf_pow = np.array(path).T
 
     # MCD using power-based DTW
@@ -186,7 +195,9 @@ def calculate_mcd_f0(x, y, fs, f0min, f0max):
     try:
         gt_mcep_nonsil_f0 = gt_feats["mcep"][gt_nonsil_f0_idx]
         cvt_mcep_nonsil_f0 = cvt_feats["mcep"][cvt_nonsil_f0_idx]
-        _, path = fastdtw(cvt_mcep_nonsil_f0, gt_mcep_nonsil_f0, dist=scipy.spatial.distance.euclidean)
+        _, path = fastdtw(
+            cvt_mcep_nonsil_f0, gt_mcep_nonsil_f0, dist=scipy.spatial.distance.euclidean
+        )
         twf_f0 = np.array(path).T
 
         # f0RMSE, f0CORR using f0-based DTW
@@ -219,9 +230,10 @@ def calculate_mcd_f0(x, y, fs, f0min, f0max):
 import editdistance as ed
 import jiwer
 import torch
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Tokenizer, Wav2Vec2Processor
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2Tokenizer
 
 ASR_PRETRAINED_MODEL = "facebook/wav2vec2-large-960h-lv60-self"
+
 
 def load_asr_model(device):
     """Load model"""
@@ -256,7 +268,7 @@ def calculate_measures(groundtruth, transcription):
     groundtruth = normalize_sentence(groundtruth)
     transcription = normalize_sentence(transcription)
 
-    #cer = ed.eval(transcription, groundtruth) / len(groundtruth)
+    # cer = ed.eval(transcription, groundtruth) / len(groundtruth)
     # c_result = jiwer.compute_measures([c for c in groundtruth if c != " "], [c for c in transcription if c != " "])
     c_result = jiwer.cer(groundtruth, transcription, return_dict=True)
     w_result = jiwer.compute_measures(groundtruth, transcription)
@@ -268,17 +280,18 @@ def transcribe(model, device, wav):
     """Calculate score on one single waveform"""
     # preparation
     inputs = model["tokenizer"](
-        wav, sampling_rate=16000, return_tensors="pt", padding="longest")
+        wav, sampling_rate=16000, return_tensors="pt", padding="longest"
+    )
     input_values = inputs.input_values.to(device)
     attention_mask = inputs.attention_mask.to(device)
 
     # forward
-    logits = model["model"](
-        input_values, attention_mask=attention_mask).logits
+    logits = model["model"](input_values, attention_mask=attention_mask).logits
     predicted_ids = torch.argmax(logits, dim=-1)
     transcription = model["tokenizer"].batch_decode(predicted_ids)[0]
 
     return transcription
+
 
 ################################################################################
 
@@ -286,28 +299,34 @@ def transcribe(model, device, wav):
 # Reference: https://github.com/tzuhsien/Voice-conversion-evaluation/blob/master/metrics/speaker_verification
 # Reference: https://github.com/yistLin/dvector/blob/master/equal_error_rate.pyi
 
+import os
 from collections import defaultdict
 from itertools import chain
-import os
 
-#from utils import find_files, write_hdf5, read_hdf5
-
-from resemblyzer import preprocess_wav, VoiceEncoder
+from resemblyzer import VoiceEncoder, preprocess_wav
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq
 from sklearn.metrics import roc_curve
 
+from .utils import find_files
+
+# from utils import find_files, write_hdf5, read_hdf5
+
+
 def load_asv_model(device):
     model = VoiceEncoder().to(device)
     return model
+
 
 def get_embedding(wav_path, encoder):
     wav = preprocess_wav(wav_path)
     embedding = encoder.embed_utterance(wav)
     return embedding
 
+
 def get_cosine_similarity(x_emb, y_emb):
     return np.inner(x_emb, y_emb) / (np.linalg.norm(x_emb) * np.linalg.norm(y_emb))
+
 
 def generate_sample(embeddings, this_spk, other_spks, label):
     """
@@ -325,6 +344,7 @@ def generate_sample(embeddings, this_spk, other_spks, label):
 
     return samples
 
+
 def calculate_equal_error_rate(labels, scores):
     """
     labels: (N,1) value: 0,1
@@ -337,6 +357,7 @@ def calculate_equal_error_rate(labels, scores):
     equal_error_rate = brentq(a, 0.0, 1.0)
     threshold = interp1d(fpr, thresholds)(equal_error_rate)
     return equal_error_rate, threshold
+
 
 def calculate_threshold(data_root, task, device, query="E3*.wav"):
 
@@ -371,7 +392,10 @@ def calculate_threshold(data_root, task, device, query="E3*.wav"):
     labels = [x[1] for x in samples]
     equal_error_rate, threshold = calculate_equal_error_rate(labels, scores)
 
-    return float(equal_error_rate), float(threshold) # remember to convert from np.array to float
+    return float(equal_error_rate), float(
+        threshold
+    )  # remember to convert from np.array to float
+
 
 def calculate_accept(x_path, y_path, encoder, threshold):
     x_emb = get_embedding(x_path, encoder)

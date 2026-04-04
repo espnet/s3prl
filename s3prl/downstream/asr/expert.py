@@ -1,20 +1,20 @@
 # Copyright (c) Facebook, Inc. All Rights Reserved
 
 import os
-import editdistance
-from pathlib import Path
 from argparse import Namespace
+from pathlib import Path
 
+import editdistance
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, DistributedSampler
 from torch.distributed import is_initialized
 from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader, DistributedSampler
 
-from .model import *
 from ..model import *
 from .dataset import SequenceDataset
 from .dictionary import Dictionary
+from .model import *
 
 
 def token_to_word(text):

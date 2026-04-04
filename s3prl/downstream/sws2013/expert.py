@@ -5,14 +5,14 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader, WeightedRandomSampler
 from lxml import etree
+from torch.utils.data import DataLoader, WeightedRandomSampler
 from tqdm import tqdm
 
+from .model import Model
+from .quesst14_dataset import QUESST14Dataset
 from .sws2013_dataset import SWS2013Dataset
 from .sws2013_testset import SWS2013Testset
-from .quesst14_dataset import QUESST14Dataset
-from .model import Model
 
 
 class DownstreamExpert(nn.Module):

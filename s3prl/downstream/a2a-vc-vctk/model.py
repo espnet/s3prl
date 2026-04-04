@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the simple (LSTMP), simple-AR and taco2-AR models for any-to-any voice conversion ]
 #   Reference    [ `WaveNet Vocoder with Limited Training Data for Voice Conversion`, Interspeech 2018 ]
@@ -12,17 +13,21 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+
+from s3prl.downstream.asr.model import downsample
 
 ################################################################################
 
 # The follow section is related to Tacotron2
 # Reference: https://github.com/espnet/espnet/blob/master/espnet/nets/pytorch_backend/tacotron2
 
+
 def encoder_init(m):
     """Initialize encoder parameters."""
     if isinstance(m, torch.nn.Conv1d):
         torch.nn.init.xavier_uniform_(m.weight, torch.nn.init.calculate_gain("relu"))
+
 
 class Taco2Encoder(torch.nn.Module):
     """Encoder module of the Tacotron2 TTS model.
@@ -139,6 +144,7 @@ class Taco2Encoder(torch.nn.Module):
 
         return xs, hlens
 
+
 class Taco2Prenet(torch.nn.Module):
     """Prenet module for decoder of Tacotron2.
 
@@ -175,12 +181,24 @@ class Taco2Prenet(torch.nn.Module):
             x = F.dropout(self.prenet[i](x), self.dropout_rate)
         return x
 
+
 ################################################################################
 
-class RNNLayer(nn.Module):
-    ''' RNN wrapper, includes time-downsampling'''
 
-    def __init__(self, input_dim, module, bidirection, dim, dropout, layer_norm, sample_rate, proj):
+class RNNLayer(nn.Module):
+    """RNN wrapper, includes time-downsampling"""
+
+    def __init__(
+        self,
+        input_dim,
+        module,
+        bidirection,
+        dim,
+        dropout,
+        layer_norm,
+        sample_rate,
+        proj,
+    ):
         super(RNNLayer, self).__init__()
         # Setup
         rnn_out_dim = 2 * dim if bidirection else dim
@@ -192,7 +210,8 @@ class RNNLayer(nn.Module):
 
         # Recurrent layer
         self.layer = getattr(nn, module.upper())(
-            input_dim, dim, bidirectional=bidirection, num_layers=1, batch_first=True)
+            input_dim, dim, bidirectional=bidirection, num_layers=1, batch_first=True
+        )
 
         # Regularizations
         if self.layer_norm:
@@ -210,7 +229,9 @@ class RNNLayer(nn.Module):
         if not self.training:
             self.layer.flatten_parameters()
 
-        input_x = pack_padded_sequence(input_x, x_len, batch_first=True, enforce_sorted=False)
+        input_x = pack_padded_sequence(
+            input_x, x_len, batch_first=True, enforce_sorted=False
+        )
         output, _ = self.layer(input_x)
         output, x_len = pad_packed_sequence(output, batch_first=True)
 
@@ -222,7 +243,7 @@ class RNNLayer(nn.Module):
 
         # Perform Downsampling
         if self.sample_rate > 1:
-            output, x_len = downsample(output, x_len, self.sample_rate, 'drop')
+            output, x_len = downsample(output, x_len, self.sample_rate, "drop")
 
         if self.proj:
             output = torch.tanh(self.pj(output))
@@ -231,7 +252,7 @@ class RNNLayer(nn.Module):
 
 
 class RNNCell(nn.Module):
-    ''' RNN cell wrapper'''
+    """RNN cell wrapper"""
 
     def __init__(self, input_dim, module, dim, dropout, layer_norm, proj):
         super(RNNCell, self).__init__()
@@ -243,7 +264,7 @@ class RNNCell(nn.Module):
         self.proj = proj
 
         # Recurrent cell
-        self.cell = getattr(nn, module.upper()+"Cell")(input_dim, dim)
+        self.cell = getattr(nn, module.upper() + "Cell")(input_dim, dim)
 
         # Regularizations
         if self.layer_norm:
@@ -271,33 +292,37 @@ class RNNCell(nn.Module):
 
         return new_z, new_c
 
+
 ################################################################################
 
+
 class Model(nn.Module):
-    def __init__(self,
-                 input_dim,
-                 output_dim,
-                 resample_ratio,
-                 stats,
-                 ar,
-                 encoder_type,
-                 hidden_dim,
-                 lstmp_layers,
-                 lstmp_dropout_rate,
-                 lstmp_proj_dim,
-                 lstmp_layernorm,
-                 spk_emb_integration_type,
-                 spk_emb_dim,
-                 prenet_layers=2,
-                 prenet_dim=256,
-                 prenet_dropout_rate=0.5,
-                 **kwargs):
+    def __init__(
+        self,
+        input_dim,
+        output_dim,
+        resample_ratio,
+        stats,
+        ar,
+        encoder_type,
+        hidden_dim,
+        lstmp_layers,
+        lstmp_dropout_rate,
+        lstmp_proj_dim,
+        lstmp_layernorm,
+        spk_emb_integration_type,
+        spk_emb_dim,
+        prenet_layers=2,
+        prenet_dim=256,
+        prenet_dropout_rate=0.5,
+        **kwargs
+    ):
         super(Model, self).__init__()
 
         self.ar = ar
         self.encoder_type = encoder_type
-        self.hidden_dim = hidden_dim # this is also the decoder output dim
-        self.output_dim = output_dim # acoustic feature dim
+        self.hidden_dim = hidden_dim  # this is also the decoder output dim
+        self.output_dim = output_dim  # acoustic feature dim
         self.resample_ratio = resample_ratio
         self.spk_emb_integration_type = spk_emb_integration_type
         self.spk_emb_dim = spk_emb_dim
@@ -312,8 +337,7 @@ class Model(nn.Module):
             self.encoder = Taco2Encoder(input_dim, eunits=hidden_dim)
         elif encoder_type == "ffn":
             self.encoder = torch.nn.Sequential(
-                torch.nn.Linear(input_dim, hidden_dim),
-                torch.nn.ReLU()
+                torch.nn.Linear(input_dim, hidden_dim), torch.nn.ReLU()
             )
         else:
             raise ValueError("Encoder type not supported.")
@@ -372,9 +396,9 @@ class Model(nn.Module):
 
     def _integrate_with_spk_emb(self, hs, spembs):
         """Integrate speaker embedding with hidden states.
-            Args:
-                hs (Tensor): Batch of hidden state sequences (B, Lmax, hdim).
-                spembs (Tensor): Batch of speaker embeddings (B, spk_embed_dim).
+        Args:
+            hs (Tensor): Batch of hidden state sequences (B, Lmax, hdim).
+            spembs (Tensor): Batch of speaker embeddings (B, spk_embed_dim).
         """
         if self.spk_emb_integration_type == "add":
             # apply projection and then add to hidden states
@@ -389,26 +413,28 @@ class Model(nn.Module):
 
         return hs
 
-    def forward(self, features, lens, ref_spk_embs, targets = None):
+    def forward(self, features, lens, ref_spk_embs, targets=None):
         """Calculate forward propagation.
-            Args:
-            features: Batch of the sequences of input features (B, Lmax, idim).
-            targets: Batch of the sequences of padded target features (B, Lmax, odim).
-            ref_spk_embs: Batch of the sequences of reference speaker embeddings (B, spk_emb_dim).
+        Args:
+        features: Batch of the sequences of input features (B, Lmax, idim).
+        targets: Batch of the sequences of padded target features (B, Lmax, odim).
+        ref_spk_embs: Batch of the sequences of reference speaker embeddings (B, spk_emb_dim).
         """
         B = features.shape[0]
 
         # resample the input features according to resample_ratio
         features = features.permute(0, 2, 1)
-        resampled_features = F.interpolate(features, scale_factor = self.resample_ratio)
+        resampled_features = F.interpolate(features, scale_factor=self.resample_ratio)
         resampled_features = resampled_features.permute(0, 2, 1)
         lens = lens * self.resample_ratio
 
         # encoder
         if self.encoder_type == "taco2":
-            encoder_states, lens = self.encoder(resampled_features, lens) # (B, Lmax, hidden_dim)
+            encoder_states, lens = self.encoder(
+                resampled_features, lens
+            )  # (B, Lmax, hidden_dim)
         elif self.encoder_type == "ffn":
-            encoder_states = self.encoder(resampled_features) # (B, Lmax, hidden_dim)
+            encoder_states = self.encoder(resampled_features)  # (B, Lmax, hidden_dim)
 
         # inject speaker embeddings
         encoder_states = self._integrate_with_spk_emb(encoder_states, ref_spk_embs)
@@ -416,7 +442,7 @@ class Model(nn.Module):
         # decoder: LSTMP layers & projection
         if self.ar:
             if targets is not None:
-                targets = targets.transpose(0, 1) # (Lmax, B, output_dim)
+                targets = targets.transpose(0, 1)  # (Lmax, B, output_dim)
             predicted_list = []
 
             # initialize hidden states
@@ -429,15 +455,25 @@ class Model(nn.Module):
 
             # step-by-step loop for autoregressive decoding
             for t, encoder_state in enumerate(encoder_states.transpose(0, 1)):
-                concat = torch.cat([encoder_state, self.prenet(prev_out)], dim=1) # each encoder_state has shape (B, hidden_dim)
+                concat = torch.cat(
+                    [encoder_state, self.prenet(prev_out)], dim=1
+                )  # each encoder_state has shape (B, hidden_dim)
                 for i, lstmp in enumerate(self.lstmps):
-                    lstmp_input = concat if i == 0 else z_list[i-1]
+                    lstmp_input = concat if i == 0 else z_list[i - 1]
                     z_list[i], c_list[i] = lstmp(lstmp_input, z_list[i], c_list[i])
-                predicted_list += [self.proj(z_list[-1]).view(B, self.output_dim, -1)] # projection is done here to ensure output dim
-                prev_out = targets[t] if targets is not None else predicted_list[-1].squeeze(-1) # targets not None = teacher-forcing
-                prev_out = self.normalize(prev_out) # apply normalization
+                predicted_list += [
+                    self.proj(z_list[-1]).view(B, self.output_dim, -1)
+                ]  # projection is done here to ensure output dim
+                prev_out = (
+                    targets[t]
+                    if targets is not None
+                    else predicted_list[-1].squeeze(-1)
+                )  # targets not None = teacher-forcing
+                prev_out = self.normalize(prev_out)  # apply normalization
             predicted = torch.cat(predicted_list, dim=2)
-            predicted = predicted.transpose(1, 2)  # (B, hidden_dim, Lmax) -> (B, Lmax, hidden_dim)
+            predicted = predicted.transpose(
+                1, 2
+            )  # (B, hidden_dim, Lmax) -> (B, Lmax, hidden_dim)
         else:
             predicted = encoder_states
             for i, lstmp in enumerate(self.lstmps):
