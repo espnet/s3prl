@@ -1,0 +1,934 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="encoder" href="s3prl.dataio.encoder.html"><link rel="prev" title="collate_fn" href="s3prl.dataio.collate_fn.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>corpus - S3PRL 0.4.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=80fa0baa" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">S3PRL 0.4.18
+ documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">S3PRL 0.4.18
+ documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/installation.html">Install S3PRL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/upstream_collection.html">S3PRL Upstream Collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/problem.html">Use Problem module to run customizable recipes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How to Contribute</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/general.html">General Guideline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/upstream.html">Adding New Upstream</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="s3prl.nn.html">nn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s3prl.task.html">task</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="s3prl.dataio.collate_fn.html">collate_fn</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.dataio.encoder.html">encoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.dataio.sampler.html">sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="s3prl.metric.html">metric</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="s3prl.util.html">util</a><input aria-label="Toggle navigation of util" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.audio_info.html">audio_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.benchmark.html">benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.download.html">download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.override.html">override</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.pseudo_data.html">pseudo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3prl.util.seed.html">seed</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/_autosummary/s3prl.dataio.corpus.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="corpus">
+<h1>corpus<a class="headerlink" href="#corpus" title="Link to this heading">¶</a></h1>
+<p><strong>(s3prl.dataio.corpus)</strong></p>
+<p id="module-s3prl.dataio.corpus">Parse the commonly used corpus into standardized dictionary structure</p>
+<section id="fluentspeechcommands">
+<h2>FluentSpeechCommands<a class="headerlink" href="#fluentspeechcommands" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">FluentSpeechCommands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/fluent_speech_commands.html#FluentSpeechCommands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/fluent_speech_commands.py#L24-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<p>Parse the Fluent Speech Command dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_root</strong> – (str) The dataset root of Fluent Speech Command</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands.all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return all the data points in a dict of the format</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">data_id1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The waveform path</span>
+<span class="w">    </span><span class="nt">speakerId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The speaker name</span>
+<span class="w">    </span><span class="nt">transcription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The transcription</span>
+<span class="w">    </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The action</span>
+<span class="w">    </span><span class="nt">object</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The action&#39;s targeting object</span>
+<span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The location where the action happens</span>
+
+<span class="nt">data_id2</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands.data_split" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list:</p>
+<p><code class="code docutils literal notranslate"><span class="pre">train_data</span></code>, <code class="code docutils literal notranslate"><span class="pre">valid_data</span></code>, <code class="code docutils literal notranslate"><span class="pre">test_data</span></code></p>
+<p>each is a dict following the format specified in <a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.all_data" title="s3prl.dataio.corpus.FluentSpeechCommands.all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_data</span></code></a></p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list:</p>
+<p><code class="code docutils literal notranslate"><span class="pre">train_ids</span></code>, <code class="code docutils literal notranslate"><span class="pre">valid_ids</span></code>, <code class="code docutils literal notranslate"><span class="pre">test_ids</span></code></p>
+<p>Each is a list containing data_ids. data_ids can be used as the key to access the <a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.all_data" title="s3prl.dataio.corpus.FluentSpeechCommands.all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_data</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/fluent_speech_commands.html#FluentSpeechCommands.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/fluent_speech_commands.py#L110-L165"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands.download_dataset" title="Link to this definition">¶</a></dt>
+<dd><p>Download and unzip the dataset to <code class="code docutils literal notranslate"><span class="pre">tgt_dir</span></code>/fluent_speech_commands_dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tgt_dir</strong> (<em>str</em>) – The root directory containing many different datasets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.FluentSpeechCommands.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.FluentSpeechCommands.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="iemocap">
+<h2>IEMOCAP<a class="headerlink" href="#iemocap" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">IEMOCAP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/iemocap.html#IEMOCAP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/iemocap.py#L29-L173"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<p>Parse the IEMOCAP dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_root</strong> – (str) The dataset root of IEMOCAP</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return:
+dict</p>
+<p>all the data points of IEMOCAP in the format of</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">data_id1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">wav_path (str)</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The waveform path</span>
+<span class="w">    </span><span class="nt">speaker (str)</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The speaker name</span>
+<span class="w">    </span><span class="nt">act (str)</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">improvised / scripted</span>
+<span class="w">    </span><span class="nt">emotion (str)</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The emotion label</span>
+<span class="w">    </span><span class="nt">session_id (int)</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The session</span>
+
+<span class="nt">data_id2</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.get_whole_session">
+<span class="sig-name descname"><span class="pre">get_whole_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/iemocap.html#IEMOCAP.get_whole_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/iemocap.py#L104-L118"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.get_whole_session" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session_id</strong> (<em>int</em>) – The session index selected from 1, 2, 3, 4, 5</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>dict</p>
+<p>data points in a single session (containing improvised and scripted recordings) in the
+same format as <a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.all_data" title="s3prl.dataio.corpus.IEMOCAP.all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_data</span></code></a></p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.get_session_with_act">
+<span class="sig-name descname"><span class="pre">get_session_with_act</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/iemocap.html#IEMOCAP.get_session_with_act"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/iemocap.py#L120-L133"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.get_session_with_act" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session_id</strong> (<em>int</em>) – The session index selected from 1, 2, 3, 4, 5</p></li>
+<li><p><strong>act</strong> (<em>str</em>) – ‘improvised’ or ‘scripted’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">s3prl.base.container.Container</span></code></p>
+<p>data points in a single session with a specific act (either improvised or scripted) in the
+same format as <a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.all_data" title="s3prl.dataio.corpus.IEMOCAP.all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_data</span></code></a></p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/iemocap.html#IEMOCAP.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/iemocap.py#L135-L173"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.data_split_ids">
+<em class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.IEMOCAP.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.IEMOCAP.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="librispeech">
+<h2>LibriSpeech<a class="headerlink" href="#librispeech" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">LibriSpeech</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['train-clean-100']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['dev-clean']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['test-clean']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/librispeech.html#LibriSpeech"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/librispeech.py#L88-L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<p>LibriSpeech Corpus
+Link: <a class="reference external" href="https://www.openslr.org/12">https://www.openslr.org/12</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_root</strong> (<em>str</em>) – Path to LibriSpeech corpus directory.</p></li>
+<li><p><strong>n_jobs</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of jobs. Defaults to 4.</p></li>
+<li><p><strong>train_split</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Training splits. Defaults to [“train-clean-100”].</p></li>
+<li><p><strong>valid_split</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Validation splits. Defaults to [“dev-clean”].</p></li>
+<li><p><strong>test_split</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Testing splits. Defaults to [“test-clean”].</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.get_corpus_splits">
+<span class="sig-name descname"><span class="pre">get_corpus_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/librispeech.html#LibriSpeech.get_corpus_splits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/librispeech.py#L125-L126"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.get_corpus_splits" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return all the data points in a dict of the format</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">data_id1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">wav_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The waveform path</span>
+<span class="w">    </span><span class="nt">transcription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The transcription</span>
+<span class="w">    </span><span class="nt">speaker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The speaker name</span>
+<span class="w">    </span><span class="nt">gender</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The speaker&#39;s gender</span>
+<span class="w">    </span><span class="nt">corpus_split</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">(str) The split of corpus this sample belongs to</span>
+
+<span class="nt">data_id2</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['train-clean-100',</span> <span class="pre">'dev-clean',</span> <span class="pre">'test-clean']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/librispeech.html#LibriSpeech.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/librispeech.py#L212-L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriSpeech.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriSpeech.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="librilight">
+<h2>LibriLight<a class="headerlink" href="#librilight" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">LibriLight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'10m-fold0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/librilight.html#LibriLight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/librilight.py#L94-L164"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/librilight.html#LibriLight.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/librilight.py#L116-L129"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight.all_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight.data_split_ids">
+<em class="property"><span class="k"><span class="pre">abstract</span></span><span class="w"> </span><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.LibriLight.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.LibriLight.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="quesst14">
+<h2>Quesst14<a class="headerlink" href="#quesst14" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.Quesst14">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">Quesst14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/quesst14.html#Quesst14"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/quesst14.py#L20-L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.Quesst14" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.Quesst14.valid_queries">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">valid_queries</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.Quesst14.valid_queries" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.Quesst14.test_queries">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_queries</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.Quesst14.test_queries" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.Quesst14.docs">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">docs</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.Quesst14.docs" title="Link to this definition">¶</a></dt>
+<dd><p>Valid and Test share the same document database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.Quesst14.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/quesst14.html#Quesst14.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/quesst14.py#L67-L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.Quesst14.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="snips">
+<h2>SNIPS<a class="headerlink" href="#snips" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SNIPS">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">SNIPS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_speakers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_speakers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_speakers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/snips.html#SNIPS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/snips.py#L22-L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SNIPS" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SNIPS.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SNIPS.all_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SNIPS.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SNIPS.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SNIPS.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SNIPS.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SNIPS.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SNIPS.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="speechcommandsv1">
+<h2>SpeechCommandsV1<a class="headerlink" href="#speechcommandsv1" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">SpeechCommandsV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsc1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gsc1_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L40-L215"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_root</strong> (<em>str</em>) – should contain a ‘dev’ sub-folder for the training/validation set
+and a ‘test’ sub-folder for the testing set</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.split_dataset">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_uttr_per_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">134217727</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.split_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L65-L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.split_dataset" title="Link to this definition">¶</a></dt>
+<dd><p>Split Speech Commands into 3 set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_dir</strong> – speech commands dataset root dir</p></li>
+<li><p><strong>max_uttr_per_class</strong> – predefined value in the original paper</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[(class_name, audio_path), …]
+valid_list: as above</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>train_list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.parse_train_valid_data_list">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_train_valid_data_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.parse_train_valid_data_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L101-L117"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.parse_train_valid_data_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.parse_test_data_list">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_test_data_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.parse_test_data_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L119-L127"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.parse_test_data_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.path_to_unique_name">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path_to_unique_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.path_to_unique_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L129-L131"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.path_to_unique_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.list_to_dict">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.list_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L133-L144"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.list_to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Return:
+Container: id (str)</p>
+<blockquote>
+<div><p>wav_path (str)
+class_name (str)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/speech_commands.html#SpeechCommandsV1.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/speech_commands.py#L160-L215"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.SpeechCommandsV1.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.SpeechCommandsV1.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="voxceleb1sid">
+<h2>VoxCeleb1SID<a class="headerlink" href="#voxceleb1sid" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">VoxCeleb1SID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PosixPath('/home/runner/.cache/s3prl')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sid.html#VoxCeleb1SID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sid.py#L31-L175"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID.all_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID.download_dataset">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['dev',</span> <span class="pre">'test']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sid.html#VoxCeleb1SID.download_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sid.py#L102-L175"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID.download_dataset" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SID.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SID.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="voxceleb1sv">
+<h2>VoxCeleb1SV<a class="headerlink" href="#voxceleb1sv" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3prl.dataio.corpus.</span></span><span class="sig-name descname"><span class="pre">VoxCeleb1SV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sv.html#VoxCeleb1SV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sv.py#L25-L126"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Corpus</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.path2uid">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path2uid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sv.html#VoxCeleb1SV.path2uid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sv.py#L42-L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.path2uid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.path2data">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speakerid2label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sv.html#VoxCeleb1SV.path2data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sv.py#L46-L55"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.path2data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.format_path">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sv.html#VoxCeleb1SV.format_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sv.py#L57-L102"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.format_path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.format_test_trials">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_test_trials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3prl/dataio/corpus/voxceleb1sv.html#VoxCeleb1SV.format_test_trials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/voxceleb1sv.py#L104-L118"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.format_test_trials" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.all_data">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_data</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.all_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.data_split_ids">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split_ids</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.data_split_ids" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.data_split">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_split</span></span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.data_split" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3prl.dataio.corpus.VoxCeleb1SV.dataframe_to_datapoints">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataframe_to_datapoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_name_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/s3prl/s3prl/blob/v0.4.18 /s3prl/dataio/corpus/base.py#L26-L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3prl.dataio.corpus.VoxCeleb1SV.dataframe_to_datapoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="s3prl.dataio.encoder.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">encoder</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="s3prl.dataio.collate_fn.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">collate_fn</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, S3PRL Team
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">corpus</a><ul>
+<li><a class="reference internal" href="#fluentspeechcommands">FluentSpeechCommands</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.all_data"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.data_split"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.data_split_ids"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.download_dataset"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.FluentSpeechCommands.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">FluentSpeechCommands.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iemocap">IEMOCAP</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP"><code class="docutils literal notranslate"><span class="pre">IEMOCAP</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.all_data"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.get_whole_session"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.get_whole_session()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.get_session_with_act"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.get_session_with_act()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.download_dataset"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.data_split"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.data_split_ids"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.IEMOCAP.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">IEMOCAP.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#librispeech">LibriSpeech</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech"><code class="docutils literal notranslate"><span class="pre">LibriSpeech</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.get_corpus_splits"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.get_corpus_splits()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.all_data"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.data_split_ids"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.download_dataset"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.data_split"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriSpeech.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">LibriSpeech.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#librilight">LibriLight</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight"><code class="docutils literal notranslate"><span class="pre">LibriLight</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight.download_dataset"><code class="docutils literal notranslate"><span class="pre">LibriLight.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight.all_data"><code class="docutils literal notranslate"><span class="pre">LibriLight.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight.data_split"><code class="docutils literal notranslate"><span class="pre">LibriLight.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight.data_split_ids"><code class="docutils literal notranslate"><span class="pre">LibriLight.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.LibriLight.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">LibriLight.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quesst14">Quesst14</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.Quesst14"><code class="docutils literal notranslate"><span class="pre">Quesst14</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.Quesst14.valid_queries"><code class="docutils literal notranslate"><span class="pre">Quesst14.valid_queries</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.Quesst14.test_queries"><code class="docutils literal notranslate"><span class="pre">Quesst14.test_queries</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.Quesst14.docs"><code class="docutils literal notranslate"><span class="pre">Quesst14.docs</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.Quesst14.download_dataset"><code class="docutils literal notranslate"><span class="pre">Quesst14.download_dataset()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#snips">SNIPS</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SNIPS"><code class="docutils literal notranslate"><span class="pre">SNIPS</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SNIPS.all_data"><code class="docutils literal notranslate"><span class="pre">SNIPS.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SNIPS.data_split_ids"><code class="docutils literal notranslate"><span class="pre">SNIPS.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SNIPS.data_split"><code class="docutils literal notranslate"><span class="pre">SNIPS.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SNIPS.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">SNIPS.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#speechcommandsv1">SpeechCommandsV1</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.split_dataset"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.split_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.parse_train_valid_data_list"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.parse_train_valid_data_list()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.parse_test_data_list"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.parse_test_data_list()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.path_to_unique_name"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.path_to_unique_name()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.list_to_dict"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.list_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.all_data"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.data_split_ids"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.download_dataset"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.data_split"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.SpeechCommandsV1.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">SpeechCommandsV1.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#voxceleb1sid">VoxCeleb1SID</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID.all_data"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID.data_split_ids"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID.download_dataset"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID.download_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID.data_split"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SID.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SID.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#voxceleb1sv">VoxCeleb1SV</a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV</span></code></a><ul>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.path2uid"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.path2uid()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.path2data"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.path2data()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.format_path"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.format_path()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.format_test_trials"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.format_test_trials()</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.all_data"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.all_data</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.data_split_ids"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.data_split_ids</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.data_split"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.data_split</span></code></a></li>
+<li><a class="reference internal" href="#s3prl.dataio.corpus.VoxCeleb1SV.dataframe_to_datapoints"><code class="docutils literal notranslate"><span class="pre">VoxCeleb1SV.dataframe_to_datapoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=c0b7214d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/js/custom.js?v=c883bf06"></script>
+    </body>
+</html>
