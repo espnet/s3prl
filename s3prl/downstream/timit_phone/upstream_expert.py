@@ -1,16 +1,16 @@
-import os
 import math
-import yaml
-import torch
+import os
 import random
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import yaml
 from torch.nn.utils.rnn import pad_sequence
 
 import s3prl
 from s3prl.upstream.interfaces import Featurizer
+
 from .model import *
 
 EXAMPLE_FEAT_SEQLEN = 1000
@@ -21,24 +21,28 @@ TIMIT_LABEL_STRIDE = 160
 class UpstreamExpert(nn.Module):
     def __init__(self, ckpt, **kwargs):
         super(UpstreamExpert, self).__init__()
-        ckpt = torch.load(ckpt, map_location='cpu')
+        ckpt = torch.load(ckpt, map_location="cpu")
 
-        args = ckpt['Args']
+        args = ckpt["Args"]
         self.upstream = getattr(s3prl.hub, args.upstream)()
         self.featurizer = Featurizer(self.upstream, "last_hidden_state", "cpu")
 
-        config = ckpt['Config']
-        modelrc = config['downstream_expert']['modelrc']
-        model_cls = eval(modelrc['select'])
-        model_conf = modelrc[modelrc['select']]
-        self.model = model_cls(self.featurizer.output_dim, output_class_num=TIMIT_PHONE_CLASSES, **model_conf)
-        self.model.load_state_dict(UpstreamExpert._fix_state_key(ckpt['Downstream']))
+        config = ckpt["Config"]
+        modelrc = config["downstream_expert"]["modelrc"]
+        model_cls = eval(modelrc["select"])
+        model_conf = modelrc[modelrc["select"]]
+        self.model = model_cls(
+            self.featurizer.output_dim,
+            output_class_num=TIMIT_PHONE_CLASSES,
+            **model_conf
+        )
+        self.model.load_state_dict(UpstreamExpert._fix_state_key(ckpt["Downstream"]))
 
     @staticmethod
     def _fix_state_key(states):
         keys = list(states.keys())
         for key in keys:
-            new_key = '.'.join(key.split('.')[1:])
+            new_key = ".".join(key.split(".")[1:])
             states[new_key] = states[key]
             states.pop(key)
         return states
@@ -66,7 +70,9 @@ class UpstreamExpert(nn.Module):
         feats_length = [len(f) for f in feats]
         feats = pad_sequence(feats, batch_first=True)
         posteriors = self.model(feats)
-        posteriors = [F.softmax(p[:l], dim=-1) for p, l in zip(posteriors, feats_length)]
+        posteriors = [
+            F.softmax(p[:l], dim=-1) for p, l in zip(posteriors, feats_length)
+        ]
         posteriors = pad_sequence(posteriors, batch_first=True)
 
         return {

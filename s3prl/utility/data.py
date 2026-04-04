@@ -1,6 +1,7 @@
 from torch.distributed.distributed_c10d import is_initialized
 from torch.utils.data import Dataset, DistributedSampler
 
+
 def get_ddp_sampler(dataset: Dataset, epoch: int):
     """
     This function will create a DistributedSampler if DDP is initialized,

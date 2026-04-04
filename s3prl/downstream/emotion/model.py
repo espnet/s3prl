@@ -4,12 +4,14 @@ import torch
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence
 
+
 class SelfAttentionPooling(nn.Module):
     """
     Implementation of SelfAttentionPooling
     Original Paper: Self-Attention Encoding and Pooling for Speaker Recognition
     https://arxiv.org/pdf/2008.01077v1.pdf
     """
+
     def __init__(self, input_dim):
         super(SelfAttentionPooling, self).__init__()
         self.W = nn.Linear(input_dim, 1)
@@ -17,13 +19,13 @@ class SelfAttentionPooling(nn.Module):
 
     def forward(self, batch_rep, att_mask=None):
         """
-            N: batch size, T: sequence length, H: Hidden dimension
-            input:
-                batch_rep : size (N, T, H)
-            attention_weight:
-                att_w : size (N, T, 1)
-            return:
-                utter_rep: size (N, H)
+        N: batch size, T: sequence length, H: Hidden dimension
+        input:
+            batch_rep : size (N, T, H)
+        attention_weight:
+            att_w : size (N, T, 1)
+        return:
+            utter_rep: size (N, H)
         """
         att_logits = self.W(batch_rep).squeeze(-1)
         if att_mask is not None:
@@ -44,7 +46,7 @@ class CNNSelfAttention(nn.Module):
         pooling,
         dropout,
         output_class_num,
-        **kwargs
+        **kwargs,
     ):
         super(CNNSelfAttention, self).__init__()
         self.model_seq = nn.Sequential(
@@ -181,22 +183,16 @@ class DeepNet(nn.Module):
 
 
 class DeepModel(nn.Module):
-    def __init__(
-        self,
-        input_dim,
-        output_dim,
-        model_type,
-        pooling,
-        **kwargs
-    ):
+    def __init__(self, input_dim, output_dim, model_type, pooling, **kwargs):
         super(DeepModel, self).__init__()
         self.pooling = pooling
-        self.model = eval(model_type)(input_dim=input_dim, output_class_num=output_dim, pooling=pooling, **kwargs)
+        self.model = eval(model_type)(
+            input_dim=input_dim, output_class_num=output_dim, pooling=pooling, **kwargs
+        )
 
     def forward(self, features, features_len):
         attention_mask = [
-            torch.ones(math.ceil((l / self.pooling)))
-            for l in features_len
+            torch.ones(math.ceil((l / self.pooling))) for l in features_len
         ]
         attention_mask = pad_sequence(attention_mask, batch_first=True)
         attention_mask = (1.0 - attention_mask) * -100000.0

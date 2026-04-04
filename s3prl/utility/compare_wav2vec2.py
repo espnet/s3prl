@@ -1,10 +1,12 @@
-import os
-import torch
-import random
 import argparse
+import os
+import random
+
+import torch
 import transformers
-from s3prl import hub
 from packaging import version
+
+from s3prl import hub
 
 SAMPLE_RATE = 16000
 BATCH_SIZE = 8
