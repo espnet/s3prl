@@ -34,7 +34,6 @@ class benchmark(ContextDecorator):
         torch.cuda.synchronize()
         seconds = time() - self.start
 
-        global _history
         _history[self.name].append(seconds)
         if len(_history[self.name]) % self.freq == 0:
             logger.warning(
