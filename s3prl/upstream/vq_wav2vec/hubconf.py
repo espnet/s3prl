@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/vq_wav2vec/hubconf.py ]
 #   Synopsis     [ the vq wav2vec torch hubconf ]
 #   Author       [ S3PRL ]
@@ -51,9 +52,9 @@ def vq_wav2vec_gumbel(refresh=False, legacy=False, **kwargs):
     """
     kwargs["ckpt"] = "https://dl.fbaipublicfiles.com/fairseq/wav2vec/vq-wav2vec.pt"
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/vq-wav2vec.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/vq-wav2vec.pt"
+        )
     return vq_wav2vec_custom(refresh=refresh, legacy=legacy, **kwargs)
 
 
@@ -62,11 +63,11 @@ def vq_wav2vec_kmeans(refresh=False, legacy=False, **kwargs):
     The K-means model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://dl.fbaipublicfiles.com/fairseq/wav2vec/vq-wav2vec_kmeans.pt"
+    kwargs["ckpt"] = (
+        "https://dl.fbaipublicfiles.com/fairseq/wav2vec/vq-wav2vec_kmeans.pt"
+    )
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/vq-wav2vec_kmeans.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/vq-wav2vec_kmeans.pt"
+        )
     return vq_wav2vec_custom(refresh=refresh, legacy=legacy, **kwargs)

@@ -1,6 +1,6 @@
 """
-    hubconf for Distiller
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+hubconf for Distiller
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import os
@@ -40,7 +40,7 @@ def distilhubert_base(refresh=False, *args, **kwargs):
     DistilHuBERT Base
     Default model in https://arxiv.org/abs/2110.01900
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/leo19941227/distilhubert/resolve/main/distilhubert_ls960_4-8-12.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/leo19941227/distilhubert/resolve/main/distilhubert_ls960_4-8-12.ckpt"
+    )
     return distiller_url(refresh=refresh, *args, **kwargs)

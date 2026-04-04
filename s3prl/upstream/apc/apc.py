@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/apc/apc.py ]
 #   Synopsis     [ the apc and vq-apc model ]
 #   Author       [ iamyuanchung ]

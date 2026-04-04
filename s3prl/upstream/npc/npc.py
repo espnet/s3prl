@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/npc/npc.py ]
 #   Synopsis     [ the npc model]
 #   Author       [ Alexander H. Liu (https://github.com/Alexander-H-Liu) ]

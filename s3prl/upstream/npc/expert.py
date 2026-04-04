@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/npc/expert.py ]
 #   Synopsis     [ the npc wrapper ]
 #   Author       [ S3PRL ]

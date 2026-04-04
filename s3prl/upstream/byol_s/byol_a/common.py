@@ -1,4 +1,5 @@
 """BYOL for Audio: Common definitions and utilities."""
+
 import datetime
 import logging
 import os

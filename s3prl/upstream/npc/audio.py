@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/npc/audio.py ]
 #   Synopsis     [ audio utility functions for npc ]
 #   Author       [ S3PRL / Tzu-Wei Sung (https://github.com/WindQAQ) ]

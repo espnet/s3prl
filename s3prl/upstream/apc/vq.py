@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/apc/vq.py ]
 #   Synopsis     [ the vq component for apc]
 #   Author       [ S3PRL ]

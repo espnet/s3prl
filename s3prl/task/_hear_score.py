@@ -230,9 +230,9 @@ class SoundEventScore(ScoreFunction):
         # results_overall_metrics return a pretty large nested selection of scores,
         # with dicts of scores keyed on the type of scores, like f_measure, error_rate,
         # accuracy
-        nested_overall_scores: Dict[
-            str, Dict[str, float]
-        ] = scores.results_overall_metrics()
+        nested_overall_scores: Dict[str, Dict[str, float]] = (
+            scores.results_overall_metrics()
+        )
         # Open up nested overall scores
         overall_scores: Dict[str, float] = dict(
             ChainMap(*nested_overall_scores.values())
@@ -243,7 +243,7 @@ class SoundEventScore(ScoreFunction):
 
     @staticmethod
     def sed_eval_event_container(
-        x: Dict[str, List[Dict[str, Any]]]
+        x: Dict[str, List[Dict[str, Any]]],
     ) -> MetaDataContainer:
         # Reformat event list for sed_eval
         reference_events = []

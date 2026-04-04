@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/mockingjay/expert.py ]
 #   Synopsis     [ the mockingjay wrapper ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]

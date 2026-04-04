@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/audio_albert/hubconf.py ]
 #   Synopsis     [ the audio albert torch hubconf ]
 #   Author       [ S3PRL ]
@@ -73,7 +74,7 @@ def audio_albert_logMelBase_T_share_AdamW_b32_1m_960hr_drop1(
     Total steps: 1M
     Unlabled Speech: 960hr
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/audio_albert/resolve/main/audio_albert_logMelBase_T_share_AdamW_b32_1m_960hr_drop1/states-1000000.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/audio_albert/resolve/main/audio_albert_logMelBase_T_share_AdamW_b32_1m_960hr_drop1/states-1000000.ckpt"
+    )
     return audio_albert_url(refresh=refresh, *args, **kwargs)

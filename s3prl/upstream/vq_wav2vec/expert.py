@@ -2,6 +2,7 @@
 
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/vq_wav2vec/expert.py ]
 #   Synopsis     [ the vq_wav2vec wrapper ]
 #   Author       [ S3PRL ]

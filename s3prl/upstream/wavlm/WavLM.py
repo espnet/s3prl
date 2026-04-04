@@ -161,7 +161,9 @@ def compute_mask_indices(
 
 class WavLMConfig:
     def __init__(self, cfg=None):
-        self.extractor_mode: str = "default"  # mode for feature extractor. default has a single group norm with d groups in the first conv block, whereas layer_norm has layer norms in every block (meant to use with normalize=True)
+        self.extractor_mode: str = (
+            "default"  # mode for feature extractor. default has a single group norm with d groups in the first conv block, whereas layer_norm has layer norms in every block (meant to use with normalize=True)
+        )
         self.encoder_layers: int = 12  # num encoder layers in the transformer
 
         self.encoder_embed_dim: int = 768  # encoder embedding dimension
@@ -170,7 +172,9 @@ class WavLMConfig:
         self.activation_fn: str = "gelu"  # activation function to use
 
         self.layer_norm_first: bool = False  # apply layernorm first in the transformer
-        self.conv_feature_layers: str = "[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2"  # string describing convolutional feature extraction layers in form of a python list that contains [(dim, kernel_size, stride), ...]
+        self.conv_feature_layers: str = (
+            "[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2"  # string describing convolutional feature extraction layers in form of a python list that contains [(dim, kernel_size, stride), ...]
+        )
         self.conv_bias: bool = False  # include bias in conv encoder
         self.feature_grad_mult: float = (
             1.0  # multiply feature extractor var grads by this
@@ -200,7 +204,9 @@ class WavLMConfig:
         self.mask_length: int = 10  # mask length
         self.mask_prob: float = 0.65  # probability of replacing a token with mask
         self.mask_selection: str = "static"  # how to choose mask length
-        self.mask_other: float = 0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        self.mask_other: float = (
+            0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh
+        )
         self.no_mask_overlap: bool = False  # whether to allow masks to overlap
         self.mask_min_space: int = (
             1  # min space between spans (if no overlap is enabled)
@@ -212,7 +218,9 @@ class WavLMConfig:
         self.mask_channel_selection: str = (
             "static"  # how to choose mask length for channel masking
         )
-        self.mask_channel_other: float = 0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indices
+        self.mask_channel_other: float = (
+            0  # secondary mask argument (used for more complex distributions), see help in compute_mask_indices
+        )
         self.no_mask_channel_overlap: bool = (
             False  # whether to allow channel masks to overlap
         )
@@ -463,7 +471,7 @@ class ConvFeatureExtractionModel(nn.Module):
             self.conv_layers = nn.ModuleList()
             for i, cl in enumerate(conv_layers):
                 assert len(cl) == 3, "invalid conv definition: " + str(cl)
-                (dim, k, stride) = cl
+                dim, k, stride = cl
 
                 self.conv_layers.append(
                     block(
@@ -482,7 +490,7 @@ class ConvFeatureExtractionModel(nn.Module):
             self.conv_layers = nn.ModuleList()
             for i, cl in enumerate(conv_layers):
                 assert len(cl) == 3
-                (dim, k, stride) = cl
+                dim, k, stride = cl
 
                 self.conv_layers.append(torch.nn.Conv2d(in_d, dim, k, stride))
                 self.conv_layers.append(torch.nn.ReLU())
@@ -493,7 +501,7 @@ class ConvFeatureExtractionModel(nn.Module):
             self.conv_layers = nn.ModuleList()
             for i, cl in enumerate(conv_layers):
                 assert len(cl) == 3
-                (dim, k, stride) = cl
+                dim, k, stride = cl
                 self.conv_layers.append(
                     torch.nn.Conv2d(in_d, dim, k, stride, padding=1)
                 )

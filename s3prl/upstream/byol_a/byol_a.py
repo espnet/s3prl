@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/byol_a/byol_a.py ]
 #   Synopsis     [ the byol-a model, derived from the official repo ]
 #   Author       [ NTT Communication Science Laboratories (https://github.com/nttcslab) ]
@@ -133,7 +134,7 @@ class AudioNTT2020(AudioNTT2020Task6):
 
     def forward(self, x):
         x = super().forward(x)
-        (x1, _) = torch.max(x, dim=1)
+        x1, _ = torch.max(x, dim=1)
         x2 = torch.mean(x, dim=1)
         x = x1 + x2
         assert x.shape[1] == self.d and x.ndim == 2

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/mockingjay/builder.py ]
 #   Synopsis     [ build the transformer model for downstream usage ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]

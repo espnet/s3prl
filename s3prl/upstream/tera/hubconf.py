@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/tera/hubconf.py ]
 #   Synopsis     [ the tera torch hubconf ]
 #   Author       [ S3PRL ]
@@ -106,9 +107,9 @@ def tera_logMelBase_T_F_AdamW_b32_1m_960hr(refresh=False, *args, **kwargs):
     Total steps: 1M
     Unlabled Speech: 960hr
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/98olxex0m7oy9ta/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/98olxex0m7oy9ta/states-1000000.ckpt?dl=1"
+    )
     return tera_url(refresh=refresh, *args, **kwargs)
 
 
@@ -122,9 +123,9 @@ def tera_logMelBase_T_F_AdamW_b32_1m_960hr_drop1(refresh=False, *args, **kwargs)
     Unlabled Speech: 960hr
     Differences: Dropout of 0.1 (instead of 0.3)
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/2ekbt2gxlkbvfz0/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/2ekbt2gxlkbvfz0/states-1000000.ckpt?dl=1"
+    )
     return tera_url(refresh=refresh, *args, **kwargs)
 
 
@@ -138,9 +139,9 @@ def tera_logMelBase_T_F_AdamW_b32_1m_960hr_seq3k(refresh=False, *args, **kwargs)
     Unlabled Speech: 960hr
     Differences: sequence length of 3k (instead of 1.5k)
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/tfysinbalpm3gsj/states-1000000.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/tfysinbalpm3gsj/states-1000000.ckpt?dl=1"
+    )
     return tera_url(refresh=refresh, *args, **kwargs)
 
 
@@ -154,9 +155,9 @@ def tera_logMelBase_T_F_M_AdamW_b32_1m_960hr_drop1(refresh=False, *args, **kwarg
     Unlabled Speech: 960hr
     Differences: Dropout of 0.1 (instead of 0.3)
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/tera/resolve/main/tera_logMelBase_T_F_M_AdamW_b32_1m_960hr_drop1/states-1000000.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/tera/resolve/main/tera_logMelBase_T_F_M_AdamW_b32_1m_960hr_drop1/states-1000000.ckpt"
+    )
     return tera_url(refresh=refresh, *args, **kwargs)
 
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ dataset.py ]
 #   Synopsis     [ the speaker diarization dataset ]
 #   Source       [ Refactored from https://github.com/hitachi-speech/EEND ]

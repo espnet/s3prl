@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/vq_apc/hubconf.py ]
 #   Synopsis     [ the vq apc torch hubconf ]
 #   Author       [ S3PRL ]
@@ -23,9 +24,9 @@ def vq_apc_360hr(refresh=False, *args, **kwargs):
     The vq-apc standard model on 360hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/leo19941227/apc_series/resolve/main/vq_apc_360hr.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/leo19941227/apc_series/resolve/main/vq_apc_360hr.ckpt"
+    )
     return vq_apc_url(refresh=refresh, *args, **kwargs)
 
 
@@ -34,7 +35,7 @@ def vq_apc_960hr(refresh=False, *args, **kwargs):
     The vq-apc standard model on 960hr
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/leo19941227/apc_series/resolve/main/vq_apc_960hr.ckpt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/leo19941227/apc_series/resolve/main/vq_apc_960hr.ckpt"
+    )
     return vq_apc_url(refresh=refresh, *args, **kwargs)

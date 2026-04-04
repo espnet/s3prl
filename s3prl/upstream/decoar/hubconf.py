@@ -19,7 +19,7 @@ def decoar_url(*args, **kwargs):
 
 
 def decoar(refresh=False, *args, **kwargs):
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/checkpoint_decoar.pt"
+    )
     return decoar_url(*args, refresh=refresh, **kwargs)

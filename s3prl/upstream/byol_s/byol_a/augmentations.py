@@ -1,5 +1,4 @@
-"""BYOL for Audio: Augmentation modules.
-"""
+"""BYOL for Audio: Augmentation modules."""
 
 import random
 

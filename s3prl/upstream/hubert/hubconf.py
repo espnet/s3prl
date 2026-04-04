@@ -2,6 +2,7 @@
 
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/hubert/hubconf.py ]
 #   Synopsis     [ the HuBERT torch hubconf ]
 #   Author       [ S3PRL / Kushal Lakhotia ]
@@ -89,9 +90,9 @@ def hubert_base(refresh=False, legacy=False, **kwargs):
     """
     kwargs["ckpt"] = "https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt"
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/hubert_base_ls960.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/hubert_base_ls960.pt"
+        )
     return hubert_custom(refresh=refresh, legacy=legacy, **kwargs)
 
 
@@ -102,9 +103,9 @@ def hubert_large_ll60k(refresh=False, legacy=False, **kwargs):
     """
     kwargs["ckpt"] = "https://dl.fbaipublicfiles.com/hubert/hubert_large_ll60k.pt"
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/hubert_large_ll60k.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/hubert_large_ll60k.pt"
+        )
     return hubert_custom(refresh=refresh, legacy=legacy, **kwargs)
 
 
@@ -113,41 +114,41 @@ def hubert_base_robust_mgr(refresh=False, legacy=False, **kwargs):
     The Base model, continually trained with Libri 960 hr with Musan noise, Gaussian noise and Reverberation.
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/kphuang68/HuBERT_base_robust_mgr/resolve/main/HuBERT_base_robust_mgr_best_loss_2.7821.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/kphuang68/HuBERT_base_robust_mgr/resolve/main/HuBERT_base_robust_mgr_best_loss_2.7821.pt"
+    )
     if not legacy:
-        kwargs[
-            "ckpt"
-        ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/HuBERT_base_robust_mgr_best_loss_2.7821.pt"
+        kwargs["ckpt"] = (
+            "https://huggingface.co/s3prl/converted_ckpts/resolve/main/HuBERT_base_robust_mgr_best_loss_2.7821.pt"
+        )
     return hubert_custom(refresh=refresh, legacy=legacy, **kwargs)
 
 
 def mhubert_base_vp_en_es_fr_it3(refresh=False, **kwds):
-    kwds[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/mhubert_base_vp_en_es_fr_it3.pt"
+    kwds["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/mhubert_base_vp_en_es_fr_it3.pt"
+    )
     return hubert_custom(refresh=refresh, **kwds)
 
 
 def contentvec(refresh=False, **kwds):
-    kwds[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km100.pt"
+    kwds["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km100.pt"
+    )
     return hubert_custom(refresh=refresh, **kwds)
 
 
 def contentvec_km100(refresh=False, **kwds):
-    kwds[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km100.pt"
+    kwds["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km100.pt"
+    )
     return hubert_custom(refresh=refresh, **kwds)
 
 
 def contentvec_km500(refresh=False, **kwds):
-    kwds[
-        "ckpt"
-    ] = "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km500.pt"
+    kwds["ckpt"] = (
+        "https://huggingface.co/s3prl/converted_ckpts/resolve/main/contentvec_km500.pt"
+    )
     return hubert_custom(refresh=refresh, **kwds)
 
 

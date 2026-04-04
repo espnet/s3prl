@@ -2,6 +2,7 @@
 Adapted from https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py
 
 """
+
 import logging
 import math
 import warnings

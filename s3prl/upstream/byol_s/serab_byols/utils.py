@@ -1,6 +1,7 @@
 """
 Utility functions for hear-kit
 """
+
 from typing import Tuple
 
 import numpy as np

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/byol_a/expert.py ]
 #   Synopsis     [ the BYOL-Audio wrapper ]
 #   Author       [ S3PRL ]

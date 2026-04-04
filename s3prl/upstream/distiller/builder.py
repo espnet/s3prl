@@ -1,6 +1,6 @@
 """
-    Builder for Distiller
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Builder for Distiller
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import copy

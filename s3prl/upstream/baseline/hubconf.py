@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/baseline/hubconf.py ]
 #   Synopsis     [ the baseline torch hubconf ]
 #   Author       [ S3PRL ]

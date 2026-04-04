@@ -165,9 +165,9 @@ class Tera(SslProblem):
                 task=dict(sequence_length=0),
             ),
         )
-        all_states["Upstream_Config"]["audio"][
-            "target_level"
-        ] = _pretrain_task_pipe_config["target_level"]
+        all_states["Upstream_Config"]["audio"]["target_level"] = (
+            _pretrain_task_pipe_config["target_level"]
+        )
         torch.save(
             all_states, str(additional_dir.parent.resolve()) + "/all_states.ckpt"
         )

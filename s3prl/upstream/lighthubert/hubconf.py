@@ -36,9 +36,9 @@ def lighthubert_small(refresh=False, *args, **kwargs):
     The small model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_small.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_small.pt"
+    )
     return lighthubert_url(refresh=refresh, *args, **kwargs)
 
 
@@ -47,9 +47,9 @@ def lighthubert_base(refresh=False, *args, **kwargs):
     The Base model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_base.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_base.pt"
+    )
     return lighthubert_url(refresh=refresh, *args, **kwargs)
 
 
@@ -58,7 +58,7 @@ def lighthubert_stage1(refresh=False, *args, **kwargs):
     The Stage1 model
         refresh (bool): whether to download ckpt/config again if existed
     """
-    kwargs[
-        "ckpt"
-    ] = "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_stage1.pt"
+    kwargs["ckpt"] = (
+        "https://huggingface.co/mechanicalsea/lighthubert/resolve/main/lighthubert_stage1.pt"
+    )
     return lighthubert_url(refresh=refresh, *args, **kwargs)

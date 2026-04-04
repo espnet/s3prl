@@ -2,6 +2,7 @@
 
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/multires_hubert/expert.py ]
 #   Synopsis     [ the Multiresolution HuBERT wrapper ]
 #   Author       [ Jiatong Shi ]

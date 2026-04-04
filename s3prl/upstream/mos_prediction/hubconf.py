@@ -28,9 +28,9 @@ def mos_wav2vec2(refresh=False, *args, **kwargs):
     The model from local ckpt
         ckpt (str): PATH
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/s9zpouk5svu1a4l/wav2vec2-dev-SRCC-best.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/s9zpouk5svu1a4l/wav2vec2-dev-SRCC-best.ckpt?dl=1"
+    )
     return mos_wav2vec2_url(refresh=refresh, *args, **kwargs)
 
 
@@ -57,9 +57,9 @@ def mos_tera(refresh=False, *args, **kwargs):
     The model from local ckpt
         ckpt (str): PATH
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/w4jk5bujaoosk69/tera-dev-SRCC-best.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/w4jk5bujaoosk69/tera-dev-SRCC-best.ckpt?dl=1"
+    )
     return mos_tera_url(refresh=refresh, *args, **kwargs)
 
 
@@ -86,7 +86,7 @@ def mos_apc(refresh=False, *args, **kwargs):
     The model from local ckpt
         ckpt (str): PATH
     """
-    kwargs[
-        "ckpt"
-    ] = "https://www.dropbox.com/s/ulng31as15hsvz1/apc-dev-SRCC-best.ckpt?dl=1"
+    kwargs["ckpt"] = (
+        "https://www.dropbox.com/s/ulng31as15hsvz1/apc-dev-SRCC-best.ckpt?dl=1"
+    )
     return mos_apc_url(refresh=refresh, *args, **kwargs)

@@ -1,6 +1,6 @@
 """
-    Distiller Modules
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Distiller Modules
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import math

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ upstream/spec_augment/hubconf.py ]
 #   Synopsis     [ the spec augment torch hubconf ]
 #   Author       [ S3PRL ]

@@ -82,9 +82,9 @@ class UpstreamExpert(UpstreamBase):
     def _get_mos_upstream(self):
         mos_upstream = getattr(s3prl.hub, self.upstream_type)()
         if self.upstream_type == "tera":
-            self.checkpoint["Upstream"][
-                "transformer.extracter._melscale.fb"
-            ] = torch.tensor([])
+            self.checkpoint["Upstream"]["transformer.extracter._melscale.fb"] = (
+                torch.tensor([])
+            )
         mos_upstream.load_state_dict(self.checkpoint["Upstream"])
         return mos_upstream
 

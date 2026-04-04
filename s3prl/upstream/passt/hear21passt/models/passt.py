@@ -5,6 +5,7 @@ We tried to disentangle from the timm library version.
 Adapted from https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/vision_transformer.py
 
 """
+
 import collections
 import logging
 import math
@@ -569,9 +570,9 @@ class PaSST(nn.Module):
         self.u_patchout = u_patchout
         self.s_patchout_t = s_patchout_t
         self.s_patchout_f = s_patchout_f
-        self.num_features = (
-            self.embed_dim
-        ) = embed_dim  # num_features for consistency with other models
+        self.num_features = self.embed_dim = (
+            embed_dim  # num_features for consistency with other models
+        )
         self.num_tokens = 2 if distilled else 1
         norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6)
         act_layer = act_layer or nn.GELU
@@ -642,9 +643,11 @@ class PaSST(nn.Module):
         # Classifier head(s)
         self.head = nn.Sequential(
             nn.LayerNorm(self.num_features),
-            nn.Linear(self.num_features, num_classes)
-            if num_classes > 0
-            else nn.Identity(),
+            (
+                nn.Linear(self.num_features, num_classes)
+                if num_classes > 0
+                else nn.Identity()
+            ),
         )
         self.head_dist = None
         if distilled:

@@ -1,6 +1,6 @@
 """
-    Upstream expert for Distiller
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Upstream expert for Distiller
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import torch

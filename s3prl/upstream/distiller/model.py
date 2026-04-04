@@ -1,6 +1,6 @@
 """
-    Distiller Model
-    Author: Heng-Jui Chang (https://github.com/vectominist)
+Distiller Model
+Author: Heng-Jui Chang (https://github.com/vectominist)
 """
 
 import torch
