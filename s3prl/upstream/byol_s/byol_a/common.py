@@ -15,10 +15,6 @@ except ImportError:
     import pickle
 
 import numpy as np
-import torch
-import torchaudio
-
-torchaudio.set_audio_backend("sox_io")
 
 
 def get_timestamp():
