@@ -13,9 +13,11 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ["3.10"]
-        torchaudio-version: [0.13.1, 2.0.1, 2.1.2, 2.2.2, 2.3.1, 2.4.0]
-          # espnet use 'torchaudio.models.hubert_pretrain_model' with 'feature_grad_mult' option
-          # which is available after torchaudio==0.12.0
+        torchaudio-version: [2.5.1, 2.7.1, 2.8.0, 2.9.1]
+        include:
+          - os: ubuntu-latest
+            python-version: "3.12"  # if not quoted, will be interpreted as 3.1
+            torchaudio-version: 2.9.1
 
     runs-on: ${{ matrix.os }}
 
