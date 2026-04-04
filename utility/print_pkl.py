@@ -1,5 +1,5 @@
-import pickle
 import argparse
+import pickle
 
 parser = argparse.ArgumentParser()
 parser.add_argument("path")

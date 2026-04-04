@@ -1,34 +1,36 @@
 import os
+import pickle
+import random
 import re
 import sys
 import time
-import random
-import pickle
+from pathlib import Path
 
-import tqdm
+import numpy as np
 import torch
 import torchaudio
-import numpy as np
-from torch import nn
-from pathlib import Path
-from sox import Transformer
-from torchaudio import load
-from librosa.util import find_files
+import tqdm
 from joblib.parallel import Parallel, delayed
+from librosa.util import find_files
+from sox import Transformer
+from torch import nn
 from torch.utils.data import DataLoader, Dataset
+from torchaudio import load
 from torchaudio.sox_effects import apply_effects_file
 
-
 EFFECTS = [
-["channels", "1"],
-["rate", "16000"],
-["gain", "-3.0"],
-["silence", "1", "0.1", "0.1%", "-1", "0.1", "0.1%"],
+    ["channels", "1"],
+    ["rate", "16000"],
+    ["gain", "-3.0"],
+    ["silence", "1", "0.1", "0.1%", "-1", "0.1", "0.1%"],
 ]
+
 
 # Voxceleb 2 Speaker verification
 class SpeakerVerifi_train(Dataset):
-    def __init__(self, vad_config, key_list, file_path, meta_data, max_timestep=None, n_jobs=12):
+    def __init__(
+        self, vad_config, key_list, file_path, meta_data, max_timestep=None, n_jobs=12
+    ):
         self.roots = file_path
         self.root_key = key_list
         self.max_timestep = max_timestep
@@ -37,11 +39,16 @@ class SpeakerVerifi_train(Dataset):
         self.all_speakers = []
 
         for index in range(len(self.root_key)):
-            cache_path = Path(os.path.dirname(__file__)) / '.wav_lengths' / f'{self.root_key[index]}_length.pt'
+            cache_path = (
+                Path(os.path.dirname(__file__))
+                / ".wav_lengths"
+                / f"{self.root_key[index]}_length.pt"
+            )
             cache_path.parent.mkdir(exist_ok=True)
             root = Path(self.roots[index])
 
             if not cache_path.is_file():
+
                 def trimmed_length(path):
                     wav_sample, _ = apply_effects_file(path, EFFECTS)
                     wav_sample = wav_sample.squeeze(0)
@@ -49,17 +56,20 @@ class SpeakerVerifi_train(Dataset):
                     return length
 
                 wav_paths = find_files(root)
-                wav_lengths = Parallel(n_jobs=n_jobs)(delayed(trimmed_length)(path) for path in tqdm.tqdm(wav_paths, desc="Preprocessing"))
+                wav_lengths = Parallel(n_jobs=n_jobs)(
+                    delayed(trimmed_length)(path)
+                    for path in tqdm.tqdm(wav_paths, desc="Preprocessing")
+                )
                 wav_tags = [Path(path).parts[-3:] for path in wav_paths]
                 torch.save([wav_tags, wav_lengths], str(cache_path))
             else:
                 wav_tags, wav_lengths = torch.load(str(cache_path))
                 wav_paths = [root.joinpath(*tag) for tag in wav_tags]
 
-            speaker_dirs = ([f.stem for f in root.iterdir() if f.is_dir()])
+            speaker_dirs = [f.stem for f in root.iterdir() if f.is_dir()]
             self.all_speakers.extend(speaker_dirs)
             for path, length in zip(wav_paths, wav_lengths):
-                if length > self.vad_c['min_sec']:
+                if length > self.vad_c["min_sec"]:
                     self.dataset.append(path)
 
         self.all_speakers.sort()
@@ -94,8 +104,8 @@ class SpeakerVerifi_test(Dataset):
         self.meta_data = meta_data
         self.necessary_dict = self.processing()
         self.vad_c = vad_config
-        self.dataset = self.necessary_dict['spk_paths']
-        self.pair_table = self.necessary_dict['pair_table']
+        self.dataset = self.necessary_dict["spk_paths"]
+        self.pair_table = self.necessary_dict["pair_table"]
 
     def processing(self):
         pair_table = []
@@ -104,20 +114,20 @@ class SpeakerVerifi_test(Dataset):
             usage_list = f.readlines()
         for pair in usage_list:
             list_pair = pair.split()
-            pair_1= os.path.join(self.root, list_pair[1])
-            pair_2= os.path.join(self.root, list_pair[2])
+            pair_1 = os.path.join(self.root, list_pair[1])
+            pair_2 = os.path.join(self.root, list_pair[2])
             spk_paths.add(pair_1)
             spk_paths.add(pair_2)
-            one_pair = [list_pair[0],pair_1,pair_2 ]
+            one_pair = [list_pair[0], pair_1, pair_2]
             pair_table.append(one_pair)
         return {
             "spk_paths": list(spk_paths),
             "total_spk_num": None,
-            "pair_table": pair_table
+            "pair_table": pair_table,
         }
 
     def __len__(self):
-        return len(self.necessary_dict['spk_paths'])
+        return len(self.necessary_dict["spk_paths"])
 
     def __getitem__(self, idx):
         x_path = self.dataset[idx]

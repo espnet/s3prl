@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ dataset.py ]
 #   Synopsis     [ the speaker diarization dataset ]
 #   Source       [ Refactored from https://github.com/hitachi-speech/EEND ]
@@ -7,29 +8,32 @@
 #   Copyright    [ Copyright(c), Johns Hopkins University ]
 """*********************************************************************************************"""
 
+import logging
+import math
+
 ###############
 # IMPORTATION #
 ###############
 import os
-import math
-import h5py
 import random
-import logging
-import numpy as np
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
+
+import h5py
+import numpy as np
 
 # -------------#
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, DistributedSampler
-from torch.distributed import is_initialized, get_rank
+from torch.distributed import get_rank, is_initialized
 from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader, DistributedSampler
+
+from .dataset import DiarizationDataset
 
 # -------------#
 from .model import Model
-from .dataset import DiarizationDataset
-from .utils import pit_loss, calc_diarization_error, get_label_perm
+from .utils import calc_diarization_error, get_label_perm, pit_loss
 
 
 class DownstreamExpert(nn.Module):
@@ -38,7 +42,9 @@ class DownstreamExpert(nn.Module):
     eg. downstream forward, metric computation, contents to log
     """
 
-    def __init__(self, upstream_dim, upstream_rate, downstream_expert, expdir, **kwargs):
+    def __init__(
+        self, upstream_dim, upstream_rate, downstream_expert, expdir, **kwargs
+    ):
         super(DownstreamExpert, self).__init__()
         self.upstream_dim = upstream_dim
         self.upstream_rate = upstream_rate
@@ -80,8 +86,11 @@ class DownstreamExpert(nn.Module):
         self.score_dir = os.path.join(expdir, "scoring")
         self.save_predictions = self.scorerc["save_predictions"]
 
-        if ((not is_initialized()) or get_rank() == 0) \
-                and not os.path.exists(self.score_dir) and self.save_predictions:
+        if (
+            ((not is_initialized()) or get_rank() == 0)
+            and not os.path.exists(self.score_dir)
+            and self.save_predictions
+        ):
             os.makedirs(os.path.join(self.score_dir, "predictions"))
 
         self.model = Model(

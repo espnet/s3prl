@@ -1,8 +1,10 @@
-import fairseq
-from fairseq.data import Dictionary, encoders
 import csv
 from argparse import Namespace
+
+import fairseq
 import torch
+from fairseq.data import Dictionary, encoders
+
 
 class AdditionalDataset:
 
@@ -10,8 +12,9 @@ class AdditionalDataset:
     def from_tsv(cls, file, key, bpe_tokenizer=None, pre_tokenizer=None):
 
         data = []
-        with open(file, 'r') as file:
-            reader = csv.DictReader(file,
+        with open(file, "r") as file:
+            reader = csv.DictReader(
+                file,
                 delimiter="\t",
                 quotechar=None,
                 doublequote=False,
@@ -50,9 +53,7 @@ class AdditionalDataset:
             left_pad=False,
             move_eos_to_beginning=False,
         )
-        target_lengths = torch.tensor(
-            [t.size(0) for t in target], dtype=torch.long
-        )
+        target_lengths = torch.tensor([t.size(0) for t in target], dtype=torch.long)
         prev_output_tokens = fairseq.data.data_utils.collate_tokens(
             target,
             self.dictionary.pad(),

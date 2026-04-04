@@ -105,7 +105,7 @@ class Taco2Encoder(torch.nn.Module):
         else:
             self.convs = None
         if elayers > 0:
-            iunits = econv_chans if econv_layers != 0 else embed_dim
+            iunits = econv_chans if econv_layers != 0 else eunits
             self.blstm = torch.nn.LSTM(
                 iunits, eunits // 2, elayers, batch_first=True, bidirectional=True
             )

@@ -1,8 +1,10 @@
-import os
-import torch
-import random
 import argparse
+import os
+import random
+
 import numpy as np
+import torch
+
 from s3prl import hub
 
 SAMPLE_RATE = 16000

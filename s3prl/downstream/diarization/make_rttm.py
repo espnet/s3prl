@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """*********************************************************************************************"""
+
 #   FileName     [ make_rttm.py ]
 #   Synopsis     [ Generate the RTTM file based on model predictions ]
 #   Source       [ From https://github.com/hitachi-speech/EEND ]
@@ -10,9 +11,10 @@
 """*********************************************************************************************"""
 
 import argparse
+import os
+
 import h5py
 import numpy as np
-import os
 from scipy.signal import medfilt
 
 parser = argparse.ArgumentParser(description="make rttm from decoded result")

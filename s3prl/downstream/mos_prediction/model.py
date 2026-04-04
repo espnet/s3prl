@@ -13,7 +13,6 @@ class SelfAttentionPooling(nn.Module):
         super(SelfAttentionPooling, self).__init__()
         self.W = nn.Linear(input_dim, 1)
 
-
     def forward(self, batch_rep):
         """
         input:
@@ -33,14 +32,27 @@ class SelfAttentionPooling(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, input_dim, clipping=False, attention_pooling=False, num_judges=5000, **kwargs):
+    def __init__(
+        self,
+        input_dim,
+        clipping=False,
+        attention_pooling=False,
+        num_judges=5000,
+        **kwargs
+    ):
         super(Model, self).__init__()
         self.mean_net_linear = nn.Linear(input_dim, 1)
         self.mean_net_clipping = clipping
-        self.mean_net_pooling = SelfAttentionPooling(input_dim) if attention_pooling else None
+        self.mean_net_pooling = (
+            SelfAttentionPooling(input_dim) if attention_pooling else None
+        )
         self.bias_net_linear = nn.Linear(input_dim, 1)
-        self.bias_net_pooling = SelfAttentionPooling(input_dim) if attention_pooling else None
-        self.judge_embbeding = nn.Embedding(num_embeddings = num_judges, embedding_dim=input_dim)
+        self.bias_net_pooling = (
+            SelfAttentionPooling(input_dim) if attention_pooling else None
+        )
+        self.judge_embbeding = nn.Embedding(
+            num_embeddings=num_judges, embedding_dim=input_dim
+        )
 
     def forward(self, features, judge_ids=None):
         if self.mean_net_pooling is not None:
@@ -59,7 +71,7 @@ class Model(nn.Module):
         else:
             time = features.shape[1]
             judge_features = self.judge_embbeding(judge_ids)
-            judge_features = torch.stack([judge_features for i in range(time)], dim = 1)
+            judge_features = torch.stack([judge_features for i in range(time)], dim=1)
             bias_features = features + judge_features
 
             if self.bias_net_pooling is not None:

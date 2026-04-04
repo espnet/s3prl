@@ -1,8 +1,11 @@
 import torch
+
 from utility.helper import get_transformer_tester
 
-example_path = './result/result_transformer/tera/fmllrBase960-F-N-K-libri/states-1000000.ckpt'
-tester= get_transformer_tester(from_path=example_path)
+example_path = (
+    "./result/result_transformer/tera/fmllrBase960-F-N-K-libri/states-1000000.ckpt"
+)
+tester = get_transformer_tester(from_path=example_path)
 
 # A batch of spectrograms: (batch_size, seq_len, feature_size)
 spec = torch.zeros(3, 800, 40)

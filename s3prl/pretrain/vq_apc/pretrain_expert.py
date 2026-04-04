@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ pretrain/vq_apc/pretrain_expert.py ]
 #   Synopsis     [ the VQ-APC pretrain expert ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]

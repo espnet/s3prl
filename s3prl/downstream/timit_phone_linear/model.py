@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the linear model ]
 #   Author       [ S3PRL ]
@@ -23,7 +24,6 @@ class Model(nn.Module):
 
         # init attributes
         self.linear = nn.Linear(input_dim, output_class_num)
-
 
     def forward(self, features):
         predicted = self.linear(features)

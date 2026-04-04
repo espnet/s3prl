@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ utility/fix_ckpt.py ]
 #   Synopsis     [ scripts to fix older checkpoints ]
 #   Author       [ Andy T. Liu (Andi611) ]
@@ -20,6 +21,7 @@ Make sure you understand exactly what this script does before proceeding.
 ###############
 import os
 import sys
+
 import torch
 
 
@@ -49,20 +51,26 @@ def main():
 
     # load model with old setting
     from transformer.nn_transformer import SPEC_TRANSFORMER
-    options = {'ckpt_file'     : input_ckpt,
-                'load_pretrain' : 'True',
-                'no_grad'       : 'True',
-                'dropout'       : 'default',
-                'spec_aug'      : 'False',
-                'spec_aug_prev' : 'True',
-                'weighted_sum'  : 'False',
-                'select_layer'  : -1,
-                'permute_input' : 'False' }
+
+    options = {
+        "ckpt_file": input_ckpt,
+        "load_pretrain": "True",
+        "no_grad": "True",
+        "dropout": "default",
+        "spec_aug": "False",
+        "spec_aug_prev": "True",
+        "weighted_sum": "False",
+        "select_layer": -1,
+        "permute_input": "False",
+    }
     old_transformer = SPEC_TRANSFORMER(options, inp_dim=-1)
 
     # build model with new setting
     from s3prl.upstream.mockingjay.model import TransformerForMaskedAcousticModel
-    model = TransformerForMaskedAcousticModel(old_transformer.model_config, old_transformer.inp_dim, old_transformer.inp_dim).to(torch.device('cuda'))
+
+    model = TransformerForMaskedAcousticModel(
+        old_transformer.model_config, old_transformer.inp_dim, old_transformer.inp_dim
+    ).to(torch.device("cuda"))
 
     # load old to new
     assert not check_model_equiv(old_transformer.model, model.Transformer)
@@ -73,21 +81,21 @@ def main():
     copyParams(old_transformer.SpecHead, model.SpecHead)
     assert check_model_equiv(old_transformer.SpecHead, model.SpecHead)
 
-    global_step = old_transformer.all_states['Global_step']
-    settings = old_transformer.all_states['Settings']
+    global_step = old_transformer.all_states["Global_step"]
+    settings = old_transformer.all_states["Settings"]
 
     # save
     all_states = {
-        'SpecHead': model.SpecHead.state_dict(),
-        'Transformer': model.Transformer.state_dict(),
-        'Global_step': global_step,
-        'Settings': settings
+        "SpecHead": model.SpecHead.state_dict(),
+        "Transformer": model.Transformer.state_dict(),
+        "Global_step": global_step,
+        "Settings": settings,
     }
-    new_ckpt_path = input_ckpt.replace('.ckpt', '-new.ckpt')
+    new_ckpt_path = input_ckpt.replace(".ckpt", "-new.ckpt")
     torch.save(all_states, new_ckpt_path)
 
-    print('Done fixing ckpt: ', input_ckpt, 'to: ', new_ckpt_path)
+    print("Done fixing ckpt: ", input_ckpt, "to: ", new_ckpt_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

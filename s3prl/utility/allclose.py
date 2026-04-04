@@ -1,4 +1,5 @@
 import sys
+
 import torch
 
 pth1 = torch.load(sys.argv[1])

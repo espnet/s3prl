@@ -1,13 +1,13 @@
 import argparse
 import csv
-import unicodedata
-from string import punctuation
-import re
 import os
+import re
+import unicodedata
 from os.path import join
+from string import punctuation
 
-from tqdm import tqdm
 from mutagen.mp3 import MP3
+from tqdm import tqdm
 
 rm_punctuation = punctuation.replace("'", "")
 rm_punctuation += r"""「」、⋯。《》丶–—―‘“”『』〜ー・☭«»،؛؟‐−¡¿ː ́·× ̃ ̌─〈〉"""

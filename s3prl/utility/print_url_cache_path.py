@@ -1,5 +1,7 @@
 import argparse
+
 from s3prl.util.download import _urls_to_filepaths
+
 
 def print_cache_path(url: str, refresh: bool):
     print(_urls_to_filepaths(url, refresh=refresh))

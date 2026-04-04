@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ pretrain/apc/pretrain_expert.py ]
 #   Synopsis     [ the apc pretrain expert ]
 #   Author       [ Andy T. Liu (https://github.com/andi611) ]
@@ -7,17 +8,21 @@
 """*********************************************************************************************"""
 
 
+import copy
+
+# -------------#
+import torch
+import torch.nn as nn
+
 ###############
 # IMPORTATION #
 ###############
 import yaml
-import copy
-#-------------#
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-#-------------#
+
+# -------------#
 from pretrain.apc.dataset import ApcAudioDataset
+from torch.utils.data import DataLoader
+
 from utility.audio import plot_spectrogram_to_numpy
 
 
@@ -29,7 +34,9 @@ class UpstreamPretrainExpert(nn.Module):
     The APC pretrain expert
     """
 
-    def __init__(self, datarc, upstream_config, device='cuda', multi_gpu=False, **kwargs):
+    def __init__(
+        self, datarc, upstream_config, device="cuda", multi_gpu=False, **kwargs
+    ):
         super(UpstreamPretrainExpert, self).__init__()
 
         self.datarc = datarc
@@ -37,11 +44,18 @@ class UpstreamPretrainExpert(nn.Module):
         self.multi_gpu = multi_gpu
 
         if type(upstream_config) == str:
-            self.upstream_config = yaml.load(open(upstream_config, 'r'), Loader=yaml.FullLoader)
-            print('[UpstreamPretrainExpert] - Using upstream config from:', upstream_config)
+            self.upstream_config = yaml.load(
+                open(upstream_config, "r"), Loader=yaml.FullLoader
+            )
+            print(
+                "[UpstreamPretrainExpert] - Using upstream config from:",
+                upstream_config,
+            )
         elif type(upstream_config) == dict:
             self.upstream_config = upstream_config
-            print('[UpstreamPretrainExpert] - Using upstream config from the previous experiment.')
+            print(
+                "[UpstreamPretrainExpert] - Using upstream config from the previous experiment."
+            )
         else:
             raise ValueError
 
@@ -50,41 +64,61 @@ class UpstreamPretrainExpert(nn.Module):
 
         if self.multi_gpu:
             self.model = torch.nn.DataParallel(self.model)
-            print('[UpstreamPretrainExpert] - Multi-GPU training Enabled: ' + str(torch.cuda.device_count()))
-        print('[UpstreamPretrainExpert] - Number of parameters: ' + str(sum(p.numel() for p in self.model.parameters() if p.requires_grad)))
+            print(
+                "[UpstreamPretrainExpert] - Multi-GPU training Enabled: "
+                + str(torch.cuda.device_count())
+            )
+        print(
+            "[UpstreamPretrainExpert] - Number of parameters: "
+            + str(sum(p.numel() for p in self.model.parameters() if p.requires_grad))
+        )
 
     def _init_model(self):
-        from upstream.apc.audio import create_transform
         from upstream.apc.apc import APC
+        from upstream.apc.audio import create_transform
 
         try:
-            print('[UpstreamPretrainExpert] - Using the apc preprocessor, on-the-fly feature preprocessing')
-            preprocessor, feat_dim = create_transform(copy.deepcopy(self.upstream_config['data']['audio']))
+            print(
+                "[UpstreamPretrainExpert] - Using the apc preprocessor, on-the-fly feature preprocessing"
+            )
+            preprocessor, feat_dim = create_transform(
+                copy.deepcopy(self.upstream_config["data"]["audio"])
+            )
         except:
-            raise NotImplementedError('Our upstream wrapper currently does not support other feature extracters, see: `s3prl/upstream/apc/expert.py`')
+            raise NotImplementedError(
+                "Our upstream wrapper currently does not support other feature extracters, see: `s3prl/upstream/apc/expert.py`"
+            )
 
-        print('[UpstreamPretrainExpert] - Initializing model...')
+        print("[UpstreamPretrainExpert] - Initializing model...")
         self.model = APC(feat_dim, **self.upstream_config["model"]["paras"])
         self.n_future = self.upstream_config["task"]["n_future"]
         self.loss = torch.nn.L1Loss()
         return preprocessor
 
     def _get_train_dataloader(self, preprocessor):
-        dataset = ApcAudioDataset(preprocessor,
-                                  self.upstream_config['task'],
-                                  self.datarc['train_batch_size'],
-                                  **self.datarc)
-        self.dataloader = DataLoader(dataset, batch_size=1, # for bucketing
-                                     shuffle=True, num_workers=self.datarc['num_workers'],
-                                     drop_last=False, pin_memory=True, collate_fn=dataset.collate_fn)
+        dataset = ApcAudioDataset(
+            preprocessor,
+            self.upstream_config["task"],
+            self.datarc["train_batch_size"],
+            **self.datarc,
+        )
+        self.dataloader = DataLoader(
+            dataset,
+            batch_size=1,  # for bucketing
+            shuffle=True,
+            num_workers=self.datarc["num_workers"],
+            drop_last=False,
+            pin_memory=True,
+            collate_fn=dataset.collate_fn,
+        )
 
     # Interface
     def load_model(self, init_ckpt):
-        assert 'model' in init_ckpt
+        assert "model" in init_ckpt
         if self.multi_gpu:
-            self.model.module.load_state_dict(init_ckpt['model'])
+            self.model.module.load_state_dict(init_ckpt["model"])
         else:
-            self.model.load_state_dict(init_ckpt['model'])
+            self.model.load_state_dict(init_ckpt["model"])
 
     # Interface
     def loss_to_device(self):
@@ -92,10 +126,13 @@ class UpstreamPretrainExpert(nn.Module):
 
     # Interface
     def add_state_to_save(self, all_states):
-        all_states['config'] = self.upstream_config
-        all_states['model'] = self.model.state_dict() if not self.multi_gpu else \
-                                 self.model.module.state_dict()
-        all_states['Upstream_Config'] = self.upstream_config
+        all_states["config"] = self.upstream_config
+        all_states["model"] = (
+            self.model.state_dict()
+            if not self.multi_gpu
+            else self.model.module.state_dict()
+        )
+        all_states["Upstream_Config"] = self.upstream_config
         return all_states
 
     # Interface
@@ -122,13 +159,15 @@ class UpstreamPretrainExpert(nn.Module):
         audio_feat = audio_feat.to(self.device)
 
         # APC input = shifted target
-        audio_len = [l-self.n_future for l in audio_len]
-        pred_spec, _ = self.model(audio_feat[:,:-self.n_future,:], audio_len, testing=False)
-        loss = self.loss(pred_spec, audio_feat[:,self.n_future:,:])
+        audio_len = [l - self.n_future for l in audio_len]
+        pred_spec, _ = self.model(
+            audio_feat[:, : -self.n_future, :], audio_len, testing=False
+        )
+        loss = self.loss(pred_spec, audio_feat[:, self.n_future :, :])
 
         if global_step % log_step == 0:
             spec_list = [pred_spec, audio_feat]
-            name_list = ['pred_spec', 'true_spec']
+            name_list = ["pred_spec", "true_spec"]
 
             for i in range(len(spec_list)):
                 spec = plot_spectrogram_to_numpy(spec_list[i][0].data.cpu().numpy())
@@ -160,8 +199,4 @@ class UpstreamPretrainExpert(nn.Module):
                 global_step in runner, which is helpful for Tensorboard logging
         """
         for key, values in records.items():
-            logger.add_image(
-                f'{prefix}{key}',
-                values,
-                global_step=global_step
-            )
+            logger.add_image(f"{prefix}{key}", values, global_step=global_step)

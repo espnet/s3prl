@@ -5,6 +5,7 @@ parser.add_argument("--src", required=True)
 parser.add_argument("--tgt", required=True)
 args = parser.parse_args()
 
+
 def read_file(path, callback=lambda x: x, sep=" ", default_value=""):
     content = {}
     with open(path, "r") as file:
@@ -18,6 +19,7 @@ def read_file(path, callback=lambda x: x, sep=" ", default_value=""):
                 value = default_value
             content[filename] = callback(value)
     return content
+
 
 src = read_file(args.src)
 tgt = read_file(args.tgt)

@@ -2,10 +2,10 @@ import os
 import random
 from pathlib import Path
 
-import torch
-import torchaudio
 import numpy as np
+import torch
 import torch.nn as nn
+import torchaudio
 from torch.utils.data.dataset import Dataset
 
 SAMPLE_RATE = 16000

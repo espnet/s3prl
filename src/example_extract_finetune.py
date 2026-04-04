@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ example_extract_finetune.py ]
 #   Synopsis     [ an example code of using the wrapper class for downstream feature extraction or finetune ]
 #   Author       [ Andy T. Liu (Andi611) ]
@@ -11,9 +12,9 @@
 # IMPORTATION #
 ###############
 import torch
-from transformer.nn_transformer import TRANSFORMER
 from downstream.model import example_classifier
 from downstream.solver import get_optimizer
+from transformer.nn_transformer import TRANSFORMER
 
 ################
 # EXAMPLE CODE #
@@ -33,15 +34,15 @@ from downstream.solver import get_optimizer
     permute_input: str, ['True', 'False'], this attribute is for the forward method. If Ture then input ouput is in the shape of (T, B, D), if False then in (B, T, D)
 """
 options = {
-    'ckpt_file'     : './result/result_transformer/tera/fmllrBase960-F-N-K-libri/states-1000000.ckpt',
-    'load_pretrain' : 'True',
-    'no_grad'       : 'True',
-    'dropout'       : 'default',
-    'spec_aug'      : 'False',
-    'spec_aug_prev' : 'True',
-    'weighted_sum'  : 'False',
-    'select_layer'  : -1,
-    'permute_input' : 'False',
+    "ckpt_file": "./result/result_transformer/tera/fmllrBase960-F-N-K-libri/states-1000000.ckpt",
+    "load_pretrain": "True",
+    "no_grad": "True",
+    "dropout": "default",
+    "spec_aug": "False",
+    "spec_aug_prev": "True",
+    "weighted_sum": "False",
+    "select_layer": -1,
+    "permute_input": "False",
 }
 transformer = TRANSFORMER(options=options, inp_dim=40)
 
@@ -50,11 +51,15 @@ classifier = example_classifier(input_dim=768, hidden_dim=128, class_num=2).cuda
 
 # construct the optimizer
 params = list(transformer.named_parameters()) + list(classifier.named_parameters())
-optimizer = get_optimizer(params=params, lr=4e-3, warmup_proportion=0.7, training_steps=50000)
+optimizer = get_optimizer(
+    params=params, lr=4e-3, warmup_proportion=0.7, training_steps=50000
+)
 
 # forward
-example_inputs = torch.zeros(3, 1200, 40) # A batch of spectrograms:  (batch_size, time_step, feature_size)
-reps = transformer(example_inputs) # returns: (batch_size, time_step, feature_size)
+example_inputs = torch.zeros(
+    3, 1200, 40
+)  # A batch of spectrograms:  (batch_size, time_step, feature_size)
+reps = transformer(example_inputs)  # returns: (batch_size, time_step, feature_size)
 labels = torch.LongTensor([0, 1, 0]).cuda()
 loss = classifier(reps, labels)
 
@@ -63,6 +68,9 @@ loss.backward()
 optimizer.step()
 
 # save
-PATH_TO_SAVE_YOUR_MODEL = 'example.ckpt'
-states = {'Classifier': classifier.state_dict(), 'Transformer': transformer.state_dict()}
+PATH_TO_SAVE_YOUR_MODEL = "example.ckpt"
+states = {
+    "Classifier": classifier.state_dict(),
+    "Transformer": transformer.state_dict(),
+}
 # torch.save(states, PATH_TO_SAVE_YOUR_MODEL)

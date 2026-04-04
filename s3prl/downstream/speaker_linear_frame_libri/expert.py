@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ expert.py ]
 #   Synopsis     [ the speaker linear downstream wrapper ]
 #   Author       [ S3PRL ]
@@ -12,7 +13,8 @@
 ###############
 import torch
 from torch.nn.utils.rnn import pad_sequence
-#-------------#
+
+# -------------#
 from ..speaker_linear_utter_libri.expert import DownstreamExpert as SpeakerExpert
 
 
@@ -22,7 +24,9 @@ class DownstreamExpert(SpeakerExpert):
     """
 
     def __init__(self, upstream_dim, downstream_expert, expdir, **kwargs):
-        super(DownstreamExpert, self).__init__(upstream_dim, downstream_expert, expdir, **kwargs)
+        super(DownstreamExpert, self).__init__(
+            upstream_dim, downstream_expert, expdir, **kwargs
+        )
 
     # Interface
     def forward(self, mode, features, labels, records, **kwargs):
@@ -47,8 +51,14 @@ class DownstreamExpert(SpeakerExpert):
         """
         lengths = torch.LongTensor([len(l) for l in features])
 
-        features = pad_sequence(features, batch_first=True) # list of tensors -> tensors
-        labels = labels.unsqueeze(-1).expand(features.size(0), features.size(1)).to(features.device)
+        features = pad_sequence(
+            features, batch_first=True
+        )  # list of tensors -> tensors
+        labels = (
+            labels.unsqueeze(-1)
+            .expand(features.size(0), features.size(1))
+            .to(features.device)
+        )
 
         predicted = self.model(features)
 
@@ -59,8 +69,8 @@ class DownstreamExpert(SpeakerExpert):
         loss = self.objective(predicted.reshape(-1, class_num), labels.reshape(-1))
 
         predicted_classid = predicted.max(dim=-1).indices
-        sames = (predicted_classid == labels)
+        sames = predicted_classid == labels
         for s, l in zip(sames, lengths):
-            records['acc'] += s[:l].tolist()
+            records["acc"] += s[:l].tolist()
 
         return loss

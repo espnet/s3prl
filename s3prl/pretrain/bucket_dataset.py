@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ pretrain/bucket_dataset.py ]
 #   Synopsis     [ the general acoustic dataset with bucketing ]
 #   Author1      [ Andy T. Liu (https://github.com/andi611) ]
@@ -13,9 +14,9 @@
 ###############
 import os
 import random
+
 import pandas as pd
 from torch.utils.data.dataset import Dataset
-
 
 HALF_BATCHSIZE_TIME = 99999
 
@@ -26,22 +27,36 @@ HALF_BATCHSIZE_TIME = 99999
 class FeatDataset(Dataset):
     """Base On-the-fly feature dataset by Andy T. Liu"""
 
-    def __init__(self, extracter, task_config, bucket_size, file_path, sets,
-                 max_timestep=0, libri_root=None, **kwargs):
+    def __init__(
+        self,
+        extracter,
+        task_config,
+        bucket_size,
+        file_path,
+        sets,
+        max_timestep=0,
+        libri_root=None,
+        **kwargs
+    ):
         super(FeatDataset, self).__init__()
 
         self.extracter = extracter
         self.task_config = task_config
         self.libri_root = libri_root
-        self.sample_length = task_config['sequence_length']
+        self.sample_length = task_config["sequence_length"]
         if self.sample_length > 0:
-            print('[Dataset] - Sampling random segments for training, sample length:', self.sample_length)
+            print(
+                "[Dataset] - Sampling random segments for training, sample length:",
+                self.sample_length,
+            )
 
         # Read file
         self.root = file_path
-        tables = [pd.read_csv(os.path.join(file_path, s + '.csv')) for s in sets]
-        self.table = pd.concat(tables, ignore_index=True).sort_values(by=['length'], ascending=False)
-        print('[Dataset] - Training data from these sets:', str(sets))
+        tables = [pd.read_csv(os.path.join(file_path, s + ".csv")) for s in sets]
+        self.table = pd.concat(tables, ignore_index=True).sort_values(
+            by=["length"], ascending=False
+        )
+        print("[Dataset] - Training data from these sets:", str(sets))
 
         # Drop seqs that are too long
         if max_timestep > 0:
@@ -50,10 +65,10 @@ class FeatDataset(Dataset):
         if max_timestep < 0:
             self.table = self.table[self.table.length > (-1 * max_timestep)]
 
-        X = self.table['file_path'].tolist()
-        X_lens = self.table['length'].tolist()
+        X = self.table["file_path"].tolist()
+        X_lens = self.table["length"].tolist()
         self.num_samples = len(X)
-        print('[Dataset] - Number of individual training instances:', self.num_samples)
+        print("[Dataset] - Number of individual training instances:", self.num_samples)
 
         # Use bucketing to allow different batch size at run time
         self.X = []
@@ -66,9 +81,13 @@ class FeatDataset(Dataset):
             # Fill in batch_x until batch is full
             if len(batch_x) == bucket_size:
                 # Half the batch size if seq too long
-                if (bucket_size >= 2) and (max(batch_len) > HALF_BATCHSIZE_TIME) and self.sample_length == 0:
-                    self.X.append(batch_x[:bucket_size//2])
-                    self.X.append(batch_x[bucket_size//2:])
+                if (
+                    (bucket_size >= 2)
+                    and (max(batch_len) > HALF_BATCHSIZE_TIME)
+                    and self.sample_length == 0
+                ):
+                    self.X.append(batch_x[: bucket_size // 2])
+                    self.X.append(batch_x[bucket_size // 2 :])
                 else:
                     self.X.append(batch_x)
                 batch_x, batch_len = [], []
@@ -78,16 +97,18 @@ class FeatDataset(Dataset):
             self.X.append(batch_x)
 
     def _sample(self, x):
-        if self.sample_length <= 0: return x
-        if len(x) < self.sample_length: return x
-        idx = random.randint(0, len(x)-self.sample_length)
-        return x[idx:idx+self.sample_length]
+        if self.sample_length <= 0:
+            return x
+        if len(x) < self.sample_length:
+            return x
+        idx = random.randint(0, len(x) - self.sample_length)
+        return x[idx : idx + self.sample_length]
 
     def __len__(self):
         return len(self.X)
 
     def collate_fn(self, items):
-        items = items[0] # hack bucketing
+        items = items[0]  # hack bucketing
         return items
 
 

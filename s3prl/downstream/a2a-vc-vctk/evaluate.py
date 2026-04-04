@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ evaluate.py ]
 #   Synopsis     [ main objective evaluation script for any-to-any voice conversion ]
 #   Author       [ Wen-Chin Huang (https://github.com/unilight) ]
@@ -11,20 +12,26 @@ import argparse
 import multiprocessing as mp
 import os
 
-import numpy as np
 import librosa
-
+import numpy as np
 import torch
-from tqdm import tqdm
 import yaml
-
+from tqdm import tqdm
 from utils import find_files
-from vc_evaluate import calculate_mcd_f0
-from vc_evaluate import load_asr_model, transcribe, calculate_measures
-from vc_evaluate import load_asv_model, calculate_threshold, calculate_accept
+from vc_evaluate import (
+    calculate_accept,
+    calculate_mcd_f0,
+    calculate_measures,
+    calculate_threshold,
+    load_asr_model,
+    load_asv_model,
+    transcribe,
+)
+
 
 def get_basename(path):
     return os.path.splitext(os.path.split(path)[-1])[0]
+
 
 def get_trgspk_and_number(basename):
     # converted: <trgspk>_<srcspk>_E<number>_gen
@@ -34,6 +41,7 @@ def get_trgspk_and_number(basename):
     # ground truth: E<number>
     else:
         return basename
+
 
 def _calculate_asv_score(model, file_list, gt_root, threshold):
     results = {}
@@ -45,12 +53,15 @@ def _calculate_asv_score(model, file_list, gt_root, threshold):
         gt_wav_path = os.path.join(gt_root, trgspk, number + ".wav")
 
         # calculate acept
-        results[basename] = calculate_accept(cvt_wav_path, gt_wav_path, model, threshold)
+        results[basename] = calculate_accept(
+            cvt_wav_path, gt_wav_path, model, threshold
+        )
 
     return results, 100.0 * float(np.mean(np.array(list(results.values()))))
 
+
 def _calculate_asr_score(model, device, file_list, groundtruths):
-    keys = ["hits", "substitutions",  "deletions", "insertions"]
+    keys = ["hits", "substitutions", "deletions", "insertions"]
     ers = {}
     c_results = {k: 0 for k in keys}
     w_results = {k: 0 for k in keys}
@@ -58,7 +69,7 @@ def _calculate_asr_score(model, device, file_list, groundtruths):
     for i, cvt_wav_path in enumerate(tqdm(file_list)):
         basename = get_basename(cvt_wav_path)
         _, number = get_trgspk_and_number(basename)
-        groundtruth = groundtruths[number[1:]] # get rid of the first character "E"
+        groundtruth = groundtruths[number[1:]]  # get rid of the first character "E"
 
         # load waveform
         wav, _ = librosa.load(cvt_wav_path, sr=16000)
@@ -67,9 +78,16 @@ def _calculate_asr_score(model, device, file_list, groundtruths):
         transcription = transcribe(model, device, wav)
 
         # error calculation
-        c_result, w_result, norm_groundtruth, norm_transcription = calculate_measures(groundtruth, transcription)
+        c_result, w_result, norm_groundtruth, norm_transcription = calculate_measures(
+            groundtruth, transcription
+        )
 
-        ers[basename] = [c_result["cer"] * 100.0, w_result["wer"] * 100.0, norm_transcription, norm_groundtruth]
+        ers[basename] = [
+            c_result["cer"] * 100.0,
+            w_result["wer"] * 100.0,
+            norm_transcription,
+            norm_groundtruth,
+        ]
 
         for k in keys:
             c_results[k] += c_result[k]
@@ -77,13 +95,17 @@ def _calculate_asr_score(model, device, file_list, groundtruths):
 
     # calculate over whole set
     def er(r):
-        return float(r["substitutions"] + r["deletions"] + r["insertions"]) \
-            / float(r["substitutions"] + r["deletions"] + r["hits"]) * 100.0
+        return (
+            float(r["substitutions"] + r["deletions"] + r["insertions"])
+            / float(r["substitutions"] + r["deletions"] + r["hits"])
+            * 100.0
+        )
 
     cer = er(c_results)
     wer = er(w_results)
 
     return ers, cer, wer
+
 
 def _calculate_mcd_f0(file_list, gt_root, f0_all, results):
     for i, cvt_wav_path in enumerate(file_list):
@@ -100,35 +122,58 @@ def _calculate_mcd_f0(file_list, gt_root, f0_all, results):
         cvt_wav, _ = librosa.load(cvt_wav_path, sr=gt_fs)
 
         # calculate MCD, F0RMSE, F0CORR and DDUR
-        mcd, f0rmse, f0corr, ddur = calculate_mcd_f0(cvt_wav, gt_wav, gt_fs, f0min, f0max)
+        mcd, f0rmse, f0corr, ddur = calculate_mcd_f0(
+            cvt_wav, gt_wav, gt_fs, f0min, f0max
+        )
 
         results.append([basename, mcd, f0rmse, f0corr, ddur])
 
+
 def get_parser():
     parser = argparse.ArgumentParser(description="objective evaluation script.")
-    parser.add_argument("--wavdir", required=True, type=str, help="directory for converted waveforms")
-    parser.add_argument("--task", required=True, type=str, choices = ["task1", "task2"], help="task 1 or task 2")
-    parser.add_argument("--samples", required=True, type=int, help="number of reference samples")
-    parser.add_argument("--data_root", type=str, default="./data", help="directory of data")
-    parser.add_argument("--log_path", type=str, default=None,
-                         help="path of output log. If not specified, output to <wavdir>/obj.log")
-    parser.add_argument("--n_jobs", default=10, type=int, help="number of parallel jobs")
+    parser.add_argument(
+        "--wavdir", required=True, type=str, help="directory for converted waveforms"
+    )
+    parser.add_argument(
+        "--task",
+        required=True,
+        type=str,
+        choices=["task1", "task2"],
+        help="task 1 or task 2",
+    )
+    parser.add_argument(
+        "--samples", required=True, type=int, help="number of reference samples"
+    )
+    parser.add_argument(
+        "--data_root", type=str, default="./data", help="directory of data"
+    )
+    parser.add_argument(
+        "--log_path",
+        type=str,
+        default=None,
+        help="path of output log. If not specified, output to <wavdir>/obj.log",
+    )
+    parser.add_argument(
+        "--n_jobs", default=10, type=int, help="number of parallel jobs"
+    )
     return parser
 
 
 def main():
     args = get_parser().parse_args()
 
-    #trgspk = args.trgspk
+    # trgspk = args.trgspk
     task = args.task
     gt_root = os.path.join(args.data_root, "vcc2020")
     f0_path = os.path.join(args.data_root, "f0.yaml")
     threshold_path = os.path.join(args.data_root, "thresholds.yaml")
-    transcription_path = os.path.join(args.data_root, "vcc2020", "prompts", "Eng_transcriptions.txt")
+    transcription_path = os.path.join(
+        args.data_root, "vcc2020", "prompts", "Eng_transcriptions.txt"
+    )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # load f0min and f0 max
-    with open(f0_path, 'r') as f:
+    with open(f0_path, "r") as f:
         f0_all = yaml.load(f, Loader=yaml.FullLoader)
 
     # load ground truth transcriptions
@@ -149,7 +194,7 @@ def main():
     threshold = None
     threshold_all = {}
     if os.path.exists(threshold_path):
-        with open(threshold_path, 'r') as f:
+        with open(threshold_path, "r") as f:
             threshold_all = yaml.load(f, Loader=yaml.FullLoader)
             if threshold_all and task in threshold_all:
                 equal_error_rate, threshold = threshold_all[task]
@@ -159,7 +204,7 @@ def main():
             threshold_all[task] = [equal_error_rate, threshold]
         else:
             threshold_all = {task: [equal_error_rate, threshold]}
-        with open(threshold_path, 'w') as f:
+        with open(threshold_path, "w") as f:
             yaml.safe_dump(threshold_all, f)
     print(f"[INFO]: Equal error rate: {equal_error_rate}")
     print(f"[INFO]: Threshold: {threshold}")
@@ -171,7 +216,9 @@ def main():
     asv_model = load_asv_model(device)
 
     # calculate accept rate
-    accept_results, accept_rate = _calculate_asv_score(asv_model, converted_files, gt_root, threshold)
+    accept_results, accept_rate = _calculate_asv_score(
+        asv_model, converted_files, gt_root, threshold
+    )
 
     ##############################
 
@@ -180,7 +227,9 @@ def main():
     asr_model = load_asr_model(device)
 
     # calculate error rates
-    ers, cer, wer = _calculate_asr_score(asr_model, device, converted_files, groundtruths)
+    ers, cer, wer = _calculate_asr_score(
+        asr_model, device, converted_files, groundtruths
+    )
 
     ##############################
 
@@ -206,8 +255,11 @@ def main():
             for p in processes:
                 p.join()
 
-            results = sorted(results, key=lambda x:x[0])
-            results = [result + ers[result[0]] + [accept_results[result[0]]] for result in results]
+            results = sorted(results, key=lambda x: x[0])
+            results = [
+                result + ers[result[0]] + [accept_results[result[0]]]
+                for result in results
+            ]
     else:
         results = []
         for f in converted_files:
@@ -215,7 +267,11 @@ def main():
             results.append([basename] + ers[basename] + [accept_results[basename]])
 
     # write to log
-    log_path = args.log_path if args.log_path else os.path.join(args.wavdir, f"obj_{args.samples}samples.log")
+    log_path = (
+        args.log_path
+        if args.log_path
+        else os.path.join(args.wavdir, f"obj_{args.samples}samples.log")
+    )
     with open(log_path, "w") as f:
 
         # average result
@@ -237,11 +293,7 @@ def main():
                     )
                 )
             elif task == "task2":
-                f.write(
-                    "{} {:.1f} {:.1f} {} \t{} | {}\n".format(
-                        *result
-                    )
-                )
+                f.write("{} {:.1f} {:.1f} {} \t{} | {}\n".format(*result))
 
         if task == "task1":
             print(
@@ -262,7 +314,7 @@ def main():
             )
             f.write(
                 "Mean CER, WER, accept rate: {:.1f} {:.1f} {:.2f}".format(
-                     mCER, mWER, mACCEPT
+                    mCER, mWER, mACCEPT
                 )
             )
 

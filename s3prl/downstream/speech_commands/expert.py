@@ -1,20 +1,20 @@
 """Downstream expert for Spoken Term Detection on Speech Commands."""
 
-import re
-import os
 import hashlib
+import os
+import re
 from pathlib import Path
 from typing import List, Tuple, Union
 
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, WeightedRandomSampler
 from catalyst.data.sampler import DistributedSamplerWrapper
 from torch.distributed import is_initialized
 from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from ..model import *
-from .dataset import SpeechCommandsDataset, SpeechCommandsTestingDataset, CLASSES
+from .dataset import CLASSES, SpeechCommandsDataset, SpeechCommandsTestingDataset
 
 
 class DownstreamExpert(nn.Module):
@@ -23,7 +23,9 @@ class DownstreamExpert(nn.Module):
     eg. downstream forward, metric computation, contents to log
     """
 
-    def __init__(self, upstream_dim: int, downstream_expert: dict, expdir: str, **kwargs):
+    def __init__(
+        self, upstream_dim: int, downstream_expert: dict, expdir: str, **kwargs
+    ):
         super(DownstreamExpert, self).__init__()
         self.upstream_dim = upstream_dim
         self.datarc = downstream_expert["datarc"]
@@ -35,21 +37,23 @@ class DownstreamExpert(nn.Module):
         self.dev_dataset = SpeechCommandsDataset(valid_list, **self.datarc)
         self.test_dataset = SpeechCommandsTestingDataset(**self.datarc)
 
-        model_cls = eval(self.modelrc['select'])
-        model_conf = self.modelrc.get(self.modelrc['select'], {})
-        self.projector = nn.Linear(upstream_dim, self.modelrc['projector_dim'])
+        model_cls = eval(self.modelrc["select"])
+        model_conf = self.modelrc.get(self.modelrc["select"], {})
+        self.projector = nn.Linear(upstream_dim, self.modelrc["projector_dim"])
         self.model = model_cls(
-            input_dim = self.modelrc['projector_dim'],
-            output_dim = self.train_dataset.class_num,
+            input_dim=self.modelrc["projector_dim"],
+            output_dim=self.train_dataset.class_num,
             **model_conf,
         )
 
         self.objective = nn.CrossEntropyLoss()
         self.expdir = expdir
-        self.register_buffer('best_score', torch.zeros(1))
+        self.register_buffer("best_score", torch.zeros(1))
 
     def _get_balanced_train_dataloader(self, dataset, drop_last=False):
-        sampler = WeightedRandomSampler(dataset.sample_weights, len(dataset.sample_weights))
+        sampler = WeightedRandomSampler(
+            dataset.sample_weights, len(dataset.sample_weights)
+        )
         if is_initialized():
             sampler = DistributedSamplerWrapper(sampler)
         return DataLoader(
@@ -85,11 +89,13 @@ class DownstreamExpert(nn.Module):
 
     # Interface
     def get_dataloader(self, mode):
-        if mode == 'train':
-            return self._get_balanced_train_dataloader(self.train_dataset, drop_last=True)
-        elif mode == 'dev':
+        if mode == "train":
+            return self._get_balanced_train_dataloader(
+                self.train_dataset, drop_last=True
+            )
+        elif mode == "dev":
             return self._get_balanced_dev_dataloader(self.dev_dataset, drop_last=False)
-        elif mode == 'test':
+        elif mode == "test":
             return self._get_dataloader(self.test_dataset)
         else:
             raise NotImplementedError
@@ -97,7 +103,9 @@ class DownstreamExpert(nn.Module):
     # Interface
     def forward(self, mode, features, labels, filenames, records, **kwargs):
         device = features[0].device
-        features_len = torch.IntTensor([len(feat) for feat in features]).to(device=device)
+        features_len = torch.IntTensor([len(feat) for feat in features]).to(
+            device=device
+        )
         features = pad_sequence(features, batch_first=True)
         features = self.projector(features)
         predicted, _ = self.model(features, features_len)
@@ -122,32 +130,36 @@ class DownstreamExpert(nn.Module):
             values = records[key]
             average = sum(values) / len(values)
             logger.add_scalar(
-                f'speech_commands/{mode}-{key}',
-                average,
-                global_step=global_step
+                f"speech_commands/{mode}-{key}", average, global_step=global_step
             )
-            with open(Path(self.expdir, "log.log"), 'a') as f:
-                if key == 'acc':
+            with open(Path(self.expdir, "log.log"), "a") as f:
+                if key == "acc":
                     print(f"{mode} {key}: {average}")
-                    f.write(f'{mode} at step {global_step}: {average}\n')
-                    if mode == 'dev' and average > self.best_score:
+                    f.write(f"{mode} at step {global_step}: {average}\n")
+                    if mode == "dev" and average > self.best_score:
                         self.best_score = torch.ones(1) * average
-                        f.write(f'New best on {mode} at step {global_step}: {average}\n')
-                        save_names.append(f'{mode}-best.ckpt')
+                        f.write(
+                            f"New best on {mode} at step {global_step}: {average}\n"
+                        )
+                        save_names.append(f"{mode}-best.ckpt")
 
         with open(Path(self.expdir) / f"{mode}_predict.txt", "w") as file:
-            lines = [f"{f} {i}\n" for f, i in zip(records["filename"], records["predict"])]
+            lines = [
+                f"{f} {i}\n" for f, i in zip(records["filename"], records["predict"])
+            ]
             file.writelines(lines)
 
         with open(Path(self.expdir) / f"{mode}_truth.txt", "w") as file:
-            lines = [f"{f} {i}\n" for f, i in zip(records["filename"], records["truth"])]
+            lines = [
+                f"{f} {i}\n" for f, i in zip(records["filename"], records["truth"])
+            ]
             file.writelines(lines)
 
         return save_names
 
 
 def split_dataset(
-    root_dir: Union[str, Path], max_uttr_per_class=2 ** 27 - 1
+    root_dir: Union[str, Path], max_uttr_per_class=2**27 - 1
 ) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
     """Split Speech Commands into 3 set.
 

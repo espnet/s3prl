@@ -1,10 +1,9 @@
+import os
 import random
 
 import torch
-from torch.utils.data.dataset import Dataset
-
-import os
 import torchaudio
+from torch.utils.data.dataset import Dataset
 
 
 class MOSEIDataset(Dataset):
@@ -14,8 +13,9 @@ class MOSEIDataset(Dataset):
         self.path = path
 
     def __getitem__(self, idx):
-        wav_path = os.path.join(self.path,
-            'Segmented_Audio', self.split, self.data[idx][0])
+        wav_path = os.path.join(
+            self.path, "Segmented_Audio", self.split, self.data[idx][0]
+        )
         wav, sr = torchaudio.load(wav_path)
         label = self.data[idx][1]
         return wav.view(-1), torch.tensor(label).long()

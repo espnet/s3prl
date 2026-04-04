@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the linear model ]
 #   Author       [ S3PRL ]
@@ -7,15 +8,18 @@
 """*********************************************************************************************"""
 
 
+from argparse import Namespace
+from functools import lru_cache
+
 ###############
 # IMPORTATION #
 ###############
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from functools import lru_cache
-from argparse import Namespace
+
 from s3prl.upstream.mockingjay.model import TransformerEncoder
+
 
 #########
 # MODEL #
@@ -29,6 +33,7 @@ class Identity(nn.Module):
 
         return [feature]
 
+
 class Mean(nn.Module):
 
     def __init__(self, out_dim):
@@ -38,26 +43,26 @@ class Mean(nn.Module):
         # simply take mean operator / no additional parameters
 
     def forward(self, feature, att_mask):
-
-        '''
+        """
         we use 1 hidden layer and applied mean pooling in the end to generate utterance-level representation
         Arguments
             feature - [BxTxD]   Acoustic feature with shape
             att_mask   - [BxTx1]     Attention Mask logits
-        '''
-        feature=self.linear(self.act_fn(feature))
+        """
+        feature = self.linear(self.act_fn(feature))
         agg_vec_list = []
         for i in range(len(feature)):
             if torch.nonzero(att_mask[i] < 0, as_tuple=False).size(0) == 0:
                 length = len(feature[i])
             else:
                 length = torch.nonzero(att_mask[i] < 0, as_tuple=False)[0] + 1
-            agg_vec=torch.mean(feature[i][:length], dim=0)
+            agg_vec = torch.mean(feature[i][:length], dim=0)
             agg_vec_list.append(agg_vec)
         return torch.stack(agg_vec_list)
 
+
 class SAP(nn.Module):
-    ''' Self Attention Pooling module incoporate attention mask'''
+    """Self Attention Pooling module incoporate attention mask"""
 
     def __init__(self, out_dim):
         super(SAP, self).__init__()
@@ -67,17 +72,17 @@ class SAP(nn.Module):
         self.sap_layer = SelfAttentionPooling(out_dim)
 
     def forward(self, feature, att_mask):
-
-        '''
+        """
         Arguments
             feature - [BxTxD]   Acoustic feature with shape
             att_mask   - [BxTx1]     Attention Mask logits
-        '''
-        #Encode
+        """
+        # Encode
         feature = self.act_fn(feature)
         sap_vec = self.sap_layer(feature, att_mask)
 
         return sap_vec
+
 
 class SelfAttentionPooling(nn.Module):
     """
@@ -85,10 +90,12 @@ class SelfAttentionPooling(nn.Module):
     Original Paper: Self-Attention Encoding and Pooling for Speaker Recognition
     https://arxiv.org/pdf/2008.01077v1.pdf
     """
+
     def __init__(self, input_dim):
         super(SelfAttentionPooling, self).__init__()
         self.W = nn.Linear(input_dim, 1)
         self.softmax = nn.functional.softmax
+
     def forward(self, batch_rep, att_mask):
         """
         input:
@@ -109,6 +116,7 @@ class SelfAttentionPooling(nn.Module):
 
         return utter_rep
 
+
 class Model(nn.Module):
     def __init__(self, input_dim, agg_module, config):
         super(Model, self).__init__()
@@ -117,13 +125,18 @@ class Model(nn.Module):
         # init attributes
         self.agg_method = eval(agg_module)(input_dim)
 
-        self.model= eval(config['module'])(config=Namespace(**config['hparams']),)
-        self.head_mask = [None] * config['hparams']['num_hidden_layers']
-
-
+        self.model = eval(config["module"])(
+            config=Namespace(**config["hparams"]),
+        )
+        self.head_mask = [None] * config["hparams"]["num_hidden_layers"]
 
     def forward(self, features, att_mask):
-        features = self.model(features,att_mask[:,None,None], head_mask=self.head_mask, output_all_encoded_layers=False)
+        features = self.model(
+            features,
+            att_mask[:, None, None],
+            head_mask=self.head_mask,
+            output_all_encoded_layers=False,
+        )
         utterance_vector = self.agg_method(features[0], att_mask)
 
         return utterance_vector
@@ -140,17 +153,17 @@ class GE2E(nn.Module):
         - init_b (float): the initial value of b in Equation (5) of [1]
     """
 
-    def __init__(self, init_w=10.0, init_b=-5.0, loss_method='softmax'):
+    def __init__(self, init_w=10.0, init_b=-5.0, loss_method="softmax"):
         super(GE2E, self).__init__()
         self.w = nn.Parameter(torch.tensor(init_w))
         self.b = nn.Parameter(torch.tensor(init_b))
         self.loss_method = loss_method
 
-        assert self.loss_method in ['softmax', 'contrast']
+        assert self.loss_method in ["softmax", "contrast"]
 
-        if self.loss_method == 'softmax':
+        if self.loss_method == "softmax":
             self.embed_loss = self.embed_loss_softmax
-        if self.loss_method == 'contrast':
+        if self.loss_method == "contrast":
             self.embed_loss = self.embed_loss_contrast
 
     def cosine_similarity(self, dvecs):
@@ -165,7 +178,7 @@ class GE2E(nn.Module):
         ctrd_expns = ctrd_expns.reshape(-1, d_embd)
 
         dvec_rolls = torch.cat([dvecs[:, 1:, :], dvecs[:, :-1, :]], dim=1)
-        dvec_excls = dvec_rolls.unfold(1, n_uttr-1, 1)
+        dvec_excls = dvec_rolls.unfold(1, n_uttr - 1, 1)
         mean_excls = dvec_excls.mean(dim=-1).reshape(-1, d_embd)
 
         indices = _indices_to_replace(n_spkr, n_uttr).to(dvecs.device)
@@ -190,9 +203,13 @@ class GE2E(nn.Module):
             for i in range(M):
                 centroids_sigmoids = torch.sigmoid(cos_sim_matrix[j, i])
                 excl_centroids_sigmoids = torch.cat(
-                    (centroids_sigmoids[:j], centroids_sigmoids[j+1:]))
-                L_row.append(1. - torch.sigmoid(cos_sim_matrix[j, i, j]) +
-                             torch.max(excl_centroids_sigmoids))
+                    (centroids_sigmoids[:j], centroids_sigmoids[j + 1 :])
+                )
+                L_row.append(
+                    1.0
+                    - torch.sigmoid(cos_sim_matrix[j, i, j])
+                    + torch.max(excl_centroids_sigmoids)
+                )
             L_row = torch.stack(L_row)
             L.append(L_row)
         return torch.stack(L)
@@ -208,6 +225,7 @@ class GE2E(nn.Module):
 
 @lru_cache(maxsize=5)
 def _indices_to_replace(n_spkr, n_uttr):
-    indices = [(s * n_uttr + u) * n_spkr + s
-               for s in range(n_spkr) for u in range(n_uttr)]
+    indices = [
+        (s * n_uttr + u) * n_spkr + s for s in range(n_spkr) for u in range(n_uttr)
+    ]
     return torch.LongTensor(indices)

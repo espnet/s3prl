@@ -1,26 +1,23 @@
 import os
+from collections import defaultdict
+from pathlib import Path
+
+import pandas as pd
+import sklearn
 
 # import math
 import torch
+import torch.nn as nn
+from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader
+
+from .dataset import MOSEIDataset
+from .model import Model
 
 # import random
 
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-from torch.nn.utils.rnn import pad_sequence
-
-from .model import Model
-from .dataset import MOSEIDataset
-
-import pandas as pd
 
 # import sys
-
-from collections import defaultdict
-import sklearn
-
-from pathlib import Path
 
 
 class DownstreamExpert(nn.Module):
@@ -61,7 +58,7 @@ class DownstreamExpert(nn.Module):
                 label = row.label2a
             # for three-class sentiment with positive, neutral and negative
             elif self.datarc["num_class"] == 3:
-                label = (row.label2b + 1) # avoid cuda error: device-side ...
+                label = row.label2b + 1  # avoid cuda error: device-side ...
             # for six-class emotion
             elif self.datarc["num_class"] == 6:
                 label = row.label6
@@ -69,7 +66,7 @@ class DownstreamExpert(nn.Module):
             elif self.datarc["num_class"] == 7:
                 # Avoid CUDA error:
                 # device-side assert triggered (due to negative label)
-                label = (row.label7 + 3)
+                label = row.label7 + 3
             else:
                 raise ValueError("Unsupported num_class")
             # split train, dev, test
@@ -80,16 +77,16 @@ class DownstreamExpert(nn.Module):
             elif row.split == 2:
                 self.test_data.append((filename, label))
 
-        self.train_dataset = MOSEIDataset("train",
-            self.train_data, self.datarc["data_dir"])
-        self.dev_dataset = MOSEIDataset("dev",
-            self.dev_data, self.datarc["data_dir"])
-        self.test_dataset = MOSEIDataset("test",
-            self.test_data, self.datarc["data_dir"])
+        self.train_dataset = MOSEIDataset(
+            "train", self.train_data, self.datarc["data_dir"]
+        )
+        self.dev_dataset = MOSEIDataset("dev", self.dev_data, self.datarc["data_dir"])
+        self.test_dataset = MOSEIDataset(
+            "test", self.test_data, self.datarc["data_dir"]
+        )
 
         self.connector = nn.Linear(upstream_dim, self.modelrc["input_dim"])
-        self.model = Model(output_class_num=self.datarc["num_class"],
-            **self.modelrc)
+        self.model = Model(output_class_num=self.datarc["num_class"], **self.modelrc)
         self.objective = nn.CrossEntropyLoss()
         self.expdir = expdir
         self.logging = os.path.join(self.expdir, "log.log")
@@ -98,13 +95,15 @@ class DownstreamExpert(nn.Module):
 
     def _get_train_dataloader(self, dataset, epoch: int):
         from s3prl.utility.data import get_ddp_sampler
+
         sampler = get_ddp_sampler(dataset, epoch)
         return DataLoader(
-            dataset, batch_size=self.datarc['train_batch_size'],
+            dataset,
+            batch_size=self.datarc["train_batch_size"],
             shuffle=(sampler is None),
             sampler=sampler,
-            num_workers=self.datarc['num_workers'],
-            collate_fn=dataset.collate_fn
+            num_workers=self.datarc["num_workers"],
+            collate_fn=dataset.collate_fn,
         )
 
     def _get_eval_dataloader(self, dataset):
@@ -141,10 +140,10 @@ class DownstreamExpert(nn.Module):
     def get_test_dataloader(self):
         return self._get_eval_dataloader(self.test_dataset)
 
-    def get_dataloader(self, mode, epoch: int=0):
-        if mode == 'train':
-            return eval(f'self.get_{mode}_dataloader')(epoch)
-        return eval(f'self.get_{mode}_dataloader')()
+    def get_dataloader(self, mode, epoch: int = 0):
+        if mode == "train":
+            return eval(f"self.get_{mode}_dataloader")(epoch)
+        return eval(f"self.get_{mode}_dataloader")()
 
     # Interface
     def forward(self, mode, features, labels, records, **kwargs):
@@ -187,8 +186,7 @@ class DownstreamExpert(nn.Module):
         loss = self.objective(predicted, labels)
         predicted_classid = predicted.max(dim=-1).indices
 
-        records["acc"] += (
-            predicted_classid == labels).view(-1).cpu().float().tolist()
+        records["acc"] += (predicted_classid == labels).view(-1).cpu().float().tolist()
         # records['filename'] += filenames
         records["predicted"] += predicted_classid.cpu().float().tolist()
         records["original"] += labels.cpu().float().tolist()
@@ -242,8 +240,7 @@ class DownstreamExpert(nn.Module):
 
             # only saves the prediction from the best model, not the latest
             if mode in ["dev", "test"]:
-                with open(Path(self.expdir) / f"{mode}_predict.txt",
-                          "w") as file:
+                with open(Path(self.expdir) / f"{mode}_predict.txt", "w") as file:
                     line = [f"{f} \n" for f in records["predicted"]]
                     file.writelines(line)
 

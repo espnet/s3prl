@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the fluent command downstream model ]
 #   Author       [ S3PRL ]
@@ -16,13 +17,15 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from s3prl.downstream.model import AttentivePooling, MeanPooling, UtteranceLevel_Linear
 from s3prl.upstream.mockingjay.model import TransformerEncoder
-from s3prl.downstream.model import UtteranceLevel_Linear, AttentivePooling, MeanPooling
+
 
 class Identity(nn.Module):
     def __init__(self, config, **kwargs):
         super(Identity, self).__init__()
         # simply take mean operator / no additional parameters
+
     def forward(self, feature, att_mask, head_mask, **kwargs):
         return [feature]
 
@@ -36,26 +39,25 @@ class Mean(nn.Module):
         # simply take mean operator / no additional parameters
 
     def forward(self, feature, att_mask):
-
-        '''
+        """
         Arguments
             feature - [BxTxD] Acoustic feature with shape
             att_mask - [BxTx1]     Attention Mask logits
-        '''
-        feature=self.linear(self.act_fn(feature))
+        """
+        feature = self.linear(self.act_fn(feature))
         agg_vec_list = []
         for i in range(len(feature)):
             if torch.nonzero(att_mask[i] < 0, as_tuple=False).size(0) == 0:
                 length = len(feature[i])
             else:
                 length = torch.nonzero(att_mask[i] < 0, as_tuple=False)[0] + 1
-            agg_vec=torch.mean(feature[i][:length], dim=0)
+            agg_vec = torch.mean(feature[i][:length], dim=0)
             agg_vec_list.append(agg_vec)
         return torch.stack(agg_vec_list)
 
 
 class SAP(nn.Module):
-    ''' Self Attention Pooling module incoporate attention mask'''
+    """Self Attention Pooling module incoporate attention mask"""
 
     def __init__(self, out_dim):
         super(SAP, self).__init__()
@@ -65,12 +67,11 @@ class SAP(nn.Module):
         self.sap_layer = SelfAttentionPooling(out_dim)
 
     def forward(self, feature, att_mask):
-
-        '''
+        """
         Arguments
             feature - [BxTxD] Acoustic feature with shape
             att_mask - [BxTx1] Attention Mask logits
-        '''
+        """
         # Encode
         feature = self.act_fn(feature)
         sap_vec = self.sap_layer(feature, att_mask)
@@ -84,6 +85,7 @@ class SelfAttentionPooling(nn.Module):
     Original Paper: Self-Attention Encoding and Pooling for Speaker Recognition
     https://arxiv.org/pdf/2008.01077v1.pdf
     """
+
     def __init__(self, input_dim):
         super(SelfAttentionPooling, self).__init__()
         self.W = nn.Linear(input_dim, 1)
@@ -117,22 +119,31 @@ class Model(nn.Module):
         self.linear = nn.Linear(input_dim, output_class_num)
 
         # two standard transformer encoder layer
-        self.model= eval(config['module'])(config=Namespace(**config['hparams']),)
-        self.head_mask = [None] * config['hparams']['num_hidden_layers']
+        self.model = eval(config["module"])(
+            config=Namespace(**config["hparams"]),
+        )
+        self.head_mask = [None] * config["hparams"]["num_hidden_layers"]
 
     def forward(self, features, att_mask):
-        features = self.model(features,att_mask[:,None,None], head_mask=self.head_mask, output_all_encoded_layers=False)
+        features = self.model(
+            features,
+            att_mask[:, None, None],
+            head_mask=self.head_mask,
+            output_all_encoded_layers=False,
+        )
         utterance_vector = self.agg_method(features[0], att_mask)
         predicted = self.linear(utterance_vector)
 
-        return predicted # Use LogSoftmax since self.criterion combines nn.LogSoftmax() and nn.NLLLoss()
+        return predicted  # Use LogSoftmax since self.criterion combines nn.LogSoftmax() and nn.NLLLoss()
+
 
 class UtterLinear(nn.Module):
     def __init__(self, input_dim, output_class_num, pooling_name, **kwargs):
         super(UtterLinear, self).__init__()
-        self.model = UtteranceLevel_Linear(input_dim=input_dim, class_num=output_class_num)
+        self.model = UtteranceLevel_Linear(
+            input_dim=input_dim, class_num=output_class_num
+        )
         self.pooling = eval(pooling_name)(input_dim=input_dim)
-
 
     def forward(self, features, features_len):
         device = features.device

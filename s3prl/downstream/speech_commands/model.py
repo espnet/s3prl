@@ -21,6 +21,7 @@ linearly projects upstream's feature dimension to the same dimension (256), and 
 linearly projected to the class number. Hence, it does not contain non-linearity.
 """
 
+
 class Model(nn.Module):
     """
     Not used in SUPERB Benchmark

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- #
 """*********************************************************************************************"""
+
 #   FileName     [ model.py ]
 #   Synopsis     [ the 1-hidden model ]
 #   Author       [ S3PRL ]
@@ -26,7 +27,6 @@ class Model(nn.Module):
         self.out_linear = nn.Linear(hidden_size, output_class_num)
         self.drop = nn.Dropout(dropout)
         self.act_fn = nn.functional.relu
-
 
     def forward(self, features):
         hidden = self.in_linear(features)
