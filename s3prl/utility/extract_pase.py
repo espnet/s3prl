@@ -13,7 +13,6 @@ out_path = sys.argv[2]
 import torch
 import torchaudio
 
-
 x, sr = torchaudio.load(wav_path)
 x = x.view(-1).cuda()
 
