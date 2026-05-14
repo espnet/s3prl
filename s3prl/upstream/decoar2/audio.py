@@ -55,9 +55,9 @@ class FeatureExtractor(nn.Module):
         self.num_mel_bins = num_mel_bins
         self.kwargs = kwargs
         self.decode_wav = decode_wav
-        if self.decode_wav:
-            # HACK: sox cannot deal with wav with incorrect file length
-            torchaudio.set_audio_backend("soundfile")
+        # if self.decode_wav:
+        #     # HACK: sox cannot deal with wav with incorrect file length
+        #     torchaudio.set_audio_backend("soundfile")
 
     def _load_file(self, filepath):
         if self.decode_wav:

@@ -21,8 +21,6 @@ import torchaudio
 from joblib import Parallel, delayed
 from tqdm import tqdm
 
-torchaudio.set_audio_backend("sox_io")
-
 
 #############################
 # PREPROCESS CONFIGURATIONS #
