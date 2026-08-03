@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  NLTK_DISABLE_IMPORT_SECURITY: "1"
+
 jobs:
   build-and-test:
 
