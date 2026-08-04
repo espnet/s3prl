@@ -19,7 +19,7 @@ intervaltree
 lxml
 soundfile
 pysndfx
-nltk
+nltk >=3.4.5
 normalise
 editdistance
 easydict
