@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -275,13 +274,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="n">_default_cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.cache&quot;</span> <span class="o">/</span> <span class="s2">&quot;s3prl&quot;</span> <span class="o">/</span> <span class="s2">&quot;audio_info&quot;</span>
+<span class="n">_default_cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">".cache"</span> <span class="o">/</span> <span class="s2">"s3prl"</span> <span class="o">/</span> <span class="s2">"audio_info"</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;get_cache_dir&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_cache_dir&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_audio_info&quot;</span><span class="p">,</span>
+    <span class="s2">"get_cache_dir"</span><span class="p">,</span>
+    <span class="s2">"set_cache_dir"</span><span class="p">,</span>
+    <span class="s2">"get_audio_info"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -309,35 +308,35 @@
     <span class="n">cache_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Use :code:`torchaudio.info` to retrieve the metadata from audio paths.</span>
 <span class="sd">    The retrieved metadata is cached in :code:`cache_dir`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="ow">or</span> <span class="n">get_cache_dir</span><span class="p">()</span>
     <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_info</span><span class="p">(</span><span class="n">audio_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">audio_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">cache_file</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">audio_id</span><span class="si">}</span><span class="s2">.json&quot;</span>
+        <span class="n">cache_file</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">audio_id</span><span class="si">}</span><span class="s2">.json"</span>
         <span class="k">if</span> <span class="n">cache_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
             <span class="k">with</span> <span class="n">cache_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">info</span>
 
-        <span class="c1"># torchaudio.set_audio_backend(&quot;sox_io&quot;)</span>
+        <span class="c1"># torchaudio.set_audio_backend("sox_io")</span>
         <span class="n">torchaudio_info</span> <span class="o">=</span> <span class="n">torchaudio</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">audio_path</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;sample_rate&quot;</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span>
-            <span class="s2">&quot;num_frames&quot;</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">num_frames</span><span class="p">,</span>
-            <span class="s2">&quot;num_channels&quot;</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
-            <span class="s2">&quot;bits_per_sample&quot;</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">bits_per_sample</span><span class="p">,</span>
-            <span class="s2">&quot;encoding&quot;</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+            <span class="s2">"sample_rate"</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span>
+            <span class="s2">"num_frames"</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">num_frames</span><span class="p">,</span>
+            <span class="s2">"num_channels"</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
+            <span class="s2">"bits_per_sample"</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">bits_per_sample</span><span class="p">,</span>
+            <span class="s2">"encoding"</span><span class="p">:</span> <span class="n">torchaudio_info</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">info</span>
 
     <span class="n">infos</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">num_workers</span><span class="p">)(</span>
         <span class="n">delayed</span><span class="p">(</span><span class="n">_get_info</span><span class="p">)(</span><span class="n">path</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">audio_paths</span><span class="p">,</span> <span class="n">audio_ids</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Get audio metadata&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">audio_paths</span><span class="p">,</span> <span class="n">audio_ids</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Get audio metadata"</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span></div>
 

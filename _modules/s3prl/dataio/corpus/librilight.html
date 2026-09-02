@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,12 +266,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.corpus.librilight</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Parse the LibriLight corpus</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Heng-Jui Chang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -289,35 +288,35 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
 
 <span class="n">LIBRILIGHT_SPLITS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;10h&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;1h&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold0&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold3&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold4&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;10m-fold5&quot;</span><span class="p">,</span>
+    <span class="s2">"10h"</span><span class="p">,</span>
+    <span class="s2">"1h"</span><span class="p">,</span>
+    <span class="s2">"10m-fold0"</span><span class="p">,</span>
+    <span class="s2">"10m-fold1"</span><span class="p">,</span>
+    <span class="s2">"10m-fold2"</span><span class="p">,</span>
+    <span class="s2">"10m-fold3"</span><span class="p">,</span>
+    <span class="s2">"10m-fold4"</span><span class="p">,</span>
+    <span class="s2">"10m-fold5"</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="n">LIBRISPEECH_SPKR_INFO</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;https://huggingface.co/datasets/s3prl/librispeech_metadata/raw/main/SPEAKERS.TXT&quot;</span>
+    <span class="s2">"https://huggingface.co/datasets/s3prl/librispeech_metadata/raw/main/SPEAKERS.TXT"</span>
 <span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;LibriLight&quot;</span><span class="p">,</span>
+    <span class="s2">"LibriLight"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">read_text</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="n">src_file</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;.trans.txt&quot;</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">src_file</span> <span class="o">=</span> <span class="s2">"-"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">".trans.txt"</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".flac"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transcription of </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> not found!&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Transcription of </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2"> not found!"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_no_repeat</span><span class="p">(</span><span class="n">splits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -325,14 +324,14 @@
     <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
         <span class="n">count</span><span class="p">[</span><span class="n">split</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="n">repeated</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">repeated</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">count</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">repeated</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> times)&quot;</span>
+            <span class="n">repeated</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> times)"</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeated</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Found repeated splits in corpus: </span><span class="si">{</span><span class="n">repeated</span><span class="si">}</span><span class="s2">, which might cause unexpected behaviors.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Found repeated splits in corpus: </span><span class="si">{</span><span class="n">repeated</span><span class="si">}</span><span class="s2">, which might cause unexpected behaviors."</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -345,16 +344,16 @@
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
     <span class="k">for</span> <span class="n">line_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_id</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s2">&quot;SEX&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">&quot;SUBSET&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">&quot;MINUTES&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">&quot;NAME&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"SEX"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">"SUBSET"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">"MINUTES"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">"NAME"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
             <span class="k">break</span>
 
     <span class="n">line_id</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># first line with speaker info</span>
     <span class="n">spk2gender</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">line_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">line_id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_id</span><span class="p">]</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">+"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
         <span class="n">ID</span><span class="p">,</span> <span class="n">SEX</span><span class="p">,</span> <span class="n">SUBSET</span><span class="p">,</span> <span class="n">MINUTES</span><span class="p">,</span> <span class="n">NAME</span> <span class="o">=</span> <span class="n">parts</span>
         <span class="n">spk2gender</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">ID</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SEX</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">spk2gender</span>
@@ -367,20 +366,20 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dataset_root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="n">train_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;10m-fold0&quot;</span><span class="p">,</span>
+        <span class="n">train_split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"10m-fold0"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_split</span> <span class="o">=</span> <span class="n">train_split</span>
 
-        <span class="k">if</span> <span class="n">train_split</span> <span class="o">==</span> <span class="s2">&quot;10h&quot;</span><span class="p">:</span>
-            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">&quot;1h&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">&quot;9h&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">train_split</span> <span class="o">==</span> <span class="s2">&quot;1h&quot;</span><span class="p">:</span>
-            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">&quot;1h&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">train_split</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;10m&quot;</span><span class="p">):</span>
-            <span class="n">fold_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">train_split</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;fold&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">&quot;1h&quot;</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">fold_id</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">train_split</span> <span class="o">==</span> <span class="s2">"10h"</span><span class="p">:</span>
+            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">"1h"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">"9h"</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">train_split</span> <span class="o">==</span> <span class="s2">"1h"</span><span class="p">:</span>
+            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">"1h"</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">train_split</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"10m"</span><span class="p">):</span>
+            <span class="n">fold_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">train_split</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"fold"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span> <span class="o">/</span> <span class="s2">"1h"</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">fold_id</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported split: </span><span class="si">{</span><span class="n">train_split</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported split: </span><span class="si">{</span><span class="n">train_split</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collect_data</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
 
@@ -391,14 +390,14 @@
         <span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="s2">&quot;wget&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;-O&quot;</span><span class="p">,</span>
-                <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;librispeech_finetuning.tgz&quot;</span><span class="p">),</span>
+                <span class="s2">"wget"</span><span class="p">,</span>
+                <span class="s2">"https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz"</span><span class="p">,</span>
+                <span class="s2">"-O"</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"librispeech_finetuning.tgz"</span><span class="p">),</span>
             <span class="p">]</span>
         <span class="p">)</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;tar&quot;</span><span class="p">,</span> <span class="s2">&quot;zxvf&quot;</span><span class="p">,</span> <span class="s2">&quot;librispeech_finetuning.tgz&quot;</span><span class="p">,</span> <span class="s2">&quot;-C&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">))]</span>
+            <span class="p">[</span><span class="s2">"tar"</span><span class="p">,</span> <span class="s2">"zxvf"</span><span class="p">,</span> <span class="s2">"librispeech_finetuning.tgz"</span><span class="p">,</span> <span class="s2">"-C"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">))]</span>
         <span class="p">)</span></div>
 
 
@@ -416,24 +415,24 @@
         <span class="k">for</span> <span class="n">split_dir</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">split_dir</span><span class="p">):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">split_dir</span><span class="si">}</span><span class="s2"> is not downloaded. Skip data collection.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Split </span><span class="si">{</span><span class="n">split_dir</span><span class="si">}</span><span class="s2"> is not downloaded. Skip data collection."</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="n">wav_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">split_dir</span><span class="p">)</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.flac&quot;</span><span class="p">))</span>
-            <span class="n">name_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">wav_list</span><span class="p">]</span>
+            <span class="n">wav_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">split_dir</span><span class="p">)</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">"*.flac"</span><span class="p">))</span>
+            <span class="n">name_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".flac"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">wav_list</span><span class="p">]</span>
             <span class="n">text_list</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)(</span>
                 <span class="n">delayed</span><span class="p">(</span><span class="n">read_text</span><span class="p">)(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">wav_list</span>
             <span class="p">)</span>
-            <span class="n">spkr_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">name_list</span><span class="p">]</span>
+            <span class="n">spkr_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">name_list</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="n">wav_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wav_list</span><span class="p">)):</span>
                 <span class="n">wav</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">wav_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">])</span>
                 <span class="n">data_dict</span><span class="p">[</span><span class="n">wav</span><span class="o">.</span><span class="n">stem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;wav_path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">wav</span><span class="o">.</span><span class="n">resolve</span><span class="p">()),</span>
-                    <span class="s2">&quot;transcription&quot;</span><span class="p">:</span> <span class="n">text_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">],</span>
-                    <span class="s2">&quot;speaker&quot;</span><span class="p">:</span> <span class="n">spkr_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">],</span>
-                    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="n">spkr2gender</span><span class="p">[</span><span class="n">spkr_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">]],</span>
+                    <span class="s2">"wav_path"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">wav</span><span class="o">.</span><span class="n">resolve</span><span class="p">()),</span>
+                    <span class="s2">"transcription"</span><span class="p">:</span> <span class="n">text_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">],</span>
+                    <span class="s2">"speaker"</span><span class="p">:</span> <span class="n">spkr_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">],</span>
+                    <span class="s2">"gender"</span><span class="p">:</span> <span class="n">spkr2gender</span><span class="p">[</span><span class="n">spkr_list</span><span class="p">[</span><span class="n">wav_id</span><span class="p">]],</span>
                 <span class="p">}</span>
         <span class="k">return</span> <span class="n">data_dict</span></div>
 

@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,13 +266,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.task.dump_feature</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Dump feature Task</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Yist Y. Lin 2021</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
@@ -282,13 +281,13 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DumpFeature&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DumpFeature"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="DumpFeature">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.DumpFeature">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DumpFeature</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">dump_feat_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;feat&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">dump_feat_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"feat"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dump_feat_dir</span> <span class="o">=</span> <span class="n">dump_feat_dir</span>
@@ -307,7 +306,7 @@
         <span class="k">for</span> <span class="n">feat</span><span class="p">,</span> <span class="n">feat_len</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">feats</span><span class="p">,</span> <span class="n">feats_len</span><span class="p">,</span> <span class="n">unique_name</span><span class="p">):</span>
             <span class="n">feat</span> <span class="o">=</span> <span class="n">feat</span><span class="p">[:,</span> <span class="p">:</span><span class="n">feat_len</span><span class="p">,</span> <span class="p">:]</span>
             <span class="n">feat</span> <span class="o">=</span> <span class="n">feat</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">feat_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">))</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">feat_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.pt"</span><span class="p">))</span>
 
         <span class="n">pseudo_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pseudo_loss</span><span class="p">,</span> <span class="p">{}</span></div>

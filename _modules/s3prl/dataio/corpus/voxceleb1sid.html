@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,13 +266,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.corpus.voxceleb1sid</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Parse VoxCeleb1 corpus for classification</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Leo 2022</span>
 <span class="sd">  * Cheng Liang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -289,11 +288,11 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">SPLIT_FILE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/iden_split.txt&quot;</span>
-<span class="n">CACHE_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.cache&quot;</span> <span class="o">/</span> <span class="s2">&quot;s3prl&quot;</span>
+<span class="n">SPLIT_FILE_URL</span> <span class="o">=</span> <span class="s2">"https://www.robots.ox.ac.uk/~vgg/data/voxceleb/meta/iden_split.txt"</span>
+<span class="n">CACHE_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">".cache"</span> <span class="o">/</span> <span class="s2">"s3prl"</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;VoxCeleb1SID&quot;</span><span class="p">,</span>
+    <span class="s2">"VoxCeleb1SID"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -308,15 +307,15 @@
         <span class="n">uid2split</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_standard_usage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span><span class="p">,</span> <span class="n">cache_root</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">uid</span><span class="p">,</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">uid2split</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">uid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">uid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">))</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
 
         <span class="n">uid2wavpath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_wavs_with_uids</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset_root</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uid2split</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">Path</span><span class="p">(</span><span class="n">uid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;wav_path&quot;</span><span class="p">:</span> <span class="n">uid2wavpath</span><span class="p">[</span><span class="n">uid</span><span class="p">],</span>
-                <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_label</span><span class="p">(</span><span class="n">uid</span><span class="p">),</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">uid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">))</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"wav_path"</span><span class="p">:</span> <span class="n">uid2wavpath</span><span class="p">[</span><span class="n">uid</span><span class="p">],</span>
+                <span class="s2">"label"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_label</span><span class="p">(</span><span class="n">uid</span><span class="p">),</span>
             <span class="p">}</span>
             <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">uid2split</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="p">}</span>
@@ -328,24 +327,24 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data_split_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">"train"</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">"valid"</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_split2uids</span><span class="p">[</span><span class="s2">"test"</span><span class="p">],</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_standard_usage</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">cache_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="n">split_filename</span> <span class="o">=</span> <span class="n">SPLIT_FILE_URL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">split_filename</span> <span class="o">=</span> <span class="n">SPLIT_FILE_URL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">split_filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cache_root</span><span class="p">)</span> <span class="o">/</span> <span class="n">split_filename</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">split_filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">with</span> <span class="n">FileLock</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.lock&quot;</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget </span><span class="si">{</span><span class="n">SPLIT_FILE_URL</span><span class="si">}</span><span class="s2"> -O </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">FileLock</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">)</span> <span class="o">+</span> <span class="s2">".lock"</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s2">"wget </span><span class="si">{</span><span class="n">SPLIT_FILE_URL</span><span class="si">}</span><span class="s2"> -O </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">standard_usage</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">split_filepath</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="p">]</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">code2split</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"train"</span><span class="p">,</span> <span class="s2">"valid"</span><span class="p">,</span> <span class="s2">"test"</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">splits</span><span class="p">[</span><span class="n">code</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="n">standard_usage</span> <span class="o">=</span> <span class="p">{</span><span class="n">uid</span><span class="p">:</span> <span class="n">code2split</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">split</span><span class="p">))</span> <span class="k">for</span> <span class="n">split</span><span class="p">,</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">standard_usage</span><span class="p">}</span>
@@ -354,98 +353,98 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_find_wavs_with_uids</span><span class="p">(</span><span class="n">dataset_root</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">find_wav_with_uid</span><span class="p">(</span><span class="n">uid</span><span class="p">):</span>
-            <span class="n">found_wavs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset_root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;*/wav/</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">found_wavs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset_root</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">"*/wav/</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">"</span><span class="p">))</span>
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_wavs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="n">uid</span><span class="p">,</span> <span class="n">found_wavs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="n">uids_with_wavs</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)(</span>
-            <span class="n">delayed</span><span class="p">(</span><span class="n">find_wav_with_uid</span><span class="p">)(</span><span class="n">uid</span><span class="p">)</span> <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">uids</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Search wavs&quot;</span><span class="p">)</span>
+            <span class="n">delayed</span><span class="p">(</span><span class="n">find_wav_with_uid</span><span class="p">)(</span><span class="n">uid</span><span class="p">)</span> <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">uids</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Search wavs"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">uids2wav</span> <span class="o">=</span> <span class="p">{</span><span class="n">uid</span><span class="p">:</span> <span class="n">wav</span> <span class="k">for</span> <span class="n">uid</span><span class="p">,</span> <span class="n">wav</span> <span class="ow">in</span> <span class="n">uids_with_wavs</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">uids2wav</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_label</span><span class="p">(</span><span class="n">uid</span><span class="p">):</span>
-        <span class="n">id_string</span> <span class="o">=</span> <span class="n">uid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;speaker_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">id_string</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10001</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">id_string</span> <span class="o">=</span> <span class="n">uid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"speaker_</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">id_string</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10001</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">return</span> <span class="n">label</span>
 
 <div class="viewcode-block" id="VoxCeleb1SID.download_dataset">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.corpus.html#s3prl.dataio.corpus.VoxCeleb1SID.download_dataset">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">download_dataset</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">splits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">splits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dev"</span><span class="p">,</span> <span class="s2">"test"</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">tgt_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">&quot;Target directory does not exist&quot;</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">"Target directory does not exist"</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">zipfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZipFile</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">unzip_then_delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="s2">&quot;File not found!&quot;</span>
+            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="s2">"File not found!"</span>
 
             <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf</span><span class="p">:</span>
-                <span class="n">zipf</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">&quot;Voxceleb1&quot;</span><span class="p">,</span> <span class="n">split</span><span class="p">))</span>
+                <span class="n">zipf</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">"Voxceleb1"</span><span class="p">,</span> <span class="n">split</span><span class="p">))</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">download_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
             <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
 
             <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> to&quot;</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saving </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> to"</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
                             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
                             <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> successfully downloaded&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> successfully downloaded"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Download failed: status code </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Download failed: status code </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">filepath</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">download_dev</span><span class="p">():</span>
             <span class="n">partpaths</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)):</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2"> exists, skip donwload&quot;</span><span class="p">)</span>
-                    <span class="n">partpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"d"</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">"</span><span class="p">)):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2"> exists, skip donwload"</span><span class="p">)</span>
+                    <span class="n">partpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">"</span><span class="p">))</span>
                     <span class="k">continue</span>
                 <span class="n">fp</span> <span class="o">=</span> <span class="n">download_from_url</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;https://thor.robots.ox.ac.uk/~vgg/data/voxceleb/vox1a/vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"https://thor.robots.ox.ac.uk/~vgg/data/voxceleb/vox1a/vox1_dev_wav_parta</span><span class="si">{</span><span class="n">part</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"dev"</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">partpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 
-            <span class="n">zippath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">&quot;vox1_dev_wav.zip&quot;</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zippath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">zippath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">"vox1_dev_wav.zip"</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zippath</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">partpaths</span><span class="p">:</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
                             <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">partpaths</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="n">unzip_then_delete</span><span class="p">(</span><span class="n">zippath</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span>
+            <span class="n">unzip_then_delete</span><span class="p">(</span><span class="n">zippath</span><span class="p">,</span> <span class="s2">"dev"</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">&quot;Voxceleb1/&quot;</span> <span class="o">+</span> <span class="n">split</span> <span class="o">+</span> <span class="s2">&quot;/wav&quot;</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="n">split</span> <span class="o">==</span> <span class="s2">&quot;dev&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="s2">"Voxceleb1/"</span> <span class="o">+</span> <span class="n">split</span> <span class="o">+</span> <span class="s2">"/wav"</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">split</span> <span class="o">==</span> <span class="s2">"dev"</span><span class="p">:</span>
                     <span class="n">download_dev</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">filepath</span> <span class="o">=</span> <span class="n">download_from_url</span><span class="p">(</span>
-                        <span class="s2">&quot;https://thor.robots.ox.ac.uk/~vgg/data/voxceleb/vox1a/vox1_test_wav.zip&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+                        <span class="s2">"https://thor.robots.ox.ac.uk/~vgg/data/voxceleb/vox1a/vox1_test_wav.zip"</span><span class="p">,</span>
+                        <span class="s2">"test"</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="n">unzip_then_delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+                    <span class="n">unzip_then_delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">"test"</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Voxceleb1 dataset downloaded. Located at </span><span class="si">{</span><span class="n">tgt_dir</span><span class="si">}</span><span class="s2">/Voxceleb1/&quot;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Voxceleb1 dataset downloaded. Located at </span><span class="si">{</span><span class="n">tgt_dir</span><span class="si">}</span><span class="s2">/Voxceleb1/"</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

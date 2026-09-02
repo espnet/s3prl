@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,12 +266,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.task.speech2text_ctc_task</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Speech2Text with CTC loss</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Heng-Jui Chang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -299,18 +298,18 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Speech2TextCTCExample&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Speech2TextCTCTask&quot;</span><span class="p">,</span>
+    <span class="s2">"Speech2TextCTCExample"</span><span class="p">,</span>
+    <span class="s2">"Speech2TextCTCTask"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Speech2TextCTCExample</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An example speech-to-text task with CTC objective</span>
+<span class="w">    </span><span class="sd">"""An example speech-to-text task with CTC objective</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input_size (int, optional): Input size. Defaults to 3.</span>
 <span class="sd">        output_size (int, optional): Output size. Defaults to 4.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -326,7 +325,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_size</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): (batch_size, timestemps, input_size)</span>
 <span class="sd">            x_len (torch.LongTensor): (batch_size, )</span>
@@ -334,7 +333,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            y (torch.Tensor): (batch_size, output_size)</span>
 <span class="sd">            y_len (torch.LongTensor): (batch_size)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_size</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">output</span><span class="p">,</span> <span class="n">x_len</span>
@@ -343,23 +342,23 @@
 <div class="viewcode-block" id="Speech2TextCTCTask">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.Speech2TextCTCTask">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Speech2TextCTCTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Speech-to-text task with CTC objective</span>
+<span class="w">    </span><span class="sd">"""Speech-to-text task with CTC objective</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model (Speech2TextCTCExample)</span>
 <span class="sd">        tokenizer (Tokenizer): Text tokenizer.</span>
 <span class="sd">        decoder (Union[BeamDecoder, dict], optional):</span>
-<span class="sd">            Beam decoder or decoder&#39;s config. Defaults to None.</span>
+<span class="sd">            Beam decoder or decoder's config. Defaults to None.</span>
 <span class="sd">        log_metrics (List[str], optional):</span>
-<span class="sd">            Metrics to be logged. Defaults to [&quot;cer&quot;, &quot;wer&quot;].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            Metrics to be logged. Defaults to ["cer", "wer"].</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
         <span class="n">tokenizer</span><span class="p">:</span> <span class="n">Tokenizer</span><span class="p">,</span>
         <span class="n">decoder</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BeamDecoder</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">log_metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cer&quot;</span><span class="p">,</span> <span class="s2">&quot;wer&quot;</span><span class="p">],</span>
+        <span class="n">log_metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"cer"</span><span class="p">,</span> <span class="s2">"wer"</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
@@ -372,7 +371,7 @@
             <span class="n">decoder</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">decoder</span> <span class="o">=</span> <span class="n">BeamDecoder</span><span class="p">(</span><span class="o">**</span><span class="n">decoder</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using flashlight decoder.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Using flashlight decoder."</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">decoder</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CTCLoss</span><span class="p">(</span>
@@ -383,7 +382,7 @@
 <div class="viewcode-block" id="Speech2TextCTCTask.predict">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.Speech2TextCTCTask.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">x_len</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): (batch_size, timestamps, input_size)</span>
 <span class="sd">            x_len (torch.LongTensor): (batch_size, )</span>
@@ -392,7 +391,7 @@
 <span class="sd">            logits (torch.Tensor): (batch_size, timestamps, output_size)</span>
 <span class="sd">            prediction (list): prediction strings</span>
 <span class="sd">            valid_length (torch.LongTensor): (batch_size, )</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">logits</span><span class="p">,</span> <span class="n">x_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">)</span>
         <span class="n">predicted_tokens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
@@ -423,7 +422,7 @@
         <span class="n">beam_decode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Each forward step in the training loop</span>
 
 <span class="sd">        Args:</span>
@@ -442,7 +441,7 @@
 <span class="sd">            unique_name (np.ndarray):</span>
 <span class="sd">                Unique names for each sample.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">logits</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">x_len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">)</span>
         <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -475,47 +474,47 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">reduction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cached_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_cached_results</span><span class="p">(</span><span class="n">cached_results</span><span class="p">)</span>
 
-        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
-        <span class="n">unique_names</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;unique_name&quot;</span><span class="p">]</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"loss"</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+        <span class="n">unique_names</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"unique_name"</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">_dump_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;hyp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"hyp"</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span>
-                    <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">uid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)]</span>
+                    <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">uid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)]</span>
                 <span class="p">)</span>
 
-            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;ref&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">uid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)])</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"ref"</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">uid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">unique_names</span><span class="p">)])</span>
 
         <span class="n">beam_hyps</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;hypotheses&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">beam_hyps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hyp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="k">for</span> <span class="n">hyp</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;hypotheses&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s2">"hypotheses"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">beam_hyps</span> <span class="o">=</span> <span class="p">[</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hyp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">words</span><span class="p">)</span> <span class="k">for</span> <span class="n">hyp</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">"hypotheses"</span><span class="p">]]</span>
 
         <span class="n">logs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
+        <span class="n">logs</span><span class="p">[</span><span class="s2">"loss"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="s2">&quot;wer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;wer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;cer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;cer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;per&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;per&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">per</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;slot_type_f1&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;slot_type_f1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_type_f1</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;slot_value_cer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;slot_value_cer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_value_cer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;slot_value_wer&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;slot_value_wer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_value_wer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;slot_edit_f1_full&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;slot_edit_f1_full&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_edit_f1_full</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;slot_edit_f1_part&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;slot_edit_f1_part&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_edit_f1_part</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"wer"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"wer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">wer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"cer"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"cer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"per"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"per"</span><span class="p">]</span> <span class="o">=</span> <span class="n">per</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"slot_type_f1"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"slot_type_f1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_type_f1</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"slot_value_cer"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"slot_value_cer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_value_cer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"slot_value_wer"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"slot_value_wer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_value_wer</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"slot_edit_f1_full"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"slot_edit_f1_full"</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_edit_f1_full</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"slot_edit_f1_part"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_metrics</span><span class="p">:</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"slot_edit_f1_part"</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot_edit_f1_part</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">beam_hyps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;wer_beam&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wer</span><span class="p">(</span><span class="n">beam_hyps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-            <span class="n">logs</span><span class="p">[</span><span class="s2">&quot;char_beam&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cer</span><span class="p">(</span><span class="n">beam_hyps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"wer_beam"</span><span class="p">]</span> <span class="o">=</span> <span class="n">wer</span><span class="p">(</span><span class="n">beam_hyps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+            <span class="n">logs</span><span class="p">[</span><span class="s2">"char_beam"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cer</span><span class="p">(</span><span class="n">beam_hyps</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">logs</span></div>
 </div>

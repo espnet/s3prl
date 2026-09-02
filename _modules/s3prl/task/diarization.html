@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,13 +266,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.task.diarization</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Diarization Permutation Invarant Task</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Jiatong Shi 2022</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
@@ -288,7 +287,7 @@
 
 <span class="n">TOLERANT_FRAME_DIFF</span> <span class="o">=</span> <span class="mi">2</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DiarizationPIT&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"DiarizationPIT"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="DiarizationPIT">
@@ -303,14 +302,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">pit_loss</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_tile_representations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Tile up the representations by `factor`.</span>
 <span class="sd">        Input - sequence of representations, shape: (batch_size, seq_len, feature_dim)</span>
 <span class="sd">        Output - sequence of tiled representations, shape: (batch_size, seq_len * factor, feature_dim)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="n">reps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
-        <span class="p">),</span> <span class="s2">&quot;Input argument `reps` has invalid shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">),</span> <span class="s2">"Input argument `reps` has invalid shape: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reps</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">tiled_reps</span> <span class="o">=</span> <span class="n">reps</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
         <span class="n">tiled_reps</span> <span class="o">=</span> <span class="n">tiled_reps</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
             <span class="n">reps</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">reps</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">factor</span><span class="p">,</span> <span class="n">reps</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -318,13 +317,13 @@
         <span class="k">return</span> <span class="n">tiled_reps</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_match_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Since the upstream extraction process can sometimes cause a mismatch</span>
 <span class="sd">        between the seq lenth of inputs and labels:</span>
 <span class="sd">        - if len(inputs) &gt; len(labels), we truncate the final few timestamp of inputs to match the length of labels</span>
 <span class="sd">        - if len(inputs) &lt; len(labels), we duplicate the last timestep of inputs to match the length of labels</span>
 <span class="sd">        Note that the length of labels should never be changed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">input_len</span><span class="p">,</span> <span class="n">label_len</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">factor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">label_len</span> <span class="o">/</span> <span class="n">input_len</span><span class="p">))</span>
@@ -366,7 +365,7 @@
         <span class="k">for</span> <span class="n">pl</span><span class="p">,</span> <span class="n">ll</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">predicted_len</span><span class="p">,</span> <span class="n">label_len</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">abs</span><span class="p">(</span><span class="n">pl</span> <span class="o">-</span> <span class="n">ll</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">TOLERANT_FRAME_DIFF</span>
-            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;predicted: </span><span class="si">{</span><span class="n">pl</span><span class="si">}</span><span class="s2">, label: </span><span class="si">{</span><span class="n">ll</span><span class="si">}</span><span class="s2">, TOLERANT_FRAME_DIFF: </span><span class="si">{</span><span class="n">TOLERANT_FRAME_DIFF</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">"predicted: </span><span class="si">{</span><span class="n">pl</span><span class="si">}</span><span class="s2">, label: </span><span class="si">{</span><span class="n">ll</span><span class="si">}</span><span class="s2">, TOLERANT_FRAME_DIFF: </span><span class="si">{</span><span class="n">TOLERANT_FRAME_DIFF</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">predicted</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match_length</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
         <span class="n">loss</span><span class="p">,</span> <span class="n">perm_idx</span><span class="p">,</span> <span class="n">perm_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">label</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">label_len</span><span class="p">)</span>
@@ -397,15 +396,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">SAD_MR</span><span class="p">,</span> <span class="n">SAD_FR</span><span class="p">,</span> <span class="n">MI</span><span class="p">,</span> <span class="n">FA</span><span class="p">,</span> <span class="n">CF</span><span class="p">,</span> <span class="n">ACC</span><span class="p">,</span> <span class="n">DER</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
 
-        <span class="k">if</span> <span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span> <span class="ow">and</span> <span class="n">_dump_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_mode</span> <span class="o">==</span> <span class="s2">"test"</span> <span class="ow">and</span> <span class="n">_dump_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">record_id</span><span class="p">)))</span> <span class="o">==</span> <span class="mi">1</span>
-            <span class="p">),</span> <span class="s2">&quot;During testing, all utterances in a batch should come from the same recording&quot;</span>
+            <span class="p">),</span> <span class="s2">"During testing, all utterances in a batch should come from the same recording"</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_len</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="p">(</span>
                     <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">label_len</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
-                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Except the final chunk, other chunks from the same recording should have the same length&quot;</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">"Except the final chunk, other chunks from the same recording should have the same length"</span>
 
             <span class="n">predicted_sorted</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">chunk_id</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk_id</span><span class="p">),</span> <span class="n">largest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">indices</span><span class="p">:</span>
@@ -415,9 +414,9 @@
             <span class="n">predict</span> <span class="o">=</span> <span class="n">predict</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
             <span class="n">predict</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">predict</span><span class="p">)</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span>
 
-            <span class="n">prediction_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;prediction&quot;</span>
+            <span class="n">prediction_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_dump_dir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"prediction"</span>
             <span class="n">prediction_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span> <span class="n">prediction_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">record_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">)</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span> <span class="n">prediction_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">record_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.pt"</span><span class="p">)</span>
 
         <span class="n">cacheable</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
@@ -433,8 +432,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">reduction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cached_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_cached_results</span><span class="p">(</span><span class="n">cached_results</span><span class="p">)</span>
         <span class="n">logs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">accuracy</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="n">der</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;der&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="n">accuracy</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">"accuracy"</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="n">der</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">"der"</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">logs</span></div>
 </div>

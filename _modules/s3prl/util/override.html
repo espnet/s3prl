@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,47 +266,47 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.util.override</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Parse command-line arguments into override dictionary</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;parse_overrides&quot;</span><span class="p">,</span>
+    <span class="s2">"parse_overrides"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_override</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Example usgae:</span>
-<span class="sd">        -o &quot;optimizer.lr=1.0e-3,,optimizer.name=&#39;AdamW&#39;,,runner.eval_dataloaders=[&#39;dev&#39;, &#39;test&#39;]&quot;</span>
+<span class="sd">        -o "optimizer.lr=1.0e-3,,optimizer.name='AdamW',,runner.eval_dataloaders=['dev', 'test']"</span>
 
 <span class="sd">    Convert to:</span>
 <span class="sd">        {</span>
-<span class="sd">            &quot;optimizer&quot;: {&quot;lr&quot;: 1.0e-3, &quot;name&quot;: &quot;AdamW&quot;},</span>
-<span class="sd">            &quot;runner&quot;: {&quot;eval_dataloaders&quot;: [&quot;dev&quot;, &quot;test&quot;]}</span>
+<span class="sd">            "optimizer": {"lr": 1.0e-3, "name": "AdamW"},</span>
+<span class="sd">            "runner": {"eval_dataloaders": ["dev", "test"]}</span>
 <span class="sd">        }</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,,&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">",,"</span><span class="p">)</span>
     <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
         <span class="n">option</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">key</span><span class="p">,</span> <span class="n">value_str</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">value_str</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">value_str</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">value_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">remaining</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value_str</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">target_config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">remaining</span><span class="p">):</span>
@@ -322,40 +321,40 @@
 <div class="viewcode-block" id="parse_overrides">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.util.override.html#s3prl.util.override.parse_overrides">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_overrides</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Example usgae:</span>
 <span class="sd">        [</span>
-<span class="sd">            &quot;--optimizer.lr&quot;,</span>
-<span class="sd">            &quot;1.0e-3&quot;,</span>
-<span class="sd">            &quot;--optimizer.name&quot;,</span>
-<span class="sd">            &quot;AdamW&quot;,</span>
-<span class="sd">            &quot;--runner.eval_dataloaders&quot;,</span>
-<span class="sd">            &quot;[&#39;dev&#39;, &#39;test&#39;]&quot;,</span>
+<span class="sd">            "--optimizer.lr",</span>
+<span class="sd">            "1.0e-3",</span>
+<span class="sd">            "--optimizer.name",</span>
+<span class="sd">            "AdamW",</span>
+<span class="sd">            "--runner.eval_dataloaders",</span>
+<span class="sd">            "['dev', 'test']",</span>
 <span class="sd">        ]</span>
 
 <span class="sd">    Convert to:</span>
 <span class="sd">        {</span>
-<span class="sd">            &quot;optimizer&quot;: {&quot;lr&quot;: 1.0e-3, &quot;name&quot;: &quot;AdamW&quot;},</span>
-<span class="sd">            &quot;runner&quot;: {&quot;eval_dataloaders&quot;: [&quot;dev&quot;, &quot;test&quot;]}</span>
+<span class="sd">            "optimizer": {"lr": 1.0e-3, "name": "AdamW"},</span>
+<span class="sd">            "runner": {"eval_dataloaders": ["dev", "test"]}</span>
 <span class="sd">        }</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
         <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"--"</span><span class="p">)</span>
         <span class="n">value_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">value_str</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">value_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">remaining</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">remaining</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;newdict&quot;</span> <span class="ow">in</span> <span class="n">value_str</span> <span class="ow">or</span> <span class="s2">&quot;Container&quot;</span> <span class="ow">in</span> <span class="n">value_str</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"newdict"</span> <span class="ow">in</span> <span class="n">value_str</span> <span class="ow">or</span> <span class="s2">"Container"</span> <span class="ow">in</span> <span class="n">value_str</span><span class="p">:</span>
                 <span class="k">raise</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value_str</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">target_config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">remaining</span><span class="p">):</span>

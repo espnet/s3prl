@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,12 +266,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.task.utterance_classification_task</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Utterance Classification Tasks</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
@@ -289,17 +288,17 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;UtteranceClassifierExample&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;UtteranceClassificationTask&quot;</span><span class="p">,</span>
+    <span class="s2">"UtteranceClassifierExample"</span><span class="p">,</span>
+    <span class="s2">"UtteranceClassificationTask"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">UtteranceClassifierExample</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        input_size: int</span>
 <span class="sd">        output_size: int</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -315,14 +314,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_size</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): (batch_size, timestemps, input_size)</span>
 <span class="sd">            x_len (torch.LongTensor): (batch_size, )</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">            output (torch.Tensor): (batch_size, output_size)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_size</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_size</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">output</span>
@@ -331,14 +330,14 @@
 <div class="viewcode-block" id="UtteranceClassificationTask">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.UtteranceClassificationTask">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UtteranceClassificationTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        input_size (int): defined by model.input_size</span>
 <span class="sd">        output_size (int): defined by len(categories)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">UtteranceClassifierExample</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="n">CategoryEncoder</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        model.output_size should match len(categories)</span>
 
 <span class="sd">        Args:</span>
@@ -347,7 +346,7 @@
 <span class="sd">                encode: str -&gt; int</span>
 <span class="sd">                decode: int -&gt; str</span>
 <span class="sd">                __len__: -&gt; int</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
@@ -357,7 +356,7 @@
 <div class="viewcode-block" id="UtteranceClassificationTask.predict">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.UtteranceClassificationTask.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">x_len</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): (batch_size, timestamps, input_size)</span>
 <span class="sd">            x_len (torch.LongTensor): (batch_size, )</span>
@@ -365,7 +364,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            logits (torch.Tensor): (batch_size, output_size)</span>
 <span class="sd">            prediction (list): prediction strings</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">logits</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">)</span>
         <span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
@@ -403,9 +402,9 @@
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.UtteranceClassificationTask.reduction">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reduction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cached_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_cached_results</span><span class="p">(</span><span class="n">cached_results</span><span class="p">)</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
-        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"loss"</span><span class="p">]</span>
 
         <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
@@ -430,7 +429,7 @@
 <div class="viewcode-block" id="UtteranceMultiClassClassificationTask.predict">
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.UtteranceMultiClassClassificationTask.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">x_len</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x (torch.Tensor): (batch_size, timestamps, input_size)</span>
 <span class="sd">            x_len (torch.LongTensor): (batch_size, )</span>
@@ -438,7 +437,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            logit (torch.Tensor): List[(batch_size, sub_output_size)]</span>
 <span class="sd">            prediction (np.array): (batch_size, num_category)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">logits</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">)</span>
 
         <span class="n">logit_start</span> <span class="o">=</span> <span class="mi">0</span>
@@ -454,7 +453,7 @@
                 <span class="p">]</span>
             <span class="p">)</span>
             <span class="n">logit_start</span> <span class="o">=</span> <span class="n">logit_end</span>
-        <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sub_predictions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sub_predictions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"object"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
         <span class="k">return</span> <span class="n">sub_logits</span><span class="p">,</span> <span class="n">prediction</span></div>
 
@@ -471,7 +470,7 @@
         <span class="n">unique_name</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            x: torch.Tensor, (batch_size, timestamps, input_size)</span>
 <span class="sd">            x_len: torch.LongTensor, (batch_size)</span>
@@ -482,7 +481,7 @@
 <span class="sd">            loss: torch.Tensor</span>
 <span class="sd">            prediction: np.ndarray</span>
 <span class="sd">            label: np.ndarray</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">logit</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_len</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
             <span class="p">[</span>
@@ -505,9 +504,9 @@
 <a class="viewcode-back" href="../../../_autosummary/s3prl.task.html#s3prl.task.UtteranceMultiClassClassificationTask.reduction">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reduction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cached_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">_dump_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_cached_results</span><span class="p">(</span><span class="n">cached_results</span><span class="p">)</span>
-        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"loss"</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
 
         <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>

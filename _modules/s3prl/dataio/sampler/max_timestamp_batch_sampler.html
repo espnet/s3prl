@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,29 +266,29 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.sampler.max_timestamp_batch_sampler</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Limit the maximum timestamps in a batch to realize dynamic batching.</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;MaxTimestampBatchSampler&quot;</span><span class="p">,</span>
+    <span class="s2">"MaxTimestampBatchSampler"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="MaxTimestampBatchSampler">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.sampler.html#s3prl.dataio.sampler.MaxTimestampBatchSampler">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MaxTimestampBatchSampler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    The reduced timestamps for a batch should not exceed the max_timestamp.</span>
 <span class="sd">    If shuffled, each indices are first shuffled before aggregated into batches</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -334,9 +333,9 @@
                 <span class="n">batch</span> <span class="o">=</span> <span class="n">try_new_batch</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;There is a single length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">indice</span><span class="p">]</span><span class="si">}</span><span class="s2"> larger than &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;max_length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="si">}</span><span class="s2">. Please increase &quot;</span>
-                    <span class="s2">&quot;the max_length.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"There is a single length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lengths</span><span class="p">[</span><span class="n">indice</span><span class="p">]</span><span class="si">}</span><span class="s2"> larger than "</span>
+                    <span class="sa">f</span><span class="s2">"max_length </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="si">}</span><span class="s2">. Please increase "</span>
+                    <span class="s2">"the max_length."</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">batch</span>

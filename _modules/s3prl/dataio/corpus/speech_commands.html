@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,13 +266,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.corpus.speech_commands</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Parse the Google Speech Commands V1 corpus</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Leo 2022</span>
 <span class="sd">  * Cheng Liang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -287,33 +286,33 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">CLASSES</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;no&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;up&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;down&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;left&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;right&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;on&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;off&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;stop&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;go&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_unknown_&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_silence_&quot;</span><span class="p">,</span>
+    <span class="s2">"yes"</span><span class="p">,</span>
+    <span class="s2">"no"</span><span class="p">,</span>
+    <span class="s2">"up"</span><span class="p">,</span>
+    <span class="s2">"down"</span><span class="p">,</span>
+    <span class="s2">"left"</span><span class="p">,</span>
+    <span class="s2">"right"</span><span class="p">,</span>
+    <span class="s2">"on"</span><span class="p">,</span>
+    <span class="s2">"off"</span><span class="p">,</span>
+    <span class="s2">"stop"</span><span class="p">,</span>
+    <span class="s2">"go"</span><span class="p">,</span>
+    <span class="s2">"_unknown_"</span><span class="p">,</span>
+    <span class="s2">"_silence_"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;SpeechCommandsV1&quot;</span><span class="p">,</span>
+    <span class="s2">"SpeechCommandsV1"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="SpeechCommandsV1">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.corpus.html#s3prl.dataio.corpus.SpeechCommandsV1">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SpeechCommandsV1</span><span class="p">(</span><span class="n">Corpus</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Args:</span>
-<span class="sd">        dataset_root (str): should contain a &#39;dev&#39; sub-folder for the training/validation set</span>
-<span class="sd">            and a &#39;test&#39; sub-folder for the testing set</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        dataset_root (str): should contain a 'dev' sub-folder for the training/validation set</span>
+<span class="sd">            and a 'test' sub-folder for the testing set</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsc1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gsc1_test</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">train_dataset_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">gsc1</span><span class="p">)</span>
@@ -339,7 +338,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">split_dataset</span><span class="p">(</span>
         <span class="n">root_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">max_uttr_per_class</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">27</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split Speech Commands into 3 set.</span>
+<span class="w">        </span><span class="sd">"""Split Speech Commands into 3 set.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            root_dir: speech commands dataset root dir</span>
@@ -348,16 +347,16 @@
 <span class="sd">        Return:</span>
 <span class="sd">            train_list: [(class_name, audio_path), ...]</span>
 <span class="sd">            valid_list: as above</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">train_list</span><span class="p">,</span> <span class="n">valid_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">root_dir</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;_background_noise_&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"_background_noise_"</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.wav&quot;</span><span class="p">):</span>
-                <span class="n">speaker_hashed</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;_nohash_.*$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">audio_path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                <span class="n">hashed_again</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">speaker_hashed</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.wav"</span><span class="p">):</span>
+                <span class="n">speaker_hashed</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"_nohash_.*$"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">audio_path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">hashed_again</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">speaker_hashed</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
                 <span class="n">percentage_hash</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hashed_again</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_uttr_per_class</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
                     <span class="mf">100.0</span> <span class="o">/</span> <span class="n">max_uttr_per_class</span>
                 <span class="p">)</span>
@@ -380,14 +379,14 @@
             <span class="p">(</span>
                 <span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">class_name</span> <span class="ow">in</span> <span class="n">CLASSES</span>
-                <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;_unknown_&quot;</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
+                <span class="k">else</span> <span class="p">(</span><span class="s2">"_unknown_"</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">data_list</span>
         <span class="p">]</span>
         <span class="n">data</span> <span class="o">+=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;_silence_&quot;</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">train_dataset_root</span><span class="p">,</span> <span class="s2">&quot;_background_noise_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span>
-                <span class="s2">&quot;*.wav&quot;</span>
+            <span class="p">(</span><span class="s2">"_silence_"</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">train_dataset_root</span><span class="p">,</span> <span class="s2">"_background_noise_"</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span>
+                <span class="s2">"*.wav"</span>
             <span class="p">)</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">data</span></div>
@@ -401,7 +400,7 @@
             <span class="p">(</span><span class="n">class_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">audio_path</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">class_dir</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">test_dataset_root</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">class_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">class_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.wav&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">class_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.wav"</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">data</span></div>
 
@@ -410,7 +409,7 @@
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.corpus.html#s3prl.dataio.corpus.SpeechCommandsV1.path_to_unique_name">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">path_to_unique_name</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span></div>
+        <span class="k">return</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span></div>
 
 
 <div class="viewcode-block" id="SpeechCommandsV1.list_to_dict">
@@ -420,8 +419,8 @@
         <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">path_to_unique_name</span><span class="p">(</span><span class="n">audio_path</span><span class="p">):</span> <span class="p">{</span>
-                    <span class="s2">&quot;wav_path&quot;</span><span class="p">:</span> <span class="n">audio_path</span><span class="p">,</span>
-                    <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">class_name</span><span class="p">,</span>
+                    <span class="s2">"wav_path"</span><span class="p">:</span> <span class="n">audio_path</span><span class="p">,</span>
+                    <span class="s2">"class_name"</span><span class="p">:</span> <span class="n">class_name</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="k">for</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">audio_path</span> <span class="ow">in</span> <span class="n">data_list</span>
             <span class="p">}</span>
@@ -431,12 +430,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return:</span>
 <span class="sd">            Container: id (str)</span>
 <span class="sd">                wav_path (str)</span>
 <span class="sd">                class_name (str)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@property</span>
@@ -454,11 +453,11 @@
 
         <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">)</span>
-        <span class="p">),</span> <span class="s2">&quot;Target directory does not exist&quot;</span>
+        <span class="p">),</span> <span class="s2">"Target directory does not exist"</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">unzip_targz_then_delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">&quot;CORPORA_DIR&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.tar.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">"CORPORA_DIR"</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".tar.gz"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
@@ -467,39 +466,39 @@
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">download_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
             <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
 
             <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> to&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saving </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> to"</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span><span class="p">):</span>
                         <span class="k">if</span> <span class="n">chunk</span><span class="p">:</span>
                             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
                             <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
                             <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> successfully downloaded&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> successfully downloaded"</span><span class="p">)</span>
                 <span class="n">unzip_targz_then_delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Download failed: status code </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Download failed: status code </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">&quot;CORPORA_DIR/speech_commands_v0.01&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">"CORPORA_DIR/speech_commands_v0.01"</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="n">download_from_url</span><span class="p">(</span>
-                <span class="s2">&quot;http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz&quot;</span>
+                <span class="s2">"http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz"</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">&quot;CORPORA_DIR/speech_commands_test_set_v0.01&quot;</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">),</span> <span class="s2">"CORPORA_DIR/speech_commands_test_set_v0.01"</span>
             <span class="p">)</span>
         <span class="p">):</span>
             <span class="n">download_from_url</span><span class="p">(</span>
-                <span class="s2">&quot;http://download.tensorflow.org/data/speech_commands_test_set_v0.01.tar.gz&quot;</span>
+                <span class="s2">"http://download.tensorflow.org/data/speech_commands_test_set_v0.01.tar.gz"</span>
             <span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Speech commands dataset downloaded. Located at </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">)</span><span class="si">}</span><span class="s2">/CORPORA_DIR/&quot;</span>
+            <span class="sa">f</span><span class="s2">"Speech commands dataset downloaded. Located at </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">tgt_dir</span><span class="p">)</span><span class="si">}</span><span class="s2">/CORPORA_DIR/"</span>
         <span class="p">)</span></div>
 </div>
 

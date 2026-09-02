@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,12 +266,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.sampler.distributed_sampler</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Wrap any batch sampler for distributed training</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
@@ -281,11 +280,11 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.distributed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dist</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchSampler</span>
 
-<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T_co&quot;</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">T_co</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"T_co"</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;DistributedBatchSamplerWrapper&quot;</span><span class="p">,</span>
+    <span class="s2">"DistributedBatchSamplerWrapper"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -302,16 +301,16 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">num_replicas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dist</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Requires distributed package to be available&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Requires distributed package to be available"</span><span class="p">)</span>
             <span class="n">num_replicas</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">dist</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Requires distributed package to be available&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Requires distributed package to be available"</span><span class="p">)</span>
             <span class="n">rank</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">rank</span> <span class="o">&gt;=</span> <span class="n">num_replicas</span> <span class="ow">or</span> <span class="n">rank</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid rank </span><span class="si">{}</span><span class="s2">, rank should be in the interval&quot;</span>
-                <span class="s2">&quot; [0, </span><span class="si">{}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">num_replicas</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="s2">"Invalid rank </span><span class="si">{}</span><span class="s2">, rank should be in the interval"</span>
+                <span class="s2">" [0, </span><span class="si">{}</span><span class="s2">]"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">num_replicas</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_sampler</span> <span class="o">=</span> <span class="n">batch_sampler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_replicas</span> <span class="o">=</span> <span class="n">num_replicas</span>
@@ -321,7 +320,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">T_co</span><span class="p">]:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Building distributed batch sampler for rank=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2">, world_size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_replicas</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Building distributed batch sampler for rank=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2">, world_size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_replicas</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
         <span class="n">all_rank_batch_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_sampler</span><span class="p">))</span>
@@ -351,9 +350,9 @@
                 <span class="k">if</span> <span class="n">all_cant_be_halved</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_duplicates</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="s2">&quot;To ensure all the dataloaders in different processes get the same number &quot;</span>
-                            <span class="s2">&quot;of batches. Some batches are duplicated. This must not happen during the &quot;</span>
-                            <span class="s2">&quot;evaluation stage.&quot;</span>
+                            <span class="s2">"To ensure all the dataloaders in different processes get the same number "</span>
+                            <span class="s2">"of batches. Some batches are duplicated. This must not happen during the "</span>
+                            <span class="s2">"evaluation stage."</span>
                         <span class="p">)</span>
                         <span class="n">flatten_batch_indices</span> <span class="o">=</span> <span class="p">(</span>
                             <span class="n">flatten_batch_indices</span>
@@ -361,15 +360,15 @@
                         <span class="p">)</span>
                     <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_uneven</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="s2">&quot;Total batches will not be evenly distributed across the dataloaders in &quot;</span>
-                            <span class="s2">&quot;different processes. This must not happen during the training stage and &quot;</span>
-                            <span class="s2">&quot;can lead to hanging, while might be okay during the evaluation stage.&quot;</span>
+                            <span class="s2">"Total batches will not be evenly distributed across the dataloaders in "</span>
+                            <span class="s2">"different processes. This must not happen during the training stage and "</span>
+                            <span class="s2">"can lead to hanging, while might be okay during the evaluation stage."</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                            <span class="s2">&quot;The provided batch sampler cannot be safely wrapped for distributed training. &quot;</span>
-                            <span class="s2">&quot;Please try increase the number of indices in each batch. Or, allowing duplicated &quot;</span>
-                            <span class="s2">&quot;batches or uneven number of batches across dataloaders.&quot;</span>
+                            <span class="s2">"The provided batch sampler cannot be safely wrapped for distributed training. "</span>
+                            <span class="s2">"Please try increase the number of indices in each batch. Or, allowing duplicated "</span>
+                            <span class="s2">"batches or uneven number of batches across dataloaders."</span>
                         <span class="p">)</span>
             <span class="n">target_batch_indices</span> <span class="o">=</span> <span class="n">flatten_batch_indices</span>
 
@@ -383,13 +382,13 @@
         <span class="c1"># Since the total number of batches dynamically depends on the current epoch,</span>
         <span class="c1"># instead of pre-compute it which will duplicate the batch number computation logic,</span>
         <span class="c1"># it makes no harm to simply re-compute it with __iter__ for every call, since</span>
-        <span class="c1"># __len__ is usually not frequently called and won&#39;t be the performance bottleneck</span>
+        <span class="c1"># __len__ is usually not frequently called and won't be the performance bottleneck</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
 <div class="viewcode-block" id="DistributedBatchSamplerWrapper.set_epoch">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.sampler.html#s3prl.dataio.sampler.DistributedBatchSamplerWrapper.set_epoch">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_sampler</span><span class="p">,</span> <span class="s2">&quot;set_epoch&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_sampler</span><span class="p">,</span> <span class="s2">"set_epoch"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">batch_sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span></div>
 </div>
 

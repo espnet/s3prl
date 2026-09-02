@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,7 +266,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.encoder.tokenizer</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Load tokenizer to encode &amp; decode</span>
 
 <span class="sd">Modified from tensorflow_datasets.features.text.*</span>
@@ -275,7 +274,7 @@
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Heng-Jui Chang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">abc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -288,21 +287,21 @@
 <span class="n">BERT_LAST_IDX</span> <span class="o">=</span> <span class="mi">29635</span>
 
 <span class="c1"># Default vocabularies</span>
-<span class="n">CHARACTER_VOCAB</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s2">&quot; &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">)</span>
-<span class="n">PHONEME_VOCAB</span> <span class="o">=</span> <span class="s2">&quot;SIL SPN AA0 AA1 AA2 AE0 AE1 AE2 AH0 AH1 AH2 AO0 AO1 AO2 AW0 AW1 AW2 AY0 AY1 AY2 B CH D DH EH0 EH1 EH2 ER0 ER1 ER2 EY0 EY1 EY2 F G HH IH0 IH1 IH2 IY0 IY1 IY2 JH K L M N NG OW0 OW1 OW2 OY0 OY1 OY2 P R S SH T TH UH0 UH1 UH2 UW0 UW1 UW2 V W Y Z ZH&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
-    <span class="s2">&quot; &quot;</span>
+<span class="n">CHARACTER_VOCAB</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s2">" 'ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span><span class="p">)</span>
+<span class="n">PHONEME_VOCAB</span> <span class="o">=</span> <span class="s2">"SIL SPN AA0 AA1 AA2 AE0 AE1 AE2 AH0 AH1 AH2 AO0 AO1 AO2 AW0 AW1 AW2 AY0 AY1 AY2 B CH D DH EH0 EH1 EH2 ER0 ER1 ER2 EY0 EY1 EY2 F G HH IH0 IH1 IH2 IY0 IY1 IY2 JH K L M N NG OW0 OW1 OW2 OY0 OY1 OY2 P R S SH T TH UH0 UH1 UH2 UW0 UW1 UW2 V W Y Z ZH"</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+    <span class="s2">" "</span>
 <span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;CharacterTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CharacterSlotTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SubwordTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SubwordSlotTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;WordTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PhonemeTokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;load_tokenizer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;default_phoneme_tokenizer&quot;</span><span class="p">,</span>
+    <span class="s2">"CharacterTokenizer"</span><span class="p">,</span>
+    <span class="s2">"CharacterSlotTokenizer"</span><span class="p">,</span>
+    <span class="s2">"SubwordTokenizer"</span><span class="p">,</span>
+    <span class="s2">"SubwordSlotTokenizer"</span><span class="p">,</span>
+    <span class="s2">"WordTokenizer"</span><span class="p">,</span>
+    <span class="s2">"PhonemeTokenizer"</span><span class="p">,</span>
+    <span class="s2">"load_tokenizer"</span><span class="p">,</span>
+    <span class="s2">"default_phoneme_tokenizer"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -357,14 +356,14 @@
         <span class="k">return</span> <span class="mi">2</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{}</span><span class="s2"> vocab_size=</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">"&lt;</span><span class="si">{}</span><span class="s2"> vocab_size=</span><span class="si">{}</span><span class="s2">&gt;"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="CharacterTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CharacterTokenizer</span><span class="p">(</span><span class="n">Tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Character tokenizer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Character tokenizer."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -372,19 +371,19 @@
         <span class="k">if</span> <span class="n">vocab_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vocab_list</span> <span class="o">=</span> <span class="n">CHARACTER_VOCAB</span>
 
-        <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;eos&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"&lt;pad&gt;"</span><span class="p">,</span> <span class="s2">"&lt;eos&gt;"</span><span class="p">,</span> <span class="s2">"&lt;unk&gt;"</span><span class="p">]:</span>
             <span class="c1"># Note that vocab_list must not contain &lt;pad&gt;, &lt;eos&gt; and &lt;unk&gt;</span>
             <span class="k">assert</span> <span class="n">tok</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocab_list</span>
 
         <span class="c1"># &lt;pad&gt; = 0, &lt;eos&gt; = 1, &lt;unk&gt; = 2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;eos&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vocab_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"&lt;pad&gt;"</span><span class="p">,</span> <span class="s2">"&lt;eos&gt;"</span><span class="p">,</span> <span class="s2">"&lt;unk&gt;"</span><span class="p">]</span> <span class="o">+</span> <span class="n">vocab_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vocab2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span><span class="p">)}</span>
 
 <div class="viewcode-block" id="CharacterTokenizer.encode">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterTokenizer.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Always strip trailing space, \r and \n</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
         <span class="c1"># Manually append eos to the end</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab_to_idx</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span><span class="p">]</span></div>
 
@@ -401,7 +400,7 @@
                 <span class="k">break</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vocabs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CharacterTokenizer.load_from_file">
@@ -409,15 +408,15 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vocab_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vocab_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vocab_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="c1"># Do not strip space because character based text encoder should</span>
                 <span class="c1"># have a space token</span>
-                <span class="n">vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+                <span class="n">vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">vocab_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;No vocabulary information give, please specify either vocab_file or vocab_list.&quot;</span>
+                <span class="s2">"No vocabulary information give, please specify either vocab_file or vocab_list."</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vocab_list</span><span class="p">)</span></div>
@@ -429,7 +428,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;character&quot;</span>
+        <span class="k">return</span> <span class="s2">"character"</span>
 
 <div class="viewcode-block" id="CharacterTokenizer.vocab_to_idx">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterTokenizer.vocab_to_idx">[docs]</a>
@@ -448,19 +447,19 @@
 <div class="viewcode-block" id="CharacterSlotTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterSlotTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CharacterSlotTokenizer</span><span class="p">(</span><span class="n">Tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Character tokenizer with slots.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Character tokenizer with slots."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">slots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;eos&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"&lt;pad&gt;"</span><span class="p">,</span> <span class="s2">"&lt;eos&gt;"</span><span class="p">,</span> <span class="s2">"&lt;unk&gt;"</span><span class="p">]:</span>
             <span class="c1"># Note that vocab_list must not contain &lt;pad&gt;, &lt;eos&gt; and &lt;unk&gt;</span>
             <span class="k">assert</span> <span class="n">tok</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocab_list</span>
 
         <span class="c1"># &lt;pad&gt; = 0, &lt;eos&gt; = 1, &lt;unk&gt; = 2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;pad&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;eos&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vocab_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"&lt;pad&gt;"</span><span class="p">,</span> <span class="s2">"&lt;eos&gt;"</span><span class="p">,</span> <span class="s2">"&lt;unk&gt;"</span><span class="p">]</span> <span class="o">+</span> <span class="n">vocab_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vocab2idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span><span class="p">)}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">space_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_to_idx</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vocab_to_idx</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slots</span> <span class="o">=</span> <span class="n">slots</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span> <span class="o">=</span> <span class="p">{</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">))</span>
@@ -473,30 +472,30 @@
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterSlotTokenizer.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">iobs</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Always strip trailing space, \r and \n</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
-        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
+        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
             <span class="n">iobs</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;transcription and iobs should have same number of words (split by space)&quot;</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">"transcription and iobs should have same number of words (split by space)"</span>
 
-        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;BOS&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"BOS"</span><span class="p">:</span>
             <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EOS&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EOS"</span><span class="p">:</span>
             <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">wrd</span><span class="p">,</span> <span class="n">iob</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">iobs</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
-                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">&quot;B-&quot;</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">"O"</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
+                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">"B-"</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
             <span class="n">tokens</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab_to_idx</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">wrd</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
-                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">&quot;E-&quot;</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">"O"</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
+                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">"E-"</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -518,22 +517,22 @@
                 <span class="k">break</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vocabs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CharacterSlotTokenizer.load_from_file">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterSlotTokenizer.load_from_file">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vocab_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">slots_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="c1"># Do not strip space because character based text encoder should</span>
             <span class="c1"># have a space token</span>
-            <span class="n">vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
-        <span class="n">org_slots</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">slots_file</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">vocab_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+        <span class="n">org_slots</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">slots_file</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">slots</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="p">[</span><span class="n">slot</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">org_slots</span> <span class="k">if</span> <span class="n">slot</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span><span class="p">]:</span>
-            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;B-&quot;</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
-            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;E-&quot;</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="p">[</span><span class="n">slot</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">org_slots</span> <span class="k">if</span> <span class="n">slot</span> <span class="o">!=</span> <span class="s2">"O"</span><span class="p">]:</span>
+            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"B-"</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
+            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"E-"</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vocab_list</span><span class="p">,</span> <span class="n">slots</span><span class="p">)</span></div>
 
 
@@ -543,7 +542,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;character-slot&quot;</span>
+        <span class="k">return</span> <span class="s2">"character-slot"</span>
 
 <div class="viewcode-block" id="CharacterSlotTokenizer.vocab_to_idx">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.CharacterSlotTokenizer.vocab_to_idx">[docs]</a>
@@ -559,12 +558,12 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vocab_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id2slot</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">token</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
-            <span class="k">elif</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">token</span>
+            <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"B"</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">token</span> <span class="o">+</span> <span class="s2">" "</span>
+            <span class="k">elif</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"E"</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">" "</span> <span class="o">+</span> <span class="n">token</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;id2slot get:&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"id2slot get:"</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span></div>
 </div>
 
 
@@ -572,14 +571,14 @@
 <div class="viewcode-block" id="SubwordTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.SubwordTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SubwordTokenizer</span><span class="p">(</span><span class="n">Tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subword tokenizer using sentencepiece.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Subword tokenizer using sentencepiece."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spm</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">spm</span><span class="o">.</span><span class="n">pad_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">spm</span><span class="o">.</span><span class="n">eos_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">spm</span><span class="o">.</span><span class="n">unk_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Please train sentencepiece model with following argument:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="s2">&quot;--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=&lt;eos&gt;&quot;</span>
+                <span class="s2">"Please train sentencepiece model with following argument:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=&lt;eos&gt;"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spm</span> <span class="o">=</span> <span class="n">spm</span>
 
@@ -615,13 +614,13 @@
 
         <span class="n">spm</span> <span class="o">=</span> <span class="n">splib</span><span class="o">.</span><span class="n">SentencePieceProcessor</span><span class="p">()</span>
         <span class="n">spm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">&quot;eos&quot;</span><span class="p">)</span>
+        <span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">"eos"</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">spm</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">&quot;eos&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">"eos"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">vocab_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -629,21 +628,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;subword&quot;</span></div>
+        <span class="k">return</span> <span class="s2">"subword"</span></div>
 
 
 
 <div class="viewcode-block" id="SubwordSlotTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.SubwordSlotTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SubwordSlotTokenizer</span><span class="p">(</span><span class="n">Tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subword tokenizer with slots.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Subword tokenizer with slots."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spm</span><span class="p">,</span> <span class="n">slots</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">spm</span><span class="o">.</span><span class="n">pad_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">spm</span><span class="o">.</span><span class="n">eos_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">spm</span><span class="o">.</span><span class="n">unk_id</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Please train sentencepiece model with following argument:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="s2">&quot;--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=&lt;eos&gt;&quot;</span>
+                <span class="s2">"Please train sentencepiece model with following argument:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"--pad_id=0 --eos_id=1 --unk_id=2 --bos_id=-1 --model_type=bpe --eos_piece=&lt;eos&gt;"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spm</span> <span class="o">=</span> <span class="n">spm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slots</span> <span class="o">=</span> <span class="n">slots</span>
@@ -658,32 +657,32 @@
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.SubwordSlotTokenizer.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">iobs</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Always strip trailing space, \r and \n</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
-        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
+        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">sent</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+        <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+        <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
             <span class="n">iobs</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;transcription and iobs should have same number of words (split by space)&quot;</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">"transcription and iobs should have same number of words (split by space)"</span>
 
-        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;BOS&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"BOS"</span><span class="p">:</span>
             <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EOS&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"EOS"</span><span class="p">:</span>
             <span class="n">sent</span> <span class="o">=</span> <span class="n">sent</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">iobs</span> <span class="o">=</span> <span class="n">iobs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">wrd</span><span class="p">,</span> <span class="n">iob</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">iobs</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
-                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">&quot;B-&quot;</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">"O"</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
+                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">"B-"</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
             <span class="n">encoded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spm</span><span class="o">.</span><span class="n">encode_as_ids</span><span class="p">(</span><span class="n">wrd</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">encoded</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span>
             <span class="n">tokens</span> <span class="o">+=</span> <span class="n">encoded</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># drop eos</span>
-            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
-                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">&quot;E-&quot;</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">iob</span> <span class="o">!=</span> <span class="s2">"O"</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">iobs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">iob</span><span class="p">):</span>
+                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slot2id</span><span class="p">[</span><span class="s2">"E-"</span> <span class="o">+</span> <span class="n">iob</span><span class="p">])</span>
         <span class="k">assert</span> <span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span>
         <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tokens</span></div>
@@ -714,7 +713,7 @@
                     <span class="n">sent</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># x is a regular token interpretable by spm</span>
                 <span class="n">sent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SubwordSlotTokenizer.load_from_file">
@@ -725,18 +724,18 @@
 
         <span class="n">spm</span> <span class="o">=</span> <span class="n">splib</span><span class="o">.</span><span class="n">SentencePieceProcessor</span><span class="p">()</span>
         <span class="n">spm</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">&quot;:eos&quot;</span><span class="p">)</span>
-        <span class="n">org_slots</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">slots_file</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">":eos"</span><span class="p">)</span>
+        <span class="n">org_slots</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">slots_file</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">slots</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="p">[</span><span class="n">slot</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">org_slots</span> <span class="k">if</span> <span class="n">slot</span> <span class="o">!=</span> <span class="s2">&quot;O&quot;</span><span class="p">]:</span>
-            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;B-&quot;</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
-            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;E-&quot;</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="p">[</span><span class="n">slot</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">org_slots</span> <span class="k">if</span> <span class="n">slot</span> <span class="o">!=</span> <span class="s2">"O"</span><span class="p">]:</span>
+            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"B-"</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
+            <span class="n">slots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"E-"</span> <span class="o">+</span> <span class="n">slot</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">spm</span><span class="p">,</span> <span class="n">slots</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">&quot;eos&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spm</span><span class="o">.</span><span class="n">set_encode_extra_options</span><span class="p">(</span><span class="s2">"eos"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">vocab_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -744,22 +743,22 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;subword-slot&quot;</span></div>
+        <span class="k">return</span> <span class="s2">"subword-slot"</span></div>
 
 
 
 <div class="viewcode-block" id="WordTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.WordTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WordTokenizer</span><span class="p">(</span><span class="n">CharacterTokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Word tokenizer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Word tokenizer."""</span>
 
 <div class="viewcode-block" id="WordTokenizer.encode">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.WordTokenizer.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># Always strip trailing space, \r and \n</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2"> "</span><span class="p">)</span>
         <span class="c1"># Space as the delimiter between words</span>
-        <span class="n">words</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
         <span class="c1"># Manually append eos to the end</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vocab_to_idx</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eos_idx</span><span class="p">]</span></div>
 
@@ -778,37 +777,37 @@
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vocabs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vocabs</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;word&quot;</span></div>
+        <span class="k">return</span> <span class="s2">"word"</span></div>
 
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PhonemeTokenizer</span><span class="p">(</span><span class="n">WordTokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Phoneme tokenizer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Phoneme tokenizer."""</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;phoneme&quot;</span>
+        <span class="k">return</span> <span class="s2">"phoneme"</span>
 
 
 <div class="viewcode-block" id="BertTokenizer">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.BertTokenizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BertTokenizer</span><span class="p">(</span><span class="n">Tokenizer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bert Tokenizer.</span>
+<span class="w">    </span><span class="sd">"""Bert Tokenizer.</span>
 
 <span class="sd">    https://github.com/huggingface/pytorch-transformers/blob/master/pytorch_transformers/tokenization_bert.py</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="s2">&quot;&lt;pad&gt;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">eos_token</span> <span class="o">=</span> <span class="s2">&quot;&lt;eos&gt;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">unk_token</span> <span class="o">=</span> <span class="s2">&quot;&lt;unk&gt;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="s2">"&lt;pad&gt;"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">eos_token</span> <span class="o">=</span> <span class="s2">"&lt;eos&gt;"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tokenizer</span><span class="o">.</span><span class="n">unk_token</span> <span class="o">=</span> <span class="s2">"&lt;unk&gt;"</span>
 
 <div class="viewcode-block" id="BertTokenizer.encode">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.BertTokenizer.encode">[docs]</a>
@@ -858,7 +857,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;bert&quot;</span></div>
+        <span class="k">return</span> <span class="s2">"bert"</span></div>
 
 
 
@@ -868,10 +867,10 @@
     <span class="n">vocab_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">slots_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tokenizer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a text tokenizer.</span>
+<span class="w">    </span><span class="sd">"""Load a text tokenizer.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mode (str): Mode (&quot;character&quot;, &quot;character-slot&quot;, &quot;subword&quot;, &quot;subword-slot&quot;, &quot;word&quot;, &quot;bert-...&quot;)</span>
+<span class="sd">        mode (str): Mode ("character", "character-slot", "subword", "subword-slot", "word", "bert-...")</span>
 <span class="sd">        vocab_file (str, optional): Path to vocabularies. Defaults to None.</span>
 <span class="sd">        vocab_list (List[str], optional): List of vocabularies. Defaults to None.</span>
 <span class="sd">        slots_file (str, optional): Path to slots. Defaults to None.</span>
@@ -881,44 +880,44 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Tokenizer: Text tokenizer.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="nb">int</span><span class="p">(</span><span class="n">vocab_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">vocab_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span>
-    <span class="p">),</span> <span class="s2">&quot;For &#39;vocab_file&#39; and &#39;vocab_list&#39;, at most one argument can be presented&quot;</span>
+    <span class="p">),</span> <span class="s2">"For 'vocab_file' and 'vocab_list', at most one argument can be presented"</span>
 
-    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">vocab_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vocab</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">vocab</span> <span class="ow">in</span> <span class="n">vocab_list</span><span class="p">])</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">vocab</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">vocab</span> <span class="ow">in</span> <span class="n">vocab_list</span><span class="p">])</span>
             <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="n">vocab_file</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="k">if</span> <span class="n">slots_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mode</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;slot&quot;</span><span class="p">):</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">-slot&quot;</span>
+        <span class="k">if</span> <span class="n">slots_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mode</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"slot"</span><span class="p">):</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">-slot"</span>
 
-        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;character&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"character"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CharacterTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;character-slot&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"character-slot"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CharacterSlotTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="n">slots_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;subword&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"subword"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SubwordTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;subword-slot&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"subword-slot"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SubwordSlotTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">,</span> <span class="n">slots_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;word&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"word"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">WordTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;phoneme&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"phoneme"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">PhonemeTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_file</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">mode</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;bert-&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">mode</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"bert-"</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;`</span><span class="si">{}</span><span class="s2">` is not yet supported.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"`</span><span class="si">{}</span><span class="s2">` is not yet supported."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">default_phoneme_tokenizer</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">PhonemeTokenizer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a default LibriSpeech phoneme tokenizer.</span>
+<span class="w">    </span><span class="sd">"""Returns a default LibriSpeech phoneme tokenizer.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        PhonemeTokenizer: Vocabs include 71 phonemes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">return</span> <span class="n">PhonemeTokenizer</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">vocab_list</span><span class="o">=</span><span class="n">PHONEME_VOCAB</span><span class="p">)</span>
 </pre></div>

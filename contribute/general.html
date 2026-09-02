@@ -207,7 +207,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -292,11 +291,11 @@ on our Github Issue page to propose features and changes.</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">¶</a></h2>
 <p>Clone the repository to <strong>S3PRL_ROOT</strong> and install the package</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">S3PRL_ROOT</span><span class="o">=</span><span class="s2">&quot;/home/leo/d/s3prl&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">S3PRL_ROOT</span><span class="o">=</span><span class="s2">"/home/leo/d/s3prl"</span>
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/s3prl/s3prl.git<span class="w"> </span><span class="si">${</span><span class="nv">S3PRL_ROOT</span><span class="si">}</span>
 <span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">S3PRL_ROOT</span><span class="si">}</span>
 
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[dev]"</span>
 <span class="c1"># This installs the dependencies for the full functionality of S3PRL in the editable mode,</span>
 <span class="c1"># including the dependencies for development like testing and building doc</span>
 </pre></div>
@@ -330,7 +329,7 @@ python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class=
 <section id="coding-style-check">
 <h2>Coding-style check<a class="headerlink" href="#coding-style-check" title="Link to this heading">¶</a></h2>
 <p>Stage your changes</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;YOUR_CHANGED_OR_ADDED_FILES_ONLY&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span><span class="s2">"YOUR_CHANGED_OR_ADDED_FILES_ONLY"</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -356,8 +355,8 @@ these files following the previous step.</p>
 <section id="commit-push">
 <h2>Commit / Push<a class="headerlink" href="#commit-push" title="Link to this heading">¶</a></h2>
 <p>Commit and push the changes</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;YOUR_COMMIT_MESSAGE&quot;</span>
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span><span class="s2">&quot;YOUR_BRANCH&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"YOUR_COMMIT_MESSAGE"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span><span class="s2">"YOUR_BRANCH"</span>
 </pre></div>
 </div>
 </section>

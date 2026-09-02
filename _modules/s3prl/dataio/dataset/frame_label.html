@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,10 +266,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.dataset.frame_label</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Authors:</span>
 <span class="sd">    - Leo (2022)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
@@ -281,11 +280,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.load_audio</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoadAudio</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;chunking&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;scale_labels_secs&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_chunk_labels&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;chunk_labels_to_frame_tensor_label&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FrameLabelDataset&quot;</span><span class="p">,</span>
+    <span class="s2">"chunking"</span><span class="p">,</span>
+    <span class="s2">"scale_labels_secs"</span><span class="p">,</span>
+    <span class="s2">"get_chunk_labels"</span><span class="p">,</span>
+    <span class="s2">"chunk_labels_to_frame_tensor_label"</span><span class="p">,</span>
+    <span class="s2">"FrameLabelDataset"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -298,7 +297,7 @@
     <span class="n">step_secs</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">use_unfull_chunks</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Produce chunks (start, end points) from a given start, end seconds</span>
 
 <span class="sd">    Args:</span>
@@ -312,7 +311,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Tuple[float, float]]: Each tuple describes the starting point (in sec)</span>
 <span class="sd">            and the ending point (in sec) of each chunk in order</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start_sec</span><span class="p">,</span> <span class="n">end_sec</span>
     <span class="k">while</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -329,7 +328,7 @@
 <div class="viewcode-block" id="scale_labels_secs">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.dataset.frame_label.html#s3prl.dataio.dataset.scale_labels_secs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">scale_labels_secs</span><span class="p">(</span><span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">ratio</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    When the recording length is changed due to like pitch or speed manipulation,</span>
 <span class="sd">    the start/end timestamp (in seconds) should also be changed</span>
 
@@ -339,7 +338,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Tuple[Any, float, float]]: the scaled labels</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">label</span><span class="p">,</span> <span class="n">start</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">end</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span></div>
 
@@ -352,7 +351,7 @@
     <span class="n">end_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Given a pair a start, end points, filter out the relevant labels from the given :code:`labels`</span>
 <span class="sd">    and refine the start/end points of each label to reside between :code:`start_sec` and :code:`end_sec`</span>
 
@@ -364,10 +363,10 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Tuple[str, float, float]]: filtered labels. Only the labels relevant to the assigned</span>
 <span class="sd">            start/end point are left</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;start (</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">) &gt;= end (</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">assert</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"start (</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">) &gt;= end (</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">)"</span>
         <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">end_sec</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">start_sec</span><span class="p">:</span>
@@ -386,7 +385,7 @@
     <span class="n">frame_shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16000</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Produce frame-level labels for the given chunk labels</span>
 
 <span class="sd">    Args:</span>
@@ -401,7 +400,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.FloatTensor: shape (num_frames, num_class).</span>
 <span class="sd">            the binary frame labels for the given :code:`labels`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">get_chunk_labels</span><span class="p">(</span><span class="n">start_sec</span><span class="p">,</span> <span class="n">end_sec</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
     <span class="n">duration</span> <span class="o">=</span> <span class="n">end_sec</span> <span class="o">-</span> <span class="n">start_sec</span>
@@ -409,8 +408,8 @@
 
     <span class="n">frame_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_frames</span><span class="p">,</span> <span class="n">num_class</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">class_id</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">start_sec</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">start_sec</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">assert</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">start_sec</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">start_sec</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">start_sec</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">start_sec</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">assert</span> <span class="n">end</span> <span class="o">&gt;=</span> <span class="n">start_sec</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">start_sec</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">start_frame</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">start</span> <span class="o">-</span> <span class="n">start_sec</span><span class="p">)</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">)</span> <span class="o">//</span> <span class="n">frame_shift</span>
         <span class="n">end_frame</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">end</span> <span class="o">-</span> <span class="n">start_sec</span><span class="p">)</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">)</span> <span class="o">//</span> <span class="n">frame_shift</span>
@@ -423,12 +422,12 @@
 <div class="viewcode-block" id="FrameLabelDataset">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.dataset.frame_label.html#s3prl.dataio.dataset.FrameLabelDataset">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FrameLabelDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Args:</span>
 <span class="sd">        df (pd.DataFrame): the dataframe should have the following columns</span>
 <span class="sd">            record_id (str), wav_path (str), duration (float), utt_id (str),</span>
 <span class="sd">            label (int), start_sec (float), end_sec (float)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -447,13 +446,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span> <span class="o">=</span> <span class="n">frame_shift</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">=</span> <span class="n">sample_rate</span>
 
-        <span class="n">recording_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;record_id&quot;</span><span class="p">,</span> <span class="s2">&quot;wav_path&quot;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-        <span class="n">record_ids</span> <span class="o">=</span> <span class="n">recording_df</span><span class="p">[</span><span class="s2">&quot;record_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">recording_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">"record_id"</span><span class="p">,</span> <span class="s2">"wav_path"</span><span class="p">,</span> <span class="s2">"duration"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">record_ids</span> <span class="o">=</span> <span class="n">recording_df</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">record_to_labels</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">record_id</span> <span class="ow">in</span> <span class="n">record_ids</span><span class="p">:</span>
-            <span class="n">subset_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;record_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">record_id</span><span class="p">]</span>
+            <span class="n">subset_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">record_id</span><span class="p">]</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">subset_df</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">subset_df</span><span class="p">[</span><span class="s2">&quot;start_sec&quot;</span><span class="p">],</span> <span class="n">subset_df</span><span class="p">[</span><span class="s2">&quot;end_sec&quot;</span><span class="p">])</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">subset_df</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span> <span class="n">subset_df</span><span class="p">[</span><span class="s2">"start_sec"</span><span class="p">],</span> <span class="n">subset_df</span><span class="p">[</span><span class="s2">"end_sec"</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="n">record_to_labels</span><span class="p">[</span><span class="n">record_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
 
@@ -461,24 +460,24 @@
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">recording_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">chunks</span> <span class="o">=</span> <span class="n">chunking</span><span class="p">(</span>
                 <span class="mf">0.0</span><span class="p">,</span>
-                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">],</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">"duration"</span><span class="p">],</span>
                 <span class="n">chunk_secs</span><span class="p">,</span>
                 <span class="n">step_secs</span><span class="p">,</span>
                 <span class="n">use_unfull_chunks</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">chunk_id</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
                 <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                    <span class="n">get_chunk_labels</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">record_to_labels</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;record_id&quot;</span><span class="p">]])</span>
+                    <span class="n">get_chunk_labels</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">record_to_labels</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">]])</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="p">{</span>
-                        <span class="s2">&quot;record_id&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;record_id&quot;</span><span class="p">],</span>
-                        <span class="s2">&quot;chunk_id&quot;</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
-                        <span class="s2">&quot;wav_path&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;wav_path&quot;</span><span class="p">],</span>
-                        <span class="s2">&quot;start_sec&quot;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
-                        <span class="s2">&quot;end_sec&quot;</span><span class="p">:</span> <span class="n">end</span><span class="p">,</span>
-                        <span class="s2">&quot;unique_name&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;record_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
+                        <span class="s2">"record_id"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">],</span>
+                        <span class="s2">"chunk_id"</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
+                        <span class="s2">"wav_path"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"wav_path"</span><span class="p">],</span>
+                        <span class="s2">"start_sec"</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
+                        <span class="s2">"end_sec"</span><span class="p">:</span> <span class="n">end</span><span class="p">,</span>
+                        <span class="s2">"unique_name"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'record_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                        <span class="s2">"labels"</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
                     <span class="p">}</span>
                 <span class="p">)</span>
 
@@ -486,9 +485,9 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">audio_loader</span> <span class="o">=</span> <span class="n">LoadAudio</span><span class="p">(</span>
-            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">&quot;wav_path&quot;</span><span class="p">),</span>
-            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">&quot;start_sec&quot;</span><span class="p">),</span>
-            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">&quot;end_sec&quot;</span><span class="p">),</span>
+            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">"wav_path"</span><span class="p">),</span>
+            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">"start_sec"</span><span class="p">),</span>
+            <span class="n">flatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked_utts</span><span class="p">,</span> <span class="s2">"end_sec"</span><span class="p">),</span>
             <span class="o">**</span><span class="p">(</span><span class="n">load_audio_conf</span> <span class="ow">or</span> <span class="p">{}),</span>
         <span class="p">)</span>
 
@@ -505,22 +504,22 @@
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getinfo</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="n">audio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">audio_loader</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">chunk_labels_to_frame_tensor_label</span><span class="p">(</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;start_sec&quot;</span><span class="p">],</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;end_sec&quot;</span><span class="p">],</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"start_sec"</span><span class="p">],</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"end_sec"</span><span class="p">],</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">num_class</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">audio</span><span class="p">[</span><span class="s2">&quot;wav&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;x_len&quot;</span><span class="p">:</span> <span class="n">audio</span><span class="p">[</span><span class="s2">&quot;wav_len&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
-            <span class="s2">&quot;y_len&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span>
-            <span class="s2">&quot;unique_name&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;unique_name&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;record_id&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;record_id&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;chunk_id&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;chunk_id&quot;</span><span class="p">],</span>
+            <span class="s2">"x"</span><span class="p">:</span> <span class="n">audio</span><span class="p">[</span><span class="s2">"wav"</span><span class="p">],</span>
+            <span class="s2">"x_len"</span><span class="p">:</span> <span class="n">audio</span><span class="p">[</span><span class="s2">"wav_len"</span><span class="p">],</span>
+            <span class="s2">"y"</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+            <span class="s2">"y_len"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">),</span>
+            <span class="s2">"unique_name"</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">"unique_name"</span><span class="p">],</span>
+            <span class="s2">"labels"</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">],</span>
+            <span class="s2">"record_id"</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">],</span>
+            <span class="s2">"chunk_id"</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">"chunk_id"</span><span class="p">],</span>
         <span class="p">}</span></div>
 
 </pre></div>

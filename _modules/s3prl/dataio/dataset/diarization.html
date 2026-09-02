@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -268,14 +267,14 @@
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.dataset.diarization</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*- #</span>
-<span class="sd">&quot;&quot;&quot;*********************************************************************************************&quot;&quot;&quot;</span>
+<span class="sd">"""*********************************************************************************************"""</span>
 
 <span class="c1">#   FileName     [ dataset.py ]</span>
 <span class="c1">#   Synopsis     [ the speaker diarization dataset ]</span>
 <span class="c1">#   Source       [ Refactored from https://github.com/hitachi-speech/EEND ]</span>
 <span class="c1">#   Author       [ Jiatong Shi ]</span>
 <span class="c1">#   Copyright    [ Copyright(c), Johns Hopkins University ]</span>
-<span class="sd">&quot;&quot;&quot;*********************************************************************************************&quot;&quot;&quot;</span>
+<span class="sd">"""*********************************************************************************************"""</span>
 
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">chunk</span>
@@ -376,8 +375,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">getinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="n">rec</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">ed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;record_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">,</span>
-            <span class="s2">&quot;chunk_id&quot;</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
+            <span class="s2">"record_id"</span><span class="p">:</span> <span class="n">rec</span><span class="p">,</span>
+            <span class="s2">"chunk_id"</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
         <span class="p">}</span></div>
 
 
@@ -385,18 +384,18 @@
         <span class="n">rec</span><span class="p">,</span> <span class="n">chunk_id</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">ed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labeled_speech</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">ed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_speakers</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
-            <span class="s2">&quot;x_len&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-            <span class="s2">&quot;label_len&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
-            <span class="s2">&quot;record_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">,</span>
-            <span class="s2">&quot;chunk_id&quot;</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
+            <span class="s2">"x"</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
+            <span class="s2">"x_len"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+            <span class="s2">"label_len"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+            <span class="s2">"record_id"</span><span class="p">:</span> <span class="n">rec</span><span class="p">,</span>
+            <span class="s2">"chunk_id"</span><span class="p">:</span> <span class="n">chunk_id</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_labeled_speech</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n_speakers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_speaker_id</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts speech chunks and corresponding labels</span>
+<span class="w">        </span><span class="sd">"""Extracts speech chunks and corresponding labels</span>
 
 <span class="sd">        Extracts speech chunks and corresponding diarization labels for</span>
 <span class="sd">        given recording id and start/end times</span>
@@ -412,15 +411,15 @@
 <span class="sd">                (n_samples)</span>
 <span class="sd">            T: label</span>
 <span class="sd">                (n_frmaes, n_speakers)-shaped np.int32 array.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">data</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_wav</span><span class="p">(</span>
             <span class="n">rec</span><span class="p">,</span> <span class="n">start</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">,</span> <span class="n">end</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span>
         <span class="p">)</span>
         <span class="n">frame_num</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
         <span class="n">filtered_segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">rec</span><span class="p">]</span>
-        <span class="c1"># filtered_segments = self.data.segments[self.data.segments[&#39;rec&#39;] == rec]</span>
+        <span class="c1"># filtered_segments = self.data.segments[self.data.segments['rec'] == rec]</span>
         <span class="n">speakers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;utt&quot;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">filtered_segments</span><span class="p">]</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">"utt"</span><span class="p">]]</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">filtered_segments</span><span class="p">]</span>
         <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">n_speakers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n_speakers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">speakers</span><span class="p">)</span>
@@ -431,11 +430,11 @@
             <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">frame_num</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_speakers</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">filtered_segments</span><span class="p">:</span>
-            <span class="n">speaker_index</span> <span class="o">=</span> <span class="n">speakers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;utt&quot;</span><span class="p">]])</span>
+            <span class="n">speaker_index</span> <span class="o">=</span> <span class="n">speakers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">"utt"</span><span class="p">]])</span>
             <span class="k">if</span> <span class="n">use_speaker_id</span><span class="p">:</span>
-                <span class="n">all_speaker_index</span> <span class="o">=</span> <span class="n">all_speakers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;utt&quot;</span><span class="p">]])</span>
-            <span class="n">start_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;st&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">rate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-            <span class="n">end_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;et&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">rate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">all_speaker_index</span> <span class="o">=</span> <span class="n">all_speakers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utt2spk</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">"utt"</span><span class="p">]])</span>
+            <span class="n">start_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">"st"</span><span class="p">]</span> <span class="o">*</span> <span class="n">rate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">end_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">"et"</span><span class="p">]</span> <span class="o">*</span> <span class="n">rate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shift</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
             <span class="n">rel_start</span> <span class="o">=</span> <span class="n">rel_end</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">start_frame</span> <span class="ow">and</span> <span class="n">start_frame</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
                 <span class="n">rel_start</span> <span class="o">=</span> <span class="n">start_frame</span> <span class="o">-</span> <span class="n">start</span>
@@ -459,39 +458,39 @@
 <div class="viewcode-block" id="KaldiData">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.dataset.diarization.html#s3prl.dataio.dataset.KaldiData">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">KaldiData</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class holds data in kaldi-style directory.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""This class holds data in kaldi-style directory."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load kaldi data directory.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load kaldi data directory."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_segments_rechash</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;segments&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">utt2spk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_utt2spk</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;utt2spk&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wavs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_wav_scp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;wav.scp&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reco2dur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_reco2dur</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;reco2dur&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spk2utt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_spk2utt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;spk2utt&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utt2spk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_utt2spk</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"utt2spk"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_wav_scp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"wav.scp"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reco2dur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_reco2dur</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"reco2dur"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spk2utt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_spk2utt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"spk2utt"</span><span class="p">))</span>
 
 <div class="viewcode-block" id="KaldiData.load_wav">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.dataset.diarization.html#s3prl.dataio.dataset.KaldiData.load_wav">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_wav</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recid</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load wavfile given recid, start time and end time.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load wavfile given recid, start time and end time."""</span>
         <span class="n">data</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_wav</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavs</span><span class="p">[</span><span class="n">recid</span><span class="p">],</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">rate</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load segments file as array.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load segments file as array."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_file</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span>
             <span class="n">segments_file</span><span class="p">,</span>
-            <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;utt&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;rec&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;et&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">)],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s2">"utt"</span><span class="p">,</span> <span class="s2">"object"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"rec"</span><span class="p">,</span> <span class="s2">"object"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"st"</span><span class="p">,</span> <span class="s2">"f"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"et"</span><span class="p">,</span> <span class="s2">"f"</span><span class="p">)],</span>
             <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_segments_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load segments file as dict with uttid index.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load segments file as dict with uttid index."""</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_file</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -501,7 +500,7 @@
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_segments_rechash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segments_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load segments file as dict with recid index.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load segments file as dict with recid index."""</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_file</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -509,29 +508,29 @@
             <span class="n">utt</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">st</span><span class="p">,</span> <span class="n">et</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">rec</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">:</span>
                 <span class="n">ret</span><span class="p">[</span><span class="n">rec</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">ret</span><span class="p">[</span><span class="n">rec</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;utt&quot;</span><span class="p">:</span> <span class="n">utt</span><span class="p">,</span> <span class="s2">&quot;st&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">st</span><span class="p">),</span> <span class="s2">&quot;et&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">et</span><span class="p">)})</span>
+            <span class="n">ret</span><span class="p">[</span><span class="n">rec</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"utt"</span><span class="p">:</span> <span class="n">utt</span><span class="p">,</span> <span class="s2">"st"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">st</span><span class="p">),</span> <span class="s2">"et"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">et</span><span class="p">)})</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_wav_scp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wav_scp_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dictionary { rec: wav_rxfilename }.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return dictionary { rec: wav_rxfilename }."""</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">wav_scp_file</span><span class="p">):</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">wav_scp_file</span><span class="p">)]</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">wav_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">&quot;wav&quot;</span><span class="p">)</span>
+            <span class="n">wav_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s2">"wav"</span><span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wav_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">wav_dir</span><span class="p">))</span>
             <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_wav</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wav_rxfilename</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function reads audio file and return data in numpy.float32 array.</span>
-<span class="sd">        &quot;lru_cache&quot; holds recently loaded audio so that can be called</span>
+<span class="w">        </span><span class="sd">"""This function reads audio file and return data in numpy.float32 array.</span>
+<span class="sd">        "lru_cache" holds recently loaded audio so that can be called</span>
 <span class="sd">        many times on the same audio file.</span>
 <span class="sd">        OPTIMIZE: controls lru_cache size for random access,</span>
 <span class="sd">        considering memory size</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">wav_rxfilename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">wav_rxfilename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"|"</span><span class="p">):</span>
             <span class="c1"># input piped command</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
                 <span class="n">wav_rxfilename</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
@@ -540,13 +539,13 @@
             <span class="p">)</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">samplerate</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
                 <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()),</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="s2">"float32"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="c1"># cannot seek</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">wav_rxfilename</span> <span class="o">==</span> <span class="s2">&quot;-&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">wav_rxfilename</span> <span class="o">==</span> <span class="s2">"-"</span><span class="p">:</span>
             <span class="c1"># stdin</span>
-            <span class="n">data</span><span class="p">,</span> <span class="n">samplerate</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">samplerate</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float32"</span><span class="p">)</span>
             <span class="c1"># cannot seek</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -555,26 +554,26 @@
         <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">samplerate</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_utt2spk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">utt2spk_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns dictionary { uttid: spkid }.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns dictionary { uttid: spkid }."""</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">utt2spk_file</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_spk2utt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spk2utt_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns dictionary { spkid: list of uttids }.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns dictionary { spkid: list of uttids }."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">spk2utt_file</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">spk2utt_file</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_reco2dur</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reco2dur_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns dictionary { recid: duration }.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns dictionary { recid: duration }."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">reco2dur_file</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">reco2dur_file</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_process_wav</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wav_rxfilename</span><span class="p">,</span> <span class="n">process</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function returns preprocessed wav_rxfilename.</span>
+<span class="w">        </span><span class="sd">"""This function returns preprocessed wav_rxfilename.</span>
 <span class="sd">        Args:</span>
 <span class="sd">            wav_rxfilename:</span>
 <span class="sd">                input</span>
@@ -582,26 +581,26 @@
 <span class="sd">                command which can be connected via pipe, use stdin and stdout</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            wav_rxfilename: output piped command</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">wav_rxfilename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">wav_rxfilename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"|"</span><span class="p">):</span>
             <span class="c1"># input piped command</span>
-            <span class="k">return</span> <span class="n">wav_rxfilename</span> <span class="o">+</span> <span class="n">process</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span>
-        <span class="c1"># stdin &quot;-&quot; or normal file</span>
-        <span class="k">return</span> <span class="s2">&quot;cat </span><span class="si">{0}</span><span class="s2"> | </span><span class="si">{1}</span><span class="s2"> |&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wav_rxfilename</span><span class="p">,</span> <span class="n">process</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">wav_rxfilename</span> <span class="o">+</span> <span class="n">process</span> <span class="o">+</span> <span class="s2">"|"</span>
+        <span class="c1"># stdin "-" or normal file</span>
+        <span class="k">return</span> <span class="s2">"cat </span><span class="si">{0}</span><span class="s2"> | </span><span class="si">{1}</span><span class="s2"> |"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wav_rxfilename</span><span class="p">,</span> <span class="n">process</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavs</span><span class="p">,</span> <span class="n">segments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function returns generator of segmented audio.</span>
+<span class="w">        </span><span class="sd">"""This function returns generator of segmented audio.</span>
 <span class="sd">        Yields (utterance id, numpy.float32 array).</span>
 <span class="sd">        TODO?: sampling rate is not converted.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">segments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># segments should be sorted by rec-id</span>
             <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
-                <span class="n">wav</span> <span class="o">=</span> <span class="n">wavs</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;rec&quot;</span><span class="p">]]</span>
+                <span class="n">wav</span> <span class="o">=</span> <span class="n">wavs</span><span class="p">[</span><span class="n">seg</span><span class="p">[</span><span class="s2">"rec"</span><span class="p">]]</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">samplerate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_wav</span><span class="p">(</span><span class="n">wav</span><span class="p">)</span>
-                <span class="n">st_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;st&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">samplerate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-                <span class="n">et_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">&quot;et&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">samplerate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-                <span class="k">yield</span> <span class="n">seg</span><span class="p">[</span><span class="s2">&quot;utt&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">st_sample</span><span class="p">:</span><span class="n">et_sample</span><span class="p">]</span>
+                <span class="n">st_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">"st"</span><span class="p">]</span> <span class="o">*</span> <span class="n">samplerate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="n">et_sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">seg</span><span class="p">[</span><span class="s2">"et"</span><span class="p">]</span> <span class="o">*</span> <span class="n">samplerate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">seg</span><span class="p">[</span><span class="s2">"utt"</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">st_sample</span><span class="p">:</span><span class="n">et_sample</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># segments file not found,</span>
             <span class="c1"># wav.scp is used as segmented audio list</span>

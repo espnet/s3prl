@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,30 +266,30 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.sampler.fixed_batch_size_batch_sampler</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">The most commonly used batch sampler, recover the default batch sampler used</span>
 <span class="sd">in torch DataLoader</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Leo 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchSampler</span><span class="p">,</span> <span class="n">RandomSampler</span><span class="p">,</span> <span class="n">SequentialSampler</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FixedBatchSizeBatchSampler&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"FixedBatchSizeBatchSampler"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="FixedBatchSizeBatchSampler">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.sampler.html#s3prl.dataio.sampler.FixedBatchSizeBatchSampler">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FixedBatchSizeBatchSampler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    The reduced timestamps for a batch should not exceed the max_timestamp.</span>
 <span class="sd">    If shuffled, each indices are first shuffled before aggregated into batches</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data_source: __len__ is implemented</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

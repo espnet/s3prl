@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,13 +266,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.util.download</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Thread-safe file downloading and cacheing</span>
 
 <span class="sd">Authors</span>
 <span class="sd">  * Leo 2022</span>
 <span class="sd">  * Cheng Liang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -292,13 +291,13 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="n">_download_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.cache&quot;</span> <span class="o">/</span> <span class="s2">&quot;s3prl&quot;</span> <span class="o">/</span> <span class="s2">&quot;download&quot;</span>
+<span class="n">_download_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">".cache"</span> <span class="o">/</span> <span class="s2">"s3prl"</span> <span class="o">/</span> <span class="s2">"download"</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;get_dir&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_dir&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;download&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;urls_to_filepaths&quot;</span><span class="p">,</span>
+    <span class="s2">"get_dir"</span><span class="p">,</span>
+    <span class="s2">"set_dir"</span><span class="p">,</span>
+    <span class="s2">"download"</span><span class="p">,</span>
+    <span class="s2">"urls_to_filepaths"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -319,19 +318,19 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_download_url_to_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">hash_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This function is not thread-safe. Please ensure only a single</span>
 <span class="sd">    thread or process can enter this block at the same time</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">file_size</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;torch.hub&quot;</span><span class="p">})</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"torch.hub"</span><span class="p">})</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
     <span class="n">meta</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;getheaders&quot;</span><span class="p">):</span>
-        <span class="n">content_length</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">getheaders</span><span class="p">(</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s2">"getheaders"</span><span class="p">):</span>
+        <span class="n">content_length</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">getheaders</span><span class="p">(</span><span class="s2">"Content-Length"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">content_length</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">)</span>
+        <span class="n">content_length</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="s2">"Content-Length"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">content_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">content_length</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">file_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">content_length</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
@@ -344,12 +343,12 @@
         <span class="k">if</span> <span class="n">hash_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sha256</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
 
-        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Destination: </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Destination: </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span>
             <span class="n">total</span><span class="o">=</span><span class="n">file_size</span><span class="p">,</span>
             <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">progress</span><span class="p">,</span>
-            <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"B"</span><span class="p">,</span>
             <span class="n">unit_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">unit_divisor</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
@@ -367,7 +366,7 @@
             <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">digest</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hash_prefix</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">hash_prefix</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s1">&#39;invalid hash value (expected &quot;</span><span class="si">{}</span><span class="s1">&quot;, got &quot;</span><span class="si">{}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s1">'invalid hash value (expected "</span><span class="si">{}</span><span class="s1">", got "</span><span class="si">{}</span><span class="s1">")'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">hash_prefix</span><span class="p">,</span> <span class="n">digest</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -379,12 +378,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_download_url_to_file_requests</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">hash_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Alternative download when urllib.Request fails.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;torch.hub&quot;</span><span class="p">})</span>
-    <span class="n">file_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Length&quot;</span><span class="p">])</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"torch.hub"</span><span class="p">})</span>
+    <span class="n">file_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Content-Length"</span><span class="p">])</span>
 
     <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
     <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
@@ -396,15 +395,15 @@
             <span class="n">sha256</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
 
         <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;urllib.Request method failed. Trying using another method...&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"urllib.Request method failed. Trying using another method..."</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Destination: </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="n">tqdm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Destination: </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span>
             <span class="n">total</span><span class="o">=</span><span class="n">file_size</span><span class="p">,</span>
             <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">progress</span><span class="p">,</span>
-            <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"B"</span><span class="p">,</span>
             <span class="n">unit_scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">unit_divisor</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
@@ -422,7 +421,7 @@
             <span class="n">digest</span> <span class="o">=</span> <span class="n">sha256</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">digest</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hash_prefix</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">hash_prefix</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s1">&#39;invalid hash value (expected &quot;</span><span class="si">{}</span><span class="s1">&quot;, got &quot;</span><span class="si">{}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s1">'invalid hash value (expected "</span><span class="si">{}</span><span class="s1">", got "</span><span class="si">{}</span><span class="s1">")'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">hash_prefix</span><span class="p">,</span> <span class="n">digest</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -434,17 +433,17 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_download</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">new_enough_secs</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    If refresh is True, check the latest modfieid time of the filepath.</span>
 <span class="sd">    If the file is new enough (no older than `new_enough_secs`), than directly use it.</span>
 <span class="sd">    If the file is older than `new_enough_secs`, than re-download the file.</span>
 <span class="sd">    This function is useful when multi-processes are all downloading the same large file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.lock&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Requesting URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">lock_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="o">+</span> <span class="s2">".lock"</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Requesting URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">FileLock</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lock_file</span><span class="p">)):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">filepath</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
@@ -455,11 +454,11 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">_download_url_to_file_requests</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using URL&#39;s local file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using URL's local file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_urls_to_filepaths</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Preprocess the URL specified in *args into local file paths after downloading</span>
 
 <span class="sd">    Args:</span>
@@ -467,13 +466,13 @@
 
 <span class="sd">    Return:</span>
 <span class="sd">        Same number of downloaded file paths</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_url_to_filepath</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
         <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="n">get_dir</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">get_dir</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
             <span class="n">_download</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>

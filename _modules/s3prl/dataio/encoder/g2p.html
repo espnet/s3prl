@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,12 +266,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.dataio.encoder.g2p</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Basic G2P</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Heng-Jui Chang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
@@ -281,15 +280,15 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3prl.util.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">_urls_to_filepaths</span>
 
 <span class="n">DEFAULT_LEXICON_URL</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;https://huggingface.co/datasets/s3prl/g2p/raw/main/lexicon/librispeech-lexicon-200k-g2p.txt&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;https://huggingface.co/datasets/s3prl/g2p/raw/main/lexicon/librispeech-lexicon-allothers-g2p.txt&quot;</span><span class="p">,</span>
+    <span class="s2">"https://huggingface.co/datasets/s3prl/g2p/raw/main/lexicon/librispeech-lexicon-200k-g2p.txt"</span><span class="p">,</span>
+    <span class="s2">"https://huggingface.co/datasets/s3prl/g2p/raw/main/lexicon/librispeech-lexicon-allothers-g2p.txt"</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;G2P&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"G2P"</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_lexicon</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-    <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
     <span class="n">word</span><span class="p">,</span> <span class="o">*</span><span class="n">phonemes</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">word</span><span class="p">,</span> <span class="n">phonemes</span>
 
@@ -297,7 +296,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">read_lexicon_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
     <span class="n">w2p_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
                 <span class="n">word</span><span class="p">,</span> <span class="n">phonemes</span> <span class="o">=</span> <span class="n">parse_lexicon</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -306,11 +305,11 @@
     <span class="n">w2p</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">phonemes_all</span> <span class="ow">in</span> <span class="n">w2p_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">phonemes_all</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">phonemes_all</span><span class="p">)</span><span class="si">}</span><span class="s2"> phoneme sequences found for </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">phonemes_all</span><span class="p">)</span><span class="si">}</span><span class="s2"> phoneme sequences found for </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">phonemes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phonemes_all</span><span class="p">):</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">phonemes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">phonemes</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">w2p</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">phonemes_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Taking the first phoneme sequences for a deterministic behavior.&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Taking the first phoneme sequences for a deterministic behavior."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">w2p</span>
 
@@ -318,12 +317,12 @@
 <div class="viewcode-block" id="G2P">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.G2P">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">G2P</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Grapheme-to-phoneme</span>
+<span class="w">    </span><span class="sd">"""Grapheme-to-phoneme</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        file_list (List[str], optional): List of lexicon files. Defaults to None.</span>
 <span class="sd">        allow_unk (bool): If false, raise Error when a word can not be recognized by this basic G2P</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">allow_unk</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allow_unk</span> <span class="o">=</span> <span class="n">allow_unk</span>
@@ -335,23 +334,23 @@
 <div class="viewcode-block" id="G2P.encode">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.encoder.html#s3prl.dataio.encoder.G2P.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts grapheme-based sentences to phonemes</span>
+<span class="w">        </span><span class="sd">"""Converts grapheme-based sentences to phonemes</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            text (str): Sentence</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Phonemized sentence</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="n">word_list</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">word_list</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
         <span class="n">phonemes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">word_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_unk</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">word2phone</span>
-            <span class="n">phonemes</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word2phone</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&lt;UNK&gt;&quot;</span><span class="p">])</span>
+            <span class="n">phonemes</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word2phone</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">[</span><span class="s2">"&lt;UNK&gt;"</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phonemes</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

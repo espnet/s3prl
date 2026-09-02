@@ -207,7 +207,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -285,7 +284,7 @@ initialized.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3prl.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3PRLUpstream</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">&quot;hubert&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">"hubert"</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -685,7 +684,7 @@ Please follow the below installation instruction:</p>
 <p><a class="reference external" href="https://arxiv.org/abs/2002.02848">Unsupervised pretraining transfers well across languages</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>@inproceedings<span class="o">{</span>riviere2020unsupervised,
 <span class="w">    </span><span class="nv">title</span><span class="o">={</span>Unsupervised<span class="w"> </span>pretraining<span class="w"> </span>transfers<span class="w"> </span>well<span class="w"> </span>across<span class="w"> </span>languages<span class="o">}</span>,
-<span class="w">    </span><span class="nv">author</span><span class="o">={</span>Riviere,<span class="w"> </span>Morgane<span class="w"> </span>and<span class="w"> </span>Joulin,<span class="w"> </span>Armand<span class="w"> </span>and<span class="w"> </span>Mazar<span class="o">{</span><span class="se">\&#39;</span>e<span class="o">}</span>,<span class="w"> </span>Pierre-Emmanuel<span class="w"> </span>and<span class="w"> </span>Dupoux,<span class="w"> </span>Emmanuel<span class="o">}</span>,
+<span class="w">    </span><span class="nv">author</span><span class="o">={</span>Riviere,<span class="w"> </span>Morgane<span class="w"> </span>and<span class="w"> </span>Joulin,<span class="w"> </span>Armand<span class="w"> </span>and<span class="w"> </span>Mazar<span class="o">{</span><span class="se">\'</span>e<span class="o">}</span>,<span class="w"> </span>Pierre-Emmanuel<span class="w"> </span>and<span class="w"> </span>Dupoux,<span class="w"> </span>Emmanuel<span class="o">}</span>,
 <span class="w">    </span><span class="nv">booktitle</span><span class="o">={</span>ICASSP<span class="w"> </span><span class="m">2020</span>-2020<span class="w"> </span>IEEE<span class="w"> </span>International<span class="w"> </span>Conference<span class="w"> </span>on<span class="w"> </span>Acoustics,<span class="w"> </span>Speech<span class="w"> </span>and<span class="w"> </span>Signal<span class="w"> </span>Processing<span class="w"> </span><span class="o">(</span>ICASSP<span class="o">)}</span>,
 <span class="w">    </span><span class="nv">pages</span><span class="o">={</span><span class="m">7414</span>--7418<span class="o">}</span>,
 <span class="w">    </span><span class="nv">year</span><span class="o">={</span><span class="m">2020</span><span class="o">}</span>,
@@ -1626,7 +1625,7 @@ above), the stride seconds between windows.</p>
 <p><a class="reference external" href="https://arxiv.org/abs/2110.05069">Efficient Training of Audio Transformers with Patchout</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>@article<span class="o">{</span>koutini2021efficient,
 <span class="w">    </span><span class="nv">title</span><span class="o">={</span>Efficient<span class="w"> </span>training<span class="w"> </span>of<span class="w"> </span>audio<span class="w"> </span>transformers<span class="w"> </span>with<span class="w"> </span>patchout<span class="o">}</span>,
-<span class="w">    </span><span class="nv">author</span><span class="o">={</span>Koutini,<span class="w"> </span>Khaled<span class="w"> </span>and<span class="w"> </span>Schl<span class="o">{</span><span class="se">\&quot;</span>u<span class="o">}</span>ter,<span class="w"> </span>Jan<span class="w"> </span>and<span class="w"> </span>Eghbal-zadeh,<span class="w"> </span>Hamid<span class="w"> </span>and<span class="w"> </span>Widmer,<span class="w"> </span>Gerhard<span class="o">}</span>,
+<span class="w">    </span><span class="nv">author</span><span class="o">={</span>Koutini,<span class="w"> </span>Khaled<span class="w"> </span>and<span class="w"> </span>Schl<span class="o">{</span><span class="se">\"</span>u<span class="o">}</span>ter,<span class="w"> </span>Jan<span class="w"> </span>and<span class="w"> </span>Eghbal-zadeh,<span class="w"> </span>Hamid<span class="w"> </span>and<span class="w"> </span>Widmer,<span class="w"> </span>Gerhard<span class="o">}</span>,
 <span class="w">    </span><span class="nv">journal</span><span class="o">={</span>arXiv<span class="w"> </span>preprint<span class="w"> </span>arXiv:2110.05069<span class="o">}</span>,
 <span class="w">    </span><span class="nv">year</span><span class="o">={</span><span class="m">2021</span><span class="o">}</span>
 <span class="o">}</span>

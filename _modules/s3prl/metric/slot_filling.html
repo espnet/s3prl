@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -267,42 +266,42 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for s3prl.metric.slot_filling</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Metrics for the slot filling SLU task</span>
 
 <span class="sd">Authors:</span>
 <span class="sd">  * Yung-Sung Chuang 2021</span>
 <span class="sd">  * Heng-Jui Chang 2022</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">cer</span><span class="p">,</span> <span class="n">wer</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;slot_type_f1&quot;</span><span class="p">,</span> <span class="s2">&quot;slot_value_cer&quot;</span><span class="p">,</span> <span class="s2">&quot;slot_value_wer&quot;</span><span class="p">,</span> <span class="s2">&quot;slot_edit_f1&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"slot_type_f1"</span><span class="p">,</span> <span class="s2">"slot_value_cer"</span><span class="p">,</span> <span class="s2">"slot_value_wer"</span><span class="p">,</span> <span class="s2">"slot_edit_f1"</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;B\-(\S+) &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; E\-(\S+)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"B\-(\S+) "</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">" E\-(\S+)"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ref</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">hyp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="n">gex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;B\-(\S+) (.+?) E\-\1&quot;</span><span class="p">)</span>
+    <span class="n">gex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"B\-(\S+) (.+?) E\-\1"</span><span class="p">)</span>
 
-    <span class="n">hyp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">hyp</span><span class="p">)</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+    <span class="n">hyp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">hyp</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
 
     <span class="n">hyp_slots</span> <span class="o">=</span> <span class="n">gex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">hyp</span><span class="p">)</span>
     <span class="n">ref_slots</span> <span class="o">=</span> <span class="n">gex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
 
-    <span class="n">ref_slots</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ref_slots</span><span class="p">])</span>
+    <span class="n">ref_slots</span> <span class="o">=</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ref_slots</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hyp_slots</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">hyp_slots</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">clean</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hyp_slots</span><span class="p">])</span>
+        <span class="n">hyp_slots</span> <span class="o">=</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">clean</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hyp_slots</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">hyp_slots</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">hyp_slots</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="n">ref</span> <span class="o">=</span> <span class="n">clean</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
     <span class="n">hyp</span> <span class="o">=</span> <span class="n">clean</span><span class="p">(</span><span class="n">hyp</span><span class="p">)</span>
@@ -315,19 +314,19 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
     <span class="n">ref_text</span><span class="p">,</span> <span class="n">hyp_text</span><span class="p">,</span> <span class="n">ref_slots</span><span class="p">,</span> <span class="n">hyp_slots</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">hyp</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
 
-    <span class="n">ref_slots</span> <span class="o">=</span> <span class="n">ref_slots</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
-    <span class="n">hyp_slots</span> <span class="o">=</span> <span class="n">hyp_slots</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="n">ref_slots</span> <span class="o">=</span> <span class="n">ref_slots</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
+    <span class="n">hyp_slots</span> <span class="o">=</span> <span class="n">hyp_slots</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
     <span class="n">ref_dict</span><span class="p">,</span> <span class="n">hyp_dict</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
 
-    <span class="k">if</span> <span class="n">ref_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ref_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">ref_slot</span> <span class="ow">in</span> <span class="n">ref_slots</span><span class="p">:</span>
-            <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">ref_slot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">ref_slot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
             <span class="n">ref_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span>
             <span class="n">ref_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">hyp_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">hyp_slots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">hyp_slot</span> <span class="ow">in</span> <span class="n">hyp_slots</span><span class="p">:</span>
-            <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">hyp_slot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">hyp_slot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
             <span class="n">hyp_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span>
             <span class="n">hyp_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
@@ -377,12 +376,12 @@
         <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">unique_slots</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ref_i</span><span class="p">,</span> <span class="n">ref_v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">[</span><span class="n">slot</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">slot</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hyp_dict</span><span class="p">:</span>
-                    <span class="n">hyp_v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="n">hyp_v</span> <span class="o">=</span> <span class="s2">""</span>
                     <span class="n">value_refs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_v</span><span class="p">)</span>
                     <span class="n">value_hyps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hyp_v</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">min_cer</span> <span class="o">=</span> <span class="mi">100</span>
-                    <span class="n">best_hyp_v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="n">best_hyp_v</span> <span class="o">=</span> <span class="s2">""</span>
                     <span class="k">for</span> <span class="n">hyp_v</span> <span class="ow">in</span> <span class="n">hyp_dict</span><span class="p">[</span><span class="n">slot</span><span class="p">]:</span>
                         <span class="n">tmp_cer</span> <span class="o">=</span> <span class="n">cer</span><span class="p">([</span><span class="n">hyp_v</span><span class="p">],</span> <span class="p">[</span><span class="n">ref_v</span><span class="p">])</span>
                         <span class="k">if</span> <span class="n">min_cer</span> <span class="o">&gt;</span> <span class="n">tmp_cer</span><span class="p">:</span>
@@ -408,12 +407,12 @@
         <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">unique_slots</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ref_i</span><span class="p">,</span> <span class="n">ref_v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">[</span><span class="n">slot</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">slot</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hyp_dict</span><span class="p">:</span>
-                    <span class="n">hyp_v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="n">hyp_v</span> <span class="o">=</span> <span class="s2">""</span>
                     <span class="n">value_refs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_v</span><span class="p">)</span>
                     <span class="n">value_hyps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hyp_v</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">min_wer</span> <span class="o">=</span> <span class="mi">100</span>
-                    <span class="n">best_hyp_v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="n">best_hyp_v</span> <span class="o">=</span> <span class="s2">""</span>
                     <span class="k">for</span> <span class="n">hyp_v</span> <span class="ow">in</span> <span class="n">hyp_dict</span><span class="p">[</span><span class="n">slot</span><span class="p">]:</span>
                         <span class="n">tmp_wer</span> <span class="o">=</span> <span class="n">wer</span><span class="p">([</span><span class="n">hyp_v</span><span class="p">],</span> <span class="p">[</span><span class="n">ref_v</span><span class="p">])</span>
                         <span class="k">if</span> <span class="n">min_wer</span> <span class="o">&gt;</span> <span class="n">tmp_wer</span><span class="p">:</span>

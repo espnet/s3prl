@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="problem" href="s3prl.problem.html"><link rel="prev" title="Adding New Upstream" href="../contribute/upstream.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="task" href="s3prl.task.html"><link rel="prev" title="Adding New Upstream" href="../contribute/upstream.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>nn - S3PRL 2026.05.14 documentation</title>
@@ -207,7 +207,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -312,7 +311,7 @@ which can be very time/bandwidth consuming.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">s3prl.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3PRLUpstream</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">&quot;hubert&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">"hubert"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -420,7 +419,7 @@ fidelity of each upstream’s extracted representation.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">s3prl.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3PRLUpstream</span><span class="p">,</span> <span class="n">Featurizer</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">&quot;hubert&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">S3PRLUpstream</span><span class="p">(</span><span class="s2">"hubert"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -1213,12 +1212,12 @@ logit (torch.Tensor): (batch_size, )</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="s3prl.problem.html">
+          <a class="next-page" href="s3prl.task.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">problem</div>
+                <div class="title">task</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

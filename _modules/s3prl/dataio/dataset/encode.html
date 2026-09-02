@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -277,10 +276,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;EncodeCategory&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EncodeCategories&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EncodeMultiLabel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EncodeText&quot;</span><span class="p">,</span>
+    <span class="s2">"EncodeCategory"</span><span class="p">,</span>
+    <span class="s2">"EncodeCategories"</span><span class="p">,</span>
+    <span class="s2">"EncodeMultiLabel"</span><span class="p">,</span>
+    <span class="s2">"EncodeText"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -298,8 +297,8 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
-            <span class="s2">&quot;class_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">label</span><span class="p">),</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+            <span class="s2">"class_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">label</span><span class="p">),</span>
         <span class="p">}</span></div>
 
 
@@ -318,8 +317,8 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
-            <span class="s2">&quot;class_ids&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoders</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span>
+            <span class="s2">"labels"</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
+            <span class="s2">"class_ids"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoders</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">labels</span><span class="p">)),</span>
         <span class="p">}</span></div>
 
 
@@ -356,8 +355,8 @@
         <span class="n">binary_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_to_binary_vector</span><span class="p">(</span><span class="n">label_ids</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
-            <span class="s2">&quot;binary_labels&quot;</span><span class="p">:</span> <span class="n">binary_labels</span><span class="p">,</span>
+            <span class="s2">"labels"</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span>
+            <span class="s2">"binary_labels"</span><span class="p">:</span> <span class="n">binary_labels</span><span class="p">,</span>
         <span class="p">}</span></div>
 
 
@@ -388,8 +387,8 @@
             <span class="n">tokenized_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
-            <span class="s2">&quot;class_ids&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">tokenized_ids</span><span class="p">),</span>
+            <span class="s2">"labels"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">"class_ids"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">tokenized_ids</span><span class="p">),</span>
         <span class="p">}</span></div>
 
 </pre></div>

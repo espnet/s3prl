@@ -206,7 +206,6 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.nn.html">nn</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.problem.html">problem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/s3prl.task.html">task</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.html">dataio</a><input aria-label="Toggle navigation of dataio" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/s3prl.dataio.collate_fn.html">collate_fn</a></li>
@@ -280,11 +279,11 @@
 <div class="viewcode-block" id="LoadAudio">
 <a class="viewcode-back" href="../../../../_autosummary/s3prl.dataio.dataset.load_audio.html#s3prl.dataio.dataset.LoadAudio">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LoadAudio</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Args:</span>
 <span class="sd">        start_secs: use None if load from start</span>
 <span class="sd">        end_secs: use None if load to end</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -311,7 +310,7 @@
         <span class="k">assert</span> <span class="nb">int</span><span class="p">(</span><span class="n">start_secs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">end_secs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span>
             <span class="mi">0</span><span class="p">,</span>
             <span class="mi">2</span><span class="p">,</span>
-        <span class="p">],</span> <span class="s2">&quot;start_secs and end_secs must both be given if anyone is given&quot;</span>
+        <span class="p">],</span> <span class="s2">"start_secs and end_secs must both be given if anyone is given"</span>
 
         <span class="k">assert</span> <span class="p">(</span>
             <span class="nb">int</span><span class="p">(</span><span class="n">sox_effects</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">individual_sox_effects</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span>
@@ -355,9 +354,9 @@
 
         <span class="n">wav</span> <span class="o">=</span> <span class="n">wav</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;wav_path&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
-            <span class="s2">&quot;wav_len&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav</span><span class="p">),</span>
-            <span class="s2">&quot;wav&quot;</span><span class="p">:</span> <span class="n">wav</span><span class="p">,</span>
+            <span class="s2">"wav_path"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+            <span class="s2">"wav_len"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">wav</span><span class="p">),</span>
+            <span class="s2">"wav"</span><span class="p">:</span> <span class="n">wav</span><span class="p">,</span>
         <span class="p">}</span></div>
 
 </pre></div>
