@@ -7,7 +7,19 @@ from setuptools import find_packages, setup
 here = Path(__file__).parent.resolve()
 
 # Get the long description from the README file
-long_description = (here / "README.md").read_text(encoding="utf-8")
+# This is a fork of s3prl/s3prl, published under its own name because PyPI
+# rejects a distribution whose metadata points at a git repository, and because
+# upstream does not import under torchaudio 2.1 or newer. See FORK_NOTICE.md.
+fork_notice = """
+**This is an unofficial fork of [s3prl/s3prl](https://github.com/s3prl/s3prl)
+maintained by the ESPnet project. It is not affiliated with, nor endorsed by,
+the S3PRL Team.** Upstream calls `torchaudio.set_audio_backend` at import time,
+which no torchaudio since 2.1 provides, so it cannot be imported in an ESPnet
+environment. The import name is unchanged. See
+[FORK_NOTICE.md](https://github.com/espnet/s3prl/blob/main/FORK_NOTICE.md).
+
+"""
+long_description = fork_notice + (here / "README.md").read_text(encoding="utf-8")
 version = (here / "s3prl" / "version.txt").read_text(encoding="utf-8").strip()
 
 requirements = {}
@@ -36,7 +48,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name="s3prl",  # Required
+    name="espnet-s3prl",  # Required
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
@@ -47,7 +59,8 @@ setup(
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description="Self-Supervised Speech Pre-training and Representation Learning Toolkit",  # Optional
+    description="Self-Supervised Speech Pre-training and Representation "
+    "Learning Toolkit (ESPnet fork)",  # Optional
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
     #
@@ -72,7 +85,8 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url="https://github.com/s3prl/s3prl",  # Optional
+    url="https://github.com/s3prl/s3prl",  # the original project
+    maintainer="ESPnet Developers",
     # This should be your name or the name of the organization which owns the
     # project.
     author="Shu-wen (Leo) Yang, Andy T. Liu (Ting-Wei Liu), and the S3PRL Team",  # Optional
@@ -173,7 +187,11 @@ setup(
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/s3prl/s3prl/issues",
-        "Source": "https://github.com/s3prl/s3prl/",
+        # Issues and pull requests for the fork belong on the fork; upstream's
+        # tracker is linked so it stays discoverable.
+        "Original project": "https://github.com/s3prl/s3prl",
+        "Bug Reports (this fork)": "https://github.com/espnet/s3prl/issues",
+        "Source (this fork)": "https://github.com/espnet/s3prl/",
+        "Fork notice": "https://github.com/espnet/s3prl/blob/main/FORK_NOTICE.md",
     },
 )
